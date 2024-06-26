@@ -1,20 +1,26 @@
 package com.mypet.mungmoong.imgfile.controller;
 
-import com.mypet.mungmoong.imgfile.dto.ImgFileDTO;
-import com.mypet.mungmoong.imgfile.service.ImgFileService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 
-@Controller
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.mypet.mungmoong.imgfile.dto.ImgFileDTO;
+import com.mypet.mungmoong.imgfile.service.ImgFileService;
+
+@RestController
+@RequestMapping("/api/users")
 public class ImgFileController {
 
     private final ImgFileService imgFileService;
@@ -24,13 +30,13 @@ public class ImgFileController {
         this.imgFileService = imgFileService;
     }
 
-    @GetMapping("/users/uploadForm")
-    public String showUploadForm() {
-        return "uploadForm";
+    @GetMapping("/uploadForm")
+    public ResponseEntity<String> showUploadForm() {
+        return ResponseEntity.ok("Upload form displayed");
     }
 
-    @PostMapping("/users/uploadImage")
-    public String uploadImage(@RequestParam("image") MultipartFile file, Model model) {
+    @PostMapping("/uploadImage")
+    public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile file) {
         if (!file.isEmpty()) {
             String uploadDir = "src/main/resources/static/img/users/";
             String fileName = file.getOriginalFilename();
@@ -51,15 +57,18 @@ public class ImgFileController {
 
                 imgFileService.saveFile(imgFileDTO);
 
-                model.addAttribute("message", "파일 업로드 성공");
-                model.addAttribute("imgFile", imgFileDTO);
+                Map<String, Object> response = new HashMap<>();
+                response.put("message", "파일 업로드 성공");
+                response.put("imgFile", imgFileDTO);
+
+                return ResponseEntity.ok(response);
             } catch (IOException e) {
                 e.printStackTrace();
-                model.addAttribute("message", "파일 업로드 실패: " + e.getMessage());
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("파일 업로드 실패: " + e.getMessage());
             }
         } else {
-            model.addAttribute("message", "업로드할 파일을 선택하세요");
+            return ResponseEntity.badRequest().body("업로드할 파일을 선택하세요");
         }
-        return "redirect:/users/index";
     }
 }
