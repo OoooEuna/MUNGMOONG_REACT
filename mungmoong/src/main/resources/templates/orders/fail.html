@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/main_layout}"
+      >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주문 실패</title>
+</head>
+<body layout:fragment="content" class="d-flex flex-column h-100 bg-light">
+
+  <section style="    height: 69vh;">
+    <div class="album py-5 bg-body-tertiary">
+      <div class="container">
+        <div class="main-title py-5">
+          <h3 class="display-4 fw-bold text-body-emphasis text-center">주문 실패</h3>
+          <p class="text-center">주문이 실패되었습니다. 재주문 요청 바랍니다.</p>
+        </div>
+        <div class="d-flex justify-content-center gap-2">
+          <div class="item">
+            <a th:href="|/orders/${no}|" class="btn btn-lg btn-primary">다시 주문하기</a>
+          </div>
+        </div>
+    </div>
+  </section>
+  
+
+ 
+</body>
+</html>
