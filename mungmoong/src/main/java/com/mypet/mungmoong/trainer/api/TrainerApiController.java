@@ -1,8 +1,10 @@
-package com.mypet.mungmoong.trainer.controller;
+package com.mypet.mungmoong.trainer.api;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
@@ -13,12 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -55,10 +56,10 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Controller
-@RequestMapping("/trainer")
-public class TrainerController {
+@RequestMapping("/api/trainer")
+public class TrainerApiController {
 
-    private Logger logger = LoggerFactory.getLogger(TrainerController.class);
+    private Logger logger = LoggerFactory.getLogger(TrainerApiController.class);
 
     @GetMapping("/{page}")
     public String test(@PathVariable("page") String page) {
@@ -94,53 +95,38 @@ public class TrainerController {
     @Autowired
     private UsersService userService;
 
-    /**
-     * Orders 목록
-     * 
-     * @param model
-     * @param session
-     * @return
-     * @throws Exception
-     */
+    // orders 목록
     @GetMapping("/orders")
-    public String ordersList(Model model, HttpSession session) throws Exception {
-        log.info("[GET] - /trainer/orders");
+    public ResponseEntity<?> ordersList(HttpSession session) throws Exception {
+        log.info("[GET] - /api/orders");
         Integer trainerNo = (Integer) session.getAttribute("trainerNo");
         if (trainerNo == null) {
             log.error("트레이너 번호를 세션에서 찾을 수 없습니다.");
             // 트레이너 번호가 없을 경우 에러 처리
-            model.addAttribute("error", "트레이너 번호를 세션에서 찾을 수 없습니다.");
-            return "/trainer/error";
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                 .body("트레이너 번호를 세션에서 찾을 수 없습니다.");
         }
+
         // 데이터 요청
         log.info("trainerNo : " + trainerNo);
         List<Orders> ordersList = ordersService.listByTrainer(trainerNo);
 
-        // 모델 등록
-        model.addAttribute("ordersList", ordersList);
-
-        // 뷰 페이지 지정
-        return "/trainer/orders";
+        // 데이터와 함께 상태 코드 반환
+        return ResponseEntity.ok(ordersList);
     }
 
-    /**
-     * 입금 내역 목록
-     * 
-     * @param model
-     * @param session
-     * @return
-     * @throws Exception
-     */
+    
+    // 입금 내역 목록
     @GetMapping("/deposit")
-    public String deposit(Model model, HttpSession session) throws Exception {
-        log.info("[GET] - /trainer/orders");
+    public ResponseEntity<?> deposit(HttpSession session) throws Exception {
+        log.info("[GET] - /api/deposit");
         Integer trainerNo = (Integer) session.getAttribute("trainerNo");
         if (trainerNo == null) {
             log.error("트레이너 번호를 세션에서 찾을 수 없습니다.");
-            // 트레이너 번호가 없을 경우 에러 처리
-            model.addAttribute("error", "트레이너 번호를 세션에서 찾을 수 없습니다.");
-            return "/trainer/error";
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                 .body("트레이너 번호를 세션에서 찾을 수 없습니다.");
         }
+
         // 데이터 요청
         log.info("trainerNo : " + trainerNo);
         List<Orders> ordersList = ordersService.listByTrainer(trainerNo);
@@ -155,91 +141,76 @@ public class TrainerController {
 
         int totalApprovedAmount = approvedOrdersList.stream().mapToInt(Orders::getPrice).sum();
 
-        // 모델 등록
-        model.addAttribute("ordersList", ordersList);
-        model.addAttribute("totalAmount", totalAmount);
-        model.addAttribute("approvedOrdersList", approvedOrdersList);
-        model.addAttribute("totalApprovedAmount", totalApprovedAmount);
+        // 응답 데이터 생성
+        Map<String, Object> response = new HashMap<>();
+        response.put("ordersList", ordersList);
+        response.put("totalAmount", totalAmount);
+        response.put("approvedOrdersList", approvedOrdersList);
+        response.put("totalApprovedAmount", totalApprovedAmount);
 
-        // 뷰 페이지 지정
-        return "/trainer/deposit";
+        // JSON 형식으로 데이터 반환
+        return ResponseEntity.ok(response);
     }
 
-    /**
-     * Meaning 수정 작업
-     * 
-     * @param orderId
-     * @param meaning
-     * @return
-     * @throws Exception
-     */
+    
+    // Meaning 수정 작업
     @PostMapping("/orders")
-    public String updateOrderMeaning(@RequestParam("orderNo") int orderNo, @RequestParam("meaning") int meaning)
+    public ResponseEntity<?> updateOrderMeaning(@RequestParam("orderNo") int orderNo, @RequestParam("meaning") int meaning)
             throws Exception {
         ordersService.updateMeaning(orderNo, meaning);
-        return "redirect:/trainer/orders";
+        return ResponseEntity.ok("Order meaning updated successfully.");
     }
+    
 
-    /**
-     * Orders 조회
-     * 
-     * @param no
-     * @param model
-     * @param file
-     * @return
-     * @throws Exception
-     */
+    // Orders 조회
     @GetMapping("/orders_details")
-    public String ordersDetails(@RequestParam("no") int no,
-            Model model,
-            Files file) throws Exception {
+    public ResponseEntity<?> ordersDetails(@RequestParam("no") int no) throws Exception {
         Orders orders = ordersService.select(no);
         int petNo = orders.getPetNo();
         log.info("petNo :  " + petNo);
         Pet pet = petService.findPetById(petNo);
         log.info(":::::  pet  ::::::" + pet.toString());
         log.info(":::: orders :::::" + orders.toString());
-
-        // 파일 요청
-
-        // 모델 등록
-        model.addAttribute("orders", orders);
-        model.addAttribute("pet", pet);
-
-        // 뷰페이지 지정
-        return "/trainer/orders_details";
+    
+        // 응답 데이터 생성
+        Map<String, Object> response = new HashMap<>();
+        response.put("orders", orders);
+        response.put("pet", pet);
+    
+        // JSON 형식으로 데이터 반환
+        return ResponseEntity.ok(response);
     }
+    
 
-    /**
-     * 훈련사 정보 조회 (경력, 소개, 자격증)
-     * 
-     * @param userId
-     * @param model
-     * @return
-     * @throws Exception
-     */
+    // 훈련사 정보 조회 (경력, 소개, 자격증)
     @GetMapping("/info")
-    public String select(@RequestParam("userId") String userId, Model model) throws Exception {
+    public ResponseEntity<?> select(@RequestParam("userId") String userId) throws Exception {
         Trainer trainer = trainerService.select(userId);
         List<Career> careerList = careerService.select(userId);
         List<Certificate> certificateList = certificateService.listByUserId(userId);
-        model.addAttribute("trainer", trainer);
-        model.addAttribute("careerList", careerList);
-        model.addAttribute("certificateList", certificateList);
-        return "/trainer/info";
+    
+        // 응답 데이터 생성
+        Map<String, Object> response = new HashMap<>();
+        response.put("trainer", trainer);
+        response.put("careerList", careerList);
+        response.put("certificateList", certificateList);
+    
+        // JSON 형식으로 데이터 반환
+        return ResponseEntity.ok(response);
     }
+    
 
+    // 훈련사 정보 등록
     @PostMapping("/join_data")
-    public String insertPro(@ModelAttribute Trainer trainer, HttpSession session, Model model) {
+    public ResponseEntity<?> insertPro(@RequestBody Trainer trainer, HttpSession session) {
         try {
             Users user = (Users) session.getAttribute("user");
 
             if (user == null) {
-                return "redirect:/login";
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not logged in.");
             }
 
             trainer.setUserId(user.getUserId());
-
             trainer.setCareerList(trainer.toCareerList());
             trainer.setCertificateList(trainer.toCertificateList());
             log.info("trainer 로그조회 : " + trainer);
@@ -247,33 +218,34 @@ public class TrainerController {
             int result = trainerService.insert(trainer);
 
             if (result > 0) {
-
                 String userId = (String) session.getAttribute("userId");
                 Users updatedUser = userService.select(userId);
                 session.setAttribute("user", updatedUser);
-                return "redirect:/";
+                return ResponseEntity.ok("Trainer data inserted successfully.");
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to insert trainer data.");
             }
         } catch (Exception e) {
             log.error("Error occurred while processing trainer data", e);
-            model.addAttribute("errorMessage", "Error occurred while processing trainer data: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while processing trainer data: " + e.getMessage());
         }
-
-        return "redirect:/trainer/join_data?error";
     }
 
-    /**
-     * 훈련사 수정 화면
-     */
+
+    
+    // 훈련사 수정 화면
     @GetMapping("/info_update")
-    public String update(@RequestParam("userId") String userId, Model model, Files file, HttpSession session)
-            throws Exception {
+    public ResponseEntity<?> update(@RequestParam("userId") String userId, HttpSession session) throws Exception {
         Trainer trainer = trainerService.select(userId);
         List<Career> careerList = careerService.select(userId); // select -> listByUserId
         List<Certificate> certificateList = certificateService.listByUserId(userId);
+        Files file = new Files(); // assuming a default constructor or appropriate method to get Files object
         List<Files> fileList = fileService.listByParent(file);
         Integer trainerNo = (Integer) session.getAttribute("trainerNo");
+
         if (trainerNo == null) {
             log.error("트레이너 번호를 세션에서 찾을 수 없습니다.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("트레이너 번호를 세션에서 찾을 수 없습니다.");
         }
 
         log.info("--------------------------------------------------------------");
@@ -282,32 +254,29 @@ public class TrainerController {
         file.setParentTable("trainer");
         file.setParentTable("certificate");
 
-        model.addAttribute("trainer", trainer);
-        model.addAttribute("trainerNo", trainerNo);
-        model.addAttribute("careerList", careerList);
-        model.addAttribute("certificateList", certificateList);
-        model.addAttribute("fileList", fileList);
+        // 응답 데이터 생성
+        Map<String, Object> response = new HashMap<>();
+        response.put("trainer", trainer);
+        response.put("trainerNo", trainerNo);
+        response.put("careerList", careerList);
+        response.put("certificateList", certificateList);
+        response.put("fileList", fileList);
 
-        return "/trainer/info_update";
+        // JSON 형식으로 데이터 반환
+        return ResponseEntity.ok(response);
     }
 
-    /**
-     * 훈련사 수정 처리
-     * 
-     * @param trainer
-     * @param session
-     * @param model
-     * @throws Exception
-     */
+
+    // 훈련사 수정 처리
     @PostMapping("/info_update")
-    public String updatePro(Trainer trainer, @RequestParam("files") List<MultipartFile> files, HttpSession session) throws Exception {
+    public ResponseEntity<?> updatePro(@RequestBody Trainer trainer, @RequestParam("files") List<MultipartFile> files, HttpSession session) throws Exception {
         log.info(":::::::::::::::::: 훈련사 정보 수정 :::::::::::::::::::");
         log.info("trainser : " + trainer.toString());
     
         Integer trainerNo = (Integer) session.getAttribute("trainerNo");
         if (trainerNo == null) {
             log.error("트레이너 번호를 세션에서 찾을 수 없습니다.");
-            return "redirect:/trainer/info_update?userId=" + trainer.getUserId() + "&error=session";
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("트레이너 번호를 세션에서 찾을 수 없습니다.");
         }
         log.info("세션에서 가져온 트레이너 번호 : " + trainerNo);
     
@@ -350,8 +319,13 @@ public class TrainerController {
         int result = trainerService.update(trainer);
         log.debug("Trainer data : {}", trainer);
     
-        return "redirect:/trainer/info_update?userId=" + trainer.getUserId() + (result > 0 ? "" : "&error");
+        if (result > 0) {
+            return ResponseEntity.ok("Trainer information updated successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update trainer information.");
+        }
     }
+    
     
     
 
@@ -444,93 +418,63 @@ public class TrainerController {
     // }return"redirect:/trainer/info_update?userId="+trainer.getUserId()+"&error";
     // }
 
-    // [은아] - 나는 이거 안 씀
-    @PostMapping("/delete")
-    public String delete(@RequestParam("no") int no) throws Exception {
-        // 글 삭제 요청
-        // int result = trainerService.delete(no);
-        int result = 0;
-        // 글 삭제가 되면, 첨부파일도 같이 삭제
-        if (result > 0) {
-            // 첨부파일 삭제
-            Files file = new Files();
-            file.setParentTable("board");
-            file.setParentNo(no);
-            fileService.deleteByParent(file);
 
-            return "redirect:/trainer/board/list";
-        }
-        return "redirect:/trainer/board/update?no=" + no + "&error";
-    }
 
     // 스케쥴 👩‍🏫(full calendar 샘플)
     @GetMapping("/schedule")
-    public String scheduleCalendar(HttpSession session, Model model) throws Exception {
+    public ResponseEntity<?> scheduleCalendar(HttpSession session) throws Exception {
         Integer trainerNo = (Integer) session.getAttribute("trainerNo");
         if (trainerNo == null) {
             log.error("트레이너 번호를 세션에서 찾을 수 없습니다.");
-            // 트레이너 번호가 없을 경우 에러 처리
-            model.addAttribute("error", "트레이너 번호를 세션에서 찾을 수 없습니다.");
-            return "/trainer/error";
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("트레이너 번호를 세션에서 찾을 수 없습니다.");
         }
         List<Schedule> scheduleList = scheduleService.select(trainerNo);
-        model.addAttribute("trainerNo", trainerNo);
-        model.addAttribute("scheduleList", scheduleList);
-        return "/trainer/schedule";
+        Map<String, Object> response = new HashMap<>();
+        response.put("trainerNo", trainerNo);
+        response.put("scheduleList", scheduleList);
+        return ResponseEntity.ok(response);
     }
+
 
     // 스케쥴 등록
     @PostMapping("/schedule")
-    public String saveSchedule(@ModelAttribute Schedule schedule,
-            @RequestParam("title") String title,
-            @RequestParam("scheduleDate") Date scheduleDate,
-            HttpSession session, Model model) {
+    public ResponseEntity<?> saveSchedule(@RequestBody Schedule schedule, HttpSession session) {
         try {
             Integer trainerNo = (Integer) session.getAttribute("trainerNo");
             Users loginUser = (Users) session.getAttribute("user");
+            if (trainerNo == null || loginUser == null) {
+                log.error("트레이너 번호를 세션에서 찾을 수 없습니다.");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("트레이너 번호를 세션에서 찾을 수 없습니다.");
+            }
             String userId = loginUser.getUserId();
             log.info("저장된 아이디 : " + userId);
-            if (trainerNo == null) {
-                log.error("트레이너 번호를 세션에서 찾을 수 없습니다.");
-                // 트레이너 번호가 없을 경우 에러 처리
-                model.addAttribute("error", "트레이너 번호를 세션에서 찾을 수 없습니다.");
-                return "/trainer/error";
-            }
+    
             schedule.setTrainerNo(trainerNo);
-            schedule.setTitle(title);
             schedule.setUserId(userId);
-            schedule.setScheduleDate(scheduleDate);
             int result = scheduleService.insert(schedule);
-
+    
             if (result > 0) {
                 log.info("스케쥴 등록이 완료되었습니다╰(*°▽°*)╯");
-                return "redirect:/trainer/schedule";
+                return ResponseEntity.ok("Schedule saved successfully.");
             }
         } catch (Exception e) {
             log.error("Error occurred while processing trainer data", e);
-            model.addAttribute("errorMessage", "Error occurred while processing trainer data: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while processing trainer data: " + e.getMessage());
         }
-        return "redirect:/trainer/schedule?error";
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save schedule.");
     }
+    
 
     /**
      * 캘린더 데이터
      * - 훈련사 번호를 받아오면 해당 훈련사의 일정을
      * JSON 데이터로 응답함
-     * 
-     * @param trainerNo
-     * @return
-     * @throws Exception
      */
     @ResponseBody
     @GetMapping("/schedule/event")
-    public List<Event> trainerScheduleEvent(@RequestParam("trainerNo") int trainerNo, Event event) throws Exception {
+    public ResponseEntity<?> trainerScheduleEvent(@RequestParam("trainerNo") int trainerNo) throws Exception {
         List<Schedule> scheduleList = scheduleService.select(trainerNo);
-        // log.info("스케쥴 확인할 훈련사 번호 : " + trainerNo);
-        // log.info("::::::::::::::: 스케쥴 ::::::::::::::::::");
-        // log.info(scheduleList.toString());
         List<Event> eventList = new ArrayList<>();
-        // 풀캘린더에 맞는 변수로 변환
         for (Schedule schedule : scheduleList) {
             int no = schedule.getNo();
             String title = schedule.getTitle();
@@ -538,25 +482,22 @@ public class TrainerController {
             String description = schedule.getContent();
             eventList.add(new Event(no, title, description, date));
         }
-        return eventList;
+        return ResponseEntity.ok(eventList);
     }
+    
 
-    /**
-     * 일정 삭제
-     * 
-     * @param no
-     * @return
-     * @throws Exception
-     */
+    
+    // 일정 삭제
     @DeleteMapping("/schedule/event/{no}")
-    public ResponseEntity<String> deleteTrainerScheduleEvent(@PathVariable("no") int no) throws Exception {
+    public ResponseEntity<?> deleteTrainerScheduleEvent(@PathVariable("no") int no) throws Exception {
         log.info("스케쥴 번호 - no " + no);
         int result = scheduleService.deleteByNo(no);
         if (result > 0) {
-            return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+            return ResponseEntity.ok("SUCCESS");
         } else {
-            return new ResponseEntity<>("FAIL", HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("FAIL");
         }
     }
+    
 
 }
