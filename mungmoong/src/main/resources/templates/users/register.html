@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/register_layout}">
+<head>
+    <title>회원가입페이지</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.standalone.min.css" />
+    <meta name="csrf-token" th:content="${_csrf.token}"/>
+    <meta name="csrf-header-name" th:content="${_csrf.headerName}"/>
+  </head>
+<style>
+  .invalid-feedback {
+      display: none;
+      color: red;
+  }
+  .was-validated .invalid-feedback {
+      display: block;
+  }
+    /* 모바일에서 주소 입력 부분의 너비를 조정 */
+    #address,
+    #address2 {
+        width: 100%;
+    }
+
+    /* 모바일에서 버튼의 너비를 조정하고 중앙 정렬 */
+    .button-container button {
+        width: 45%;
+        margin: 0 auto;
+    }
+</style>
+<body layout:fragment="content">
+  <div class="container-sm reserve" style="padding: 3%; width: 50%; border-radius: 15px; margin: 0 auto; margin-top: 30px; margin-bottom: 4%; background: #fff4d5">
+    <div class="input-form-backgroud row">                          
+      <div class="input-form col-md-12 mx-auto">
+        <h4 class="mb-3">회원가입</h4>
+        <div class="button-container">
+          <button id="buttonA" class="active" onclick="showContent('A', this)">사용자</button>
+          <button id="buttonB" onclick="showContent('B', this)">반려견</button>
+        </div>
+        <div class="validation-form" novalidate>
+          <div class="row">
+            <form id="form" method="post" action="/users/register/">
+              <!-- CSRF TOKEN -->
+              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+              
+              <input type="hidden" id="combinedAddress" name="combinedAddress">
+              <div id="contentA">
+                <div class="col-md-6 mb-3">
+                  <label for="name">이름</label>
+                  <input type="text" class="form-control" name="name" id="name" placeholder="Name" value="" required>
+                  <div class="invalid-feedback">이름을 입력해주세요.</div>
+                </div>
+                <div class="mb-3">
+                  <label>성별</label>
+                  <div class="input-group">
+                  <div>
+                    <input type="radio" name="gender" id="male" value="0" >
+                    <label for="male">남자 &nbsp;</label>
+                  </div>
+                  <div>
+                    <input type="radio" name="gender" id="female" value="1">
+                    <label for="female">여자</label>
+                  </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="id">아이디</label>
+                  <div class="input-group" id="box-id">
+                    <input type="text" class="form-control" name="userId" id="userId" placeholder="ID" value="" required>
+                    <button class="btn btn-secondary" type="button" onclick="checkId()">아이디 중복확인</button>
+                    <div class="invalid-feedback">아이디를 입력해주세요.</div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="password">비밀번호</label>
+                  <input type="password" class="form-control" name="password" id="password" placeholder="PW" value="" required>
+                  <div class="invalid-feedback">비밀번호를 입력해주세요.</div>
+                
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="passwordchk">비밀번호확인</label>
+                
+                  <div class="input-group" id="box-pw">
+                    <input type="password" class="form-control" id="passwordchk" placeholder="비밀번호 확인" value="" required>
+                    <button class="btn btn-secondary" type="button" onclick="checkPasswordMatch()">비밀번호 확인</button>
+
+                  
+                  </div>
+                  <div id="password-invalid-success" style="display:none; color:green;">비밀번호 일치</div>
+                  <div id="password-invalid-feedback" style="display:none; color:red;">비밀번호는 최소 8자 이상이어야 하며, 대문자, 소문자, 숫자 및 특수문자를 포함해야 합니다.</div>
+                  <div id="password-invalid-feedback" style="display:none; color:red;">비밀번호가 일치하지 않습니다.</div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="mail">이메일</label>
+                  
+                  <div class="input-group">
+                      <input type="email" class="form-control" name="mail" id="mail" placeholder="you@example.com" required>
+                      <button class="btn btn-secondary" id="sendCode">인증번호 보내기</button>
+                  </div>
+                  <div class="invalid-send-success" style="display:none; color:green;">인증번호 성공</div>
+                      <div class="invalid-send" style="display:none; color:green;">인증번호를 보냈습니다.</div>
+                      <div class="invalid-send-error" style="display:none; color:red;">인증번호 발송에 실패했습니다.</div>
+              </div>
+              <div class="col-md-6 mb-3">
+                  <label for="mail-verification">이메일 인증</label>
+                  <div class="input-group">
+                      <input type="text" class="form-control" id="mail-verification" placeholder="인증번호 입력" >
+                      <button class="btn btn-secondary" id="verifyCode">인증번호 확인</button>
+                  </div>
+                  <div class="invalid-feedback" style="display:none; color:red;">인증번호가 일치하지 않습니다.</div>
+                  <div class="valid-feedback" style="display:none; color:green;">이메일인증 성공하였습니다.</div>
+              </div>
+                <div class="mb-3">
+                  <label for="phone">전화</label>
+                  <input type="phone" class="form-control" name="phone" id="phone" placeholder="01012341234" required>
+                  <div class="invalid-feedback">전화번호를 입력해주세요.</div>
+                </div>
+                <div class="mb-3">
+                  <label for="address2">주소</label>
+                  <input type="text" class="form-control" name="address2"id="address2" placeholder="" required>
+                  <div class="invalid-feedback">주소를 입력해주세요.</div>
+                </div>
+                <div class="mb-3">
+                  <label for="address3">상세주소<span class="text-muted">&nbsp;(필수 아님)</span></label>
+                  <input type="text" class="form-control" name="address3"id="address3" placeholder="상세주소를 입력해주세요.">
+                </div>
+
+                <input type="hidden" class="form-control" name="address"id="address" placeholder="" required>
+
+                <div class="mb-3">
+                  <label for="brith">생년월일</label>
+                  <div class="input-group input-daterange">
+                    <input type="text" class="form-control" name="birth"id="birth" value="2000-01-01">
+                  </div>
+                </div>
+                <!-- <div class="custom-control custom-checkbox" style="padding: 3% 0;">
+                  <input type="checkbox" class="custom-control-input" id="aggrement" required>
+                  <label class="custom-control-label" for="aggrement">개인정보 수집 및 이용에 동의합니다.</label>
+                </div> -->
+              </div>
+              <div id="contentB">
+                <div class="mb-3">
+                  <label for="petname">이름</label>
+                  <input type="text" class="form-control" name="petname" id="petname" placeholder="" required>
+                  <div class="invalid-feedback">반려견 이름을 입력해주세요.</div>
+                </div>
+                <div class="mb-3">
+                  <label for="pettype">견종</label>
+                  <input type="text" class="form-control" name="type" id="type" placeholder="예시 : 요크셔테리어" required>
+                  <div class="invalid-feedback">견종를 입력해주세요.</div>
+                </div>
+                <div class="mb-3">
+                  <label for="petage">나이</label>
+                  <input type="text" class="form-control" name="age" id="petage" placeholder="">
+                </div>
+                <div class="mb-3">
+                  <label>성별</label>
+                  <div class="input-group">
+                  <div>
+                    <input type="radio" name="petgender" id="petmale" value="1" >
+                    <label for="petmale">♂ &nbsp;</label>
+                  </div>
+                  <div>
+                    <input type="radio" name="petgender" id="petfemale" value="2">
+                    <label for="petfemale">♀</label>
+                  </div>
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="character">성격</label>
+                  <input type="text" class="form-control" name="character" id="character" placeholder="ex)순둥이에요">
+                </div>
+                <div>
+                  <span>특이사항</span>
+                  <br>
+                  <input type="text" style="width: 100%;" id="specialNotes" name="specialNotes">
+                </div>
+             
+                <div class="mb-4" style="text-align: center;padding: 3% 0;">
+                    <button type="submit" class="btn btn-outline-warning"  id="save-btn" onclick="combineAddress()" disabled> 가입하기 </button>
+                  <button type="button" class="btn btn-outline-warning">메인</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div>
+          <img src="/img/logo.png" alt="댕댕이" style="width: 30%; display: block; margin-left: auto; margin-right: auto;">
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/locales/bootstrap-datepicker.ko.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    
+   
+  
+
+  </script>
+</body>
+</html>
