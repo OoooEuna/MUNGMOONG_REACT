@@ -32,7 +32,6 @@ function App() {
         reverse
         bgColor="#E6E6E6"
       />
-      <Link to="/api/board">리스트</Link>
     </div>
   );
 }
