@@ -30,7 +30,7 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
           <Link to="/introduce">소개</Link>
           <Link to="/products">훈련사</Link>
           <Link to="/QnA/list">문의</Link>
-          <Link to="/board/list">공지사항</Link>
+          <Link to="/api/board">공지사항</Link>
         </div>
 
         <div className={styles.auth}>
