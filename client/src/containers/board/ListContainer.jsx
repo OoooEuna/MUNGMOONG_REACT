@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import List from '../components/board/List'
-import * as board from '../apis/board'
+import List from '../..//components/board/List'
+import * as board from '../../apis/board'
 
 const ListContainer = () => {
   // 🧊 state

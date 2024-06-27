@@ -1,6 +1,7 @@
 import React from 'react';
 import CarouselComponent from '../components/CarouselComponent';
 import FeaturetteComponent from '../components/FeaturetteComponent';
+import {Link} from 'react-router-dom'
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
         reverse
         bgColor="#E6E6E6"
       />
+      <Link to="/api/board">리스트</Link>
     </div>
   );
 }
