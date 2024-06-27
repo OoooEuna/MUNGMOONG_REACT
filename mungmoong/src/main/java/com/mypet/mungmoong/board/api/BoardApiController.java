@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mypet.mungmoong.board.dto.Board;
 import com.mypet.mungmoong.board.service.BoardService;
+import com.mypet.mungmoong.trainer.dto.Option;
+import com.mypet.mungmoong.trainer.dto.Page;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,9 +28,9 @@ public class BoardApiController {
 
     
     @GetMapping()
-    public ResponseEntity<?> getAll() {
+    public ResponseEntity<?> getAll(Page page,Option option) {
         try {
-            List<Board> boardList = boardService.list(null, null);
+            List<Board> boardList = boardService.list(page, option);
             return new ResponseEntity<>(boardList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
