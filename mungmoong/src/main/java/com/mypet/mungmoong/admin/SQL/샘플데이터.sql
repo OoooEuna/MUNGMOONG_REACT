@@ -1,4 +1,4 @@
--- Active: 1713353106333@@127.0.0.1@3306@mypet
+-- Active: 1717721626738@@127.0.0.1@3306@mypet
 -- 샘플 데이터 삽입
 -- pet 테이블
 INSERT INTO `pet` (`no`, `file_no`, `name`, `age`, `petgender`, `character`, `type`)
@@ -163,7 +163,7 @@ VALUES
 ('user5', 5, 5, 5, 'Charlie Black', 'password5', '2000-05-05', '202 Lane', 'charlie@example.com', '5678901234', 'Male', 1, 1);
 -- 바뀌기 전 샘플데이터
 INSERT INTO `users` (`user_id`, `password`, `name`, `birth`, `gender`, `address`, `mail`, `phone`, `reg_date`, `upd_date`, `role`, `enabled`) 
-VALUES ('user3', '$2a$12$TrN..KcVjciCiz.5Vj96YOBljeVTTGJ9AUKmtfbGpgc9hmC7BxQ92', '사용자', 20000101, 'Male', '인주대로 1000번길','user@mail.com' , '01012341234',now(),now(),1, 1);
+VALUES ('user', '$2a$12$TrN..KcVjciCiz.5Vj96YOBljeVTTGJ9AUKmtfbGpgc9hmC7BxQ92', '사용자', 20000101, 'Male', '인주대로 1000번길','user@mail.com' , '01012341234',now(),now(),1, 1);
 
 -- PRODUCTS 테이블
 INSERT INTO `PRODUCTS` (`no`, `no2`, `NAME`, `CAREGORY`, `DESCRIPTION`, `PRICE`)
