@@ -9,6 +9,7 @@ function App() {
     <BrowserRouter>
     <Routes>
       <Route path="/" element={<Home/>}></Route>
+      <Route path="/trainer/info/:userId" component={TrainerInfo} />
      
     </Routes>
   </BrowserRouter>
