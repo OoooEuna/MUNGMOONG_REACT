@@ -41,7 +41,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <!-- 게시글 등록 -->
-    <insert id="insert">
+    <insert id="insert"  useGeneratedKeys="true" keyProperty="no">
         INSERT INTO board( no,title, user_id, content, reg_date)
         VALUES ( #{no}, #{title}, #{userId}, #{content}, now())
     </insert>

@@ -32,7 +32,7 @@ const UpdateContainer = ({ no }) => {
       alert("게시글 수정 완료!")
 
       // ➡ 게시글 목록으로 이동
-      navigate("/boards")
+      navigate("/api/board")
 
     } catch (error) {
       console.log(error);
@@ -46,7 +46,7 @@ const UpdateContainer = ({ no }) => {
     alert("삭제 완료!")
 
     // ➡ 게시글 목록으로 이동
-    navigate("/boards")
+    navigate("/api/board")
   }
 
   // ❓ hook

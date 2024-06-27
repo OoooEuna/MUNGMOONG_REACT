@@ -9,22 +9,24 @@ import Read from './pages/board/Read';
 import Update from './pages/board/Update';
 import ProductsList from './pages/products/ProductsList';
 
+
 function App() {
   return (
     <BrowserRouter>
 
-      <div className="App">
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/api/board" element={ <List/> }></Route>
-          <Route path="/api/products" element={ <ProductsList/> }></Route>
-          {/* <Route path="/api/login" element={ <LoginPage/> }></Route> */}
+    <div className='App'>
+    <Header />
+    <Routes>
+      <Route path="/" element={<Home/>}></Route>
+      <Route path="/api/trainer/info/:userId" component={TrainerInfo}></Route>
+      <Route path="/api/products" element={ <ProductsList/> }></Route>
+      {/* <Route path="/api/login" element={ <LoginPage/> }></Route> */}
+      <Route path="/api/board" element={ <List/> }></Route>
 
-        </Routes>
-        <Footer />
-      </div>
-    </BrowserRouter>
+    </Routes>
+    <Footer />
+    </div>
+  </BrowserRouter>
 
   );
 }
