@@ -1,6 +1,7 @@
 import React from 'react';
 import { Carousel } from 'react-bootstrap';
 
+// 이미지 슬라이더
 const CarouselComponent = () => {
   return (
     <Carousel>
