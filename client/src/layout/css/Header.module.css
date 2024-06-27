@@ -1,0 +1,154 @@
+/* CustomHeader.module.css */
+
+.header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffdf8d47;
+  padding: 10px 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.topRow {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo img {
+  width: 130px;
+}
+
+.nav {
+  display: flex;
+  flex-direction: row;
+}
+
+.nav a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #333;
+  background-color: #ffdf8d05;
+  color: black;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  display: inline-block;
+  font-size: 20px;
+}
+
+.nav a:hover {
+  transform: scale(1.1) rotate(5deg); /* 회전 효과 추가 */
+}
+
+.auth {
+  display: flex;
+  align-items: center;
+}
+
+.auth button {
+  margin-left: 10px;
+  border: 2px solid #6c757d;
+  color: #6c757d;
+  background-color: transparent;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.auth button:hover {
+  background-color: #6c757d;
+  color: white;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  margin-left: 10px; /* 모바일 인증 버튼과 구분하기 위한 마진 추가 */
+}
+
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background-color: #333;
+  margin: 4px 0;
+  transition: all 0.3s;
+}
+
+.mobileMenu {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  background-color: #ffdf8d16;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  opacity: 0.7;
+}
+
+.mobileMenu nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mobileMenu nav a {
+  margin: 10px 0;
+}
+
+.mobileAuth {
+  display: none;
+  align-items: center;
+}
+
+.mobileAuthButtons {
+  display: flex;
+}
+
+@media (max-width: 768px) {
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav,
+  .auth {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+    order: 3; /* 햄버거 메뉴가 오른쪽에 위치하도록 설정 */
+  }
+
+  .mobileAuth {
+    display: flex;
+    order: 2; /* 모바일 인증 버튼이 햄버거 메뉴 바로 앞에 위치하도록 설정 */
+    margin-left: auto; /* 오른쪽으로 이동 */
+  }
+  
+  .mobileMenu {
+    display: none;
+    position: fixed;
+    top: -100%; /* 화면 위쪽 밖에서 시작 */
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.95); /* 배경색 (불투명) */
+    border-bottom: 1px solid #ddd;
+    padding: 10px 20px;
+    z-index: 1000; /* 다른 콘텐츠 위에 표시되도록 설정 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    transition: top 0.3s ease; /* top 속성의 변화를 부드럽게 애니메이션화 */
+  }
+  
+  .mobileMenu.active {
+    top: 60px; /* 화면 위에서 60px 아래로 슬라이드 */
+    display: flex; /* 메뉴 표시 */
+  }
+  
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import CarouselComponent from '../components/CarouselComponent';
 import FeaturetteComponent from '../components/FeaturetteComponent';
+import {Link} from 'react-router-dom'
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <FeaturetteComponent
         heading="펫시터가 집으로"
         text="굳이 맡기러 오지 않아도 펫시터가 집으로 직접 찾아와요"
+        
         imgSrc="img/main/main1.png"
       />
       <FeaturetteComponent
@@ -26,10 +28,11 @@ function App() {
       <FeaturetteComponent
         heading="훈련 영상!"
         text="저희 훈련사의 훈련영상입니다."
-        imgSrc="video/trainer.mp4"
+        mediaSrc="video/trainer.mp4"
         reverse
         bgColor="#E6E6E6"
       />
+      <Link to="/api/board">리스트</Link>
     </div>
   );
 }

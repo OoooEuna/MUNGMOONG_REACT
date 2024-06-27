@@ -58,6 +58,8 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
             response.addCookie(cookie); // 응답에 쿠키 등록
         }
 
+        
+
         // 인증된 사용자 정보 - (아이디/패스워드/권한)
         CustomUser loginUser = (CustomUser) authentication.getPrincipal();
         Users user = loginUser.getUser();
