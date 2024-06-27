@@ -13,7 +13,8 @@ const TrainerInfo = () => {
     // 훈련사 정보 가져오기
     const fetchTrainerInfo = async () => {
       try {
-        const response = await axios.get(`/api/trainer/info?userId=${userId}`);
+        // const response = await axios.get(`/api/trainer/info?userId=${userId}`);
+        const response = await axios.get(`/api/trainer/info`);
         setTrainer(response.data.trainer);
         setCareerList(response.data.careerList);
         setCertificateList(response.data.certificateList);
