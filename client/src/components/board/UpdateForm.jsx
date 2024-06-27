@@ -93,7 +93,7 @@ const UpdateForm = ({ no, board, onUpdate, onDelete, isLoading }) => {
       }
 
       <div className="btn-box">
-        <Link to="/boards" className='btn'>목록</Link>
+        <Link to="/api/board" className='btn'>목록</Link>
         <button className='btn' onClick={handleDelete}>삭제</button>
         <button className='btn' onClick={onSubmit}>수정</button>
       </div>

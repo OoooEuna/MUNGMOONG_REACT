@@ -21,6 +21,7 @@ function App() {
       <Route path="/api/board" element={ <List/> }></Route>
       <Route path="/api/board/:no" element={ <Read/> }></Route>
       <Route path="/api/board/update/:no" element={ <Update/> }></Route>
+      <Route path="/api/board/insert" element={ <Insert/> }></Route>
      
     </Routes>
     <Footer />

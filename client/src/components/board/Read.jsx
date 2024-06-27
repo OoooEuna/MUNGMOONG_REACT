@@ -56,7 +56,7 @@ const Read = ({ no, board, isLoading }) => {
       }
       <hr />
       <div className="btn-box">
-        <Link to="/boards" className='btn'>목록</Link>
+        <Link to="/api/board" className='btn'>목록</Link>
         <Link to={`/api/board/update/${no}`} className='btn'>수정</Link>
       </div>
     </div>

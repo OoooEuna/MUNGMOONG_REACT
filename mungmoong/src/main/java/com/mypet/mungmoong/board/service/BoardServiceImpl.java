@@ -10,11 +10,14 @@ import com.mypet.mungmoong.board.mapper.BoardMapper;
 import com.mypet.mungmoong.trainer.dto.Option;
 import com.mypet.mungmoong.trainer.dto.Page;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class BoardServiceImpl implements BoardService {
 
    @Autowired
-   BoardMapper boardMapper;
+   private BoardMapper boardMapper;
 
    
     /**
@@ -46,9 +49,12 @@ public class BoardServiceImpl implements BoardService {
      * 게시글 등록
      */
     @Override
-    public int insert(Board board) throws Exception {
+    public Board insert(Board board) throws Exception {
         int result = boardMapper.insert(board);
-        return result;
+        log.info("result : " + result);
+        int newNo = board.getNo();
+        Board newBoard = boardMapper.select(newNo);
+        return newBoard;
     }
 
     /**
