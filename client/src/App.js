@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import List from './pages/board/List';
 import Read from './pages/board/Read';
 import Update from './pages/board/Update';
+import Insert from './pages/board/Insert';
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
       <Route path="/api/board" element={ <List/> }></Route>
       <Route path="/api/board/:no" element={ <Read/> }></Route>
       <Route path="/api/board/update/:no" element={ <Update/> }></Route>
+      <Route path="/api/board/insert" element={ <Insert/> }></Route>
      
     </Routes>
   </BrowserRouter>
