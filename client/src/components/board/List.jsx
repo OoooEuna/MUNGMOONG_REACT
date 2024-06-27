@@ -6,7 +6,7 @@ const List = ({ boardList, isLoading }) => {
   return (
     <div className='container'>
       <h1>게시글 목록</h1>
-      <Link to="/boards/insert">글쓰기</Link>
+      <Link to="/api/board/insert">글쓰기</Link>
 
       {
         isLoading &&
@@ -32,7 +32,7 @@ const List = ({ boardList, isLoading }) => {
                   <tr key={board.no}>
                     <td>{board.no}</td>
                     <td>
-                      <Link to={`/boards/${board.no}`}>
+                      <Link to={`/api/board/${board.no}`}>
                         {board.title}
                       </Link>
                     </td>
