@@ -45,15 +45,6 @@ import com.mypet.mungmoong.users.service.UsersService;
 
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * [GET] - /trainer/list : 훈련사 목록 화면
- * [GET] - /trainer/read : 훈련사 조회 화면
- * [GET] - /trainer/insert : 훈련사 등록 화면
- * [POST] - /trainer/insert : 훈련사 등록 처리
- * [GET] - /trainer/update : 훈련사 수정 화면
- * [POST] - /trainer/update : 훈련사 수정 처리
- * [POST] - /trainer/delete : 훈련사 삭제 처리
- */
 @Slf4j
 @Controller
 @RequestMapping("/api/trainer")
@@ -61,10 +52,10 @@ public class TrainerApiController {
 
     private Logger logger = LoggerFactory.getLogger(TrainerApiController.class);
 
-    @GetMapping("/{page}")
-    public String test(@PathVariable("page") String page) {
-        return "/trainer/" + page;
-    }
+    // @GetMapping("/{page}")
+    // public String test(@PathVariable("page") String page) {
+    //     return "/trainer/" + page;
+    // }
 
     // ⭐ 데이터 요청과 화면 출력
     // Controller --> Service (데이터 요청)
@@ -151,7 +142,7 @@ public class TrainerApiController {
         // JSON 형식으로 데이터 반환
         return ResponseEntity.ok(response);
     }
-
+ 
     
     // Meaning 수정 작업
     @PostMapping("/orders")
@@ -325,98 +316,6 @@ public class TrainerApiController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update trainer information.");
         }
     }
-    
-    
-    
-
-    // @PostMapping("/info_update")
-    // public String updatePro(Trainer trainer, HttpSession session) throws
-    // Exception {
-    // log.info(":::::::::::::::::: 훈련사 정보 수정 :::::::::::::::::::");
-    // log.info("trainser : " + trainer.toString());
-    // List<Career> careerList = trainer.toCareerList();
-    // List<Certificate> certificateList = trainer.toCertificateList();
-    // List<Files> filesList = fileService.list();
-    // List<MultipartFile> files = trainer.getFiles();
-
-    // log.info("--------------------------------");
-    // log.info(careerList.toString());
-    // log.info("트레이너 번호가 뭘까요 : " + trainer.getNo());
-
-    // Integer trainerNo = (Integer) session.getAttribute("trainerNo");
-    // if (trainerNo == null) {
-    // log.error("트레이너 번호를 세션에서 찾을 수 없습니다.");
-    // return "redirect:/trainer/info_update?userId=" + trainer.getUserId() +
-    // "&error=session";
-    // }
-    // log.info("세션에서 가져온 트레이너 번호 : " + trainerNo);
-
-    // for (Career career : careerList) {
-    // career.setTrainerNo(trainerNo);
-    // log.info("trainerNo : " + trainerNo);
-
-    // int result = 0;
-    // if (career.getNo() > 0) {
-    // result = careerService.update(career);
-    // log.info("수정 완료!");
-    // } else {
-    // career.setTrainerNo(trainerNo);
-    // result = careerService.insert(career);
-    // log.info("등록 완료!");
-    // }
-
-    // if (result > 0) {
-    // log.info("성공!");
-    // } else {
-    // log.info(career.toString());
-    // log.info("실패..");
-    // }
-    // }
-
-    // log.info(":::::::::::::::::::::: certificateList ::::::::::::::::::::::::");
-    // log.info("certificateList : " + certificateList);
-    // log.info(":::::::::::::::::::::: 업로드 파일 목록 - files
-    // ::::::::::::::::::::::::");
-    // log.info("files : " + files);
-
-    // for (int i = 0; i < certificateList.size(); i++) {
-    // Certificate certificate = certificateList.get(i);
-    // certificate.setTrainerNo(trainerNo);
-    // log.info("trainerNo : " + trainerNo);
-
-    // // 자격증 객체에 이미지 파일 담음
-    // certificate.setInsertFile(files.get(i));
-    // certificate.insertImg();
-
-    // int result = 0;
-    // if (certificate.getNo() > 0) {
-    // result = certificateService.update(certificate);
-    // log.info(";;;;;;;;자격증 이미지update;;;;;;;;; : " + filesList.toString());
-    // log.info("자격증 수정");
-    // } else {
-    // certificate.setTrainerNo(trainerNo);
-    // result = certificateService.insert(certificate);
-    // log.info(";;;;;;;;자격증 이미지insert;;;;;;;;; : " + filesList.toString());
-    // log.info("자격증 등록");
-    // }
-
-    // if (result > 0) {
-    // log.info("자격증 성공");
-    // } else {
-    // log.info(certificate.toString());
-    // log.info("자격증 실패");
-    // }
-    // }
-
-    // int result = trainerService.update(trainer);
-
-    // log.debug("Trainer data : {}",trainer);
-
-    // if(result>0)
-    // {
-    // return "redirect:/trainer/info_update?userId=" + trainer.getUserId();
-    // }return"redirect:/trainer/info_update?userId="+trainer.getUserId()+"&error";
-    // }
 
 
 
