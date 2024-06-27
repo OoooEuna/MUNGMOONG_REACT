@@ -6,6 +6,7 @@ import Footer from './layout/Footer';
 import Home from './pages/Home';
 import List from './pages/board/List';
 import Read from './pages/board/Read';
+import Insert from './pages/board/Insert';
 import Update from './pages/board/Update';
 import TrainerInfo from './components/trainer/TrainerInfo';
 
