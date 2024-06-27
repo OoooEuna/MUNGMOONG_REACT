@@ -17,7 +17,7 @@ import com.mypet.mungmoong.users.dto.Users;
 public interface UsersMapper {
 
     // 로그인
-    public Users login(String userId) throws Exception;
+    public Users login(String userId) ;
 
     // public List<Admin> list()
 

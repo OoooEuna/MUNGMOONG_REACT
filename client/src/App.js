@@ -1,11 +1,12 @@
 import './App.css';
 import React from 'react';
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Header from './layout/Header';
+import Footer from './layout/Footer';
 import Home from './pages/Home';
 import List from './pages/board/List';
 import Read from './pages/board/Read';
 import Update from './pages/board/Update';
-
 
 function App() {
   return (
