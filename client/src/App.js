@@ -10,6 +10,8 @@ import Insert from './pages/board/Insert';
 import Update from './pages/board/Update';
 import TrainerInfo from './components/trainer/TrainerInfo';
 import ProductsList from './pages/products/ProductsList';
+import { AdminUserList } from './apis/admins';
+import Admin_info from './pages/admin/Admin_info';
 
 
 function App() {
@@ -27,6 +29,7 @@ function App() {
       <Route path="/api/board/:no" element={ <Read/> }></Route>
       <Route path="/api/board/update/:no" element={ <Update/> }></Route>
       <Route path="/api/board/insert" element={ <Insert/> }></Route>
+      <Route path="/api/admin/admin_info" element={ <Admin_info/> }></Route>
      
     </Routes>
     <Footer />

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import UpdateForm from '../../components/board/UpdateForm'
-import * as board from '../../apis/board'
 import { useNavigate } from 'react-router-dom'
+// import * as board from '../../apis/board'
+import * as board from '../../apis/board'
 
 
 const UpdateContainer = ({ no }) => {

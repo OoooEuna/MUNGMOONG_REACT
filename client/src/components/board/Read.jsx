@@ -39,7 +39,7 @@ const Read = ({ no, board, isLoading }) => {
               <tr>
                 <td>작성자</td>
                 <td>
-                  <input type="text" value={board.writer} readOnly />
+                  <input type="text" value={board.userId} readOnly />
                 </td>
               </tr>
               <tr>
