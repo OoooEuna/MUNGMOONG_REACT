@@ -65,6 +65,7 @@ public class AdminApiController {
 
     @GetMapping("/admin_info")
     public ResponseEntity<?> list(Page page, Option option) {
+        log.info("이건 들와 지겠지");
         try {
             List<Users> usersList = userService.list(page, option);
             log.info("Users page 로그 : " + page);

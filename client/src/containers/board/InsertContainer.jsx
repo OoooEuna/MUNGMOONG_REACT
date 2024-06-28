@@ -10,7 +10,7 @@ const InsertContainer = () => {
   const onInsert = async (title, writer, content) => {
     try {
       const response = await board.insert(title, writer, content)
-      const status = await response.status
+      const status = response.status
       console.log(`게시글 등록 요청 결과 : ${status}`);
       alert("게시글 등록 완료!")
 

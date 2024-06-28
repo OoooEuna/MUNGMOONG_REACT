@@ -28,7 +28,7 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
         <div className={styles.nav}>
           <Link to="/introduce">소개</Link>
-          <Link to="/products">훈련사</Link>
+          <Link to="/api/products">훈련사</Link>
           <Link to="/QnA/list">문의</Link>
           <Link to="/api/board">공지사항</Link>
         </div>
