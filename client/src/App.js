@@ -9,15 +9,19 @@ import Read from './pages/board/Read';
 import Insert from './pages/board/Insert';
 import Update from './pages/board/Update';
 import TrainerInfo from './components/trainer/TrainerInfo';
+import ProductsList from './pages/products/ProductsList';
+
 
 function App() {
   return (
     <BrowserRouter>
+
     <div className='App'>
     <Header />
     <Routes>
       <Route path="/" element={<Home/>}></Route>
       <Route path="/api/trainer/info/:userId" component={TrainerInfo}></Route>
+      <Route path="/api/products" element={ <ProductsList/> }></Route>
       {/* <Route path="/api/login" element={ <LoginPage/> }></Route> */}
       <Route path="/api/board" element={ <List/> }></Route>
       <Route path="/api/board/:no" element={ <Read/> }></Route>
@@ -28,8 +32,8 @@ function App() {
     <Footer />
     </div>
   </BrowserRouter>
+
   );
 }
-
 export default App;
 

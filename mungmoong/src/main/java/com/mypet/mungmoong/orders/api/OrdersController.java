@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.mypet.mungmoong.orders.dto.Orders;
 import com.mypet.mungmoong.orders.service.OrdersService;
-
+import com.mypet.mungmoong.users.dto.CustomUser;
+import com.mypet.mungmoong.users.dto.Users;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,13 +38,28 @@ public class OrdersController {
     @Autowired
     private OrdersService ordersService;
 
-
+/*
+ * 결제준비
+ */
 
 @GetMapping()
-public ResponseEntity<?> getAll() {
+public ResponseEntity<?> orders(Orders order
+                              ,@AuthenticationPrincipal CustomUser customUser) {
+    log.info("::::: customUser :::::");
+    log.info("customUser : "+ customUser);
+    log.info("resDate - 예약일자 : " + order.getRegDate());
+    log.info("address - 주소 : " + order.getAddress());
+    log.info("memo - 요청사항 : " + order.getAddress());
+    log.info("productId - 상품ID : " + order.getProductId());
     try {
-        List<Orders> orderList = ordersService.list();
-   return new ResponseEntity<>("GetAll Results", HttpStatus.OK);
+        Users user = (Users) customUser.getAttribute("user");
+        order.setUserId(user.getUserId());
+        int result = ordersService.insert(order);
+        //List<Orders> orderList = ordersService.list();
+        if( result > 0 )
+            log.info("등록된 orderNo : " + order.getNo());
+         return new ResponseEntity<>("GetAll Results", HttpStatus.OK);
+        
     } catch (Exception e) {
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }

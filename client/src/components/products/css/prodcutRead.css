@@ -1,0 +1,18 @@
+.flex-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100px;
+  }
+  
+  .flex-box .item {
+    display: flex;
+    align-content: start;
+  }
+  
+  .flex-box img {
+    width: 80px;
+    height: auto;
+    object-fit: contain;
+    padding: 0 10px;
+  }
