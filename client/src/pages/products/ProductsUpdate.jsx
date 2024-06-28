@@ -3,11 +3,11 @@ import ProductsUpdateContainer from '../../containers/products/ProductsUpdateCon
 import { useParams } from 'react-router-dom'
 
 const productsUpdate = () => {
-  const { no } = useParams()
+  const { id } = useParams()
   return (
     <>
       {/* Header */}
-      <ProductsUpdateContainer no={no} />
+      <ProductsUpdateContainer id={id} />
       {/* Footer */}
     </>
   )
