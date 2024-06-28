@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom'
 import styles from '../products/css/ProductsRead.module.css'
 import '../products/css/ProductsRead.css'
 import * as format from '../../apis/format'
+import Products from './ProductsList'
 // ckeditor5
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-const Read = ({ id, trainerNo, name, description, content, price }) => {
+const ProductsRead = ({ id, products, fileList, isLoading}) => {
 
   const handleDownload = (no, fileName) => {    
     onDownload(no, fileName)
@@ -16,7 +17,7 @@ const Read = ({ id, trainerNo, name, description, content, price }) => {
   return (
     <div className='container'>
       <h1 className="title">게시글 조회</h1>
-      <h3>번호 : {no}</h3>
+      <h3>훈련사아이디 : {id}</h3>
       <hr />
 
       {
@@ -26,34 +27,41 @@ const Read = ({ id, trainerNo, name, description, content, price }) => {
         </div>
       }
       {
-        !isLoading && products && (
+        !isLoading && Products && (
           <table className={styles.table}>
             <tbody>
               <tr>
-                <td>번호</td>
+                <td>훈련사아이디</td>
                 <td>
-                  <input type="text" value={no} readOnly
+                  <input type="text" value={products.id} readOnly
                          className={styles['form-input']} />
                 </td>
               </tr>
               <tr>
-                <td>등록일자</td>
+                <td>훈련명</td>
                 <td>
-                  <input type="text" value={products.regDate} readOnly
+                  <input type="text" value={products.name} readOnly
                          className={styles['form-input']} />
                 </td>
               </tr>
               <tr>
-                <td>제목</td>
+                <td>금액</td>
                 <td>
-                  <input type="text" value={products.title} readOnly
+                  <input type="text" value={products.price} readOnly
                          className={styles['form-input']} />
                 </td>
               </tr>
               <tr>
-                <td>작성자</td>
+                <td>훈련소개</td>
                 <td>
-                  <input type="text" value={products.writer} readOnly
+                  <input type="text" value={products.trainerNo} readOnly
+                         className={styles['form-input']} />
+                </td>
+              </tr>
+              <tr>
+                <td>훈련소개</td>
+                <td>
+                  <input type="text" value={products.description} readOnly
                          className={styles['form-input']} />
                 </td>
               </tr>
@@ -99,11 +107,11 @@ const Read = ({ id, trainerNo, name, description, content, price }) => {
       }
       <hr />
       <div className="btn-box">
-        <Link to="/productss" className='btn'>목록</Link>
-        <Link to={`/productss/update/${no}`} className='btn'>수정</Link>
+        <Link to="/products" className='btn'>목록</Link>
+        <Link to={`/products/update/${id}`} className='btn'>수정</Link>
       </div>
     </div>
   )
 }
 
-export default Read
+export default ProductsRead

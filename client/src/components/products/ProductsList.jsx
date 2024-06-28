@@ -31,6 +31,9 @@ const ProductsList = ({ productList, isLoading }) => {
             {productList.map((product) => 
                 (
                   <tr key={product.id}>
+                    <Link to={`/prodcuts/${product.id}`}>
+                      {product.name}
+                    </Link>
                     <td>{product.name}</td>
                     <td>{product.description}</td>
                     <td>{product.price}</td>
