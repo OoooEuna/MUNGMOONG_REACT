@@ -52,7 +52,7 @@ const ProductsReadContainer = ({ no }) => {
 
   return (
     <>
-      <Read no={no} 
+      <ProductsRead id={id} 
             products={products} 
             fileList={fileList}
             isLoading={isLoading}

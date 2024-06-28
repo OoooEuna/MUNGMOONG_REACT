@@ -84,7 +84,7 @@ public class FilesServiceImpl implements FilesService {
      */
     @Override
     public List<Files> listByParent(Files file) throws Exception {
-        List<Files> fileList = filesMapper.listByParent(file);
+      List<Files> fileList = filesMapper.listByParent(file);
         log.info("file : " + file);
         return fileList;
     }
