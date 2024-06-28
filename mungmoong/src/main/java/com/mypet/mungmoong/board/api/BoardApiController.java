@@ -55,9 +55,9 @@ public class BoardApiController {
     public ResponseEntity<?> create(@RequestBody Board board) {
         log.info("skdjhfgksdjhf;;;;;;;;;");
         try {
-            Board newBoard = boardService.insert(board);
-            if (newBoard != null) {
-                return new ResponseEntity<>(newBoard, HttpStatus.OK);
+            int result = boardService.insert(board);
+            if (result > 0) {
+                return new ResponseEntity<>("result", HttpStatus.OK);
             } else
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {

@@ -17,7 +17,7 @@ public interface BoardService {
     public Board select(int no) throws Exception;
 
     // 게시글 등록
-    public Board insert(Board board) throws Exception;
+    public int insert(Board board) throws Exception;
 
     // 게시글 수정
     public int update(Board board) throws Exception;

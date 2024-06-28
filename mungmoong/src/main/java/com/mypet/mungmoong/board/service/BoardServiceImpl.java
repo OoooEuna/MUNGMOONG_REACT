@@ -49,12 +49,9 @@ public class BoardServiceImpl implements BoardService {
      * 게시글 등록
      */
     @Override
-    public Board insert(Board board) throws Exception {
+    public int insert(Board board) throws Exception {
         int result = boardMapper.insert(board);
-        log.info("result : " + result);
-        int newNo = board.getNo();
-        Board newBoard = boardMapper.select(newNo);
-        return newBoard;
+        return result;
     }
 
     /**
