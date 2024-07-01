@@ -20,6 +20,7 @@ public interface FilesService {
 
     // 파일 업로드
     public boolean upload(Files file) throws Exception;
+
     // 파일 목록 - 부모 기준
     public List<Files> listByParent(Files file) throws Exception;
     // 파일 삭제 - 부모 기준

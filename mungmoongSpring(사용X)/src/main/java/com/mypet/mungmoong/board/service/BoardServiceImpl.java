@@ -10,11 +10,14 @@ import com.mypet.mungmoong.board.mapper.BoardMapper;
 import com.mypet.mungmoong.trainer.dto.Option;
 import com.mypet.mungmoong.trainer.dto.Page;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class BoardServiceImpl implements BoardService {
 
    @Autowired
-   BoardMapper boardMapper;
+   private BoardMapper boardMapper;
 
    
     /**

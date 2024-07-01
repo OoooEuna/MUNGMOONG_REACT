@@ -19,7 +19,7 @@ import com.mypet.mungmoong.security.filter.JwtAuthenticationFilter;
 import com.mypet.mungmoong.security.filter.JwtRequestFilter;
 import com.mypet.mungmoong.security.provider.JwtTokenProvider;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.slf4j.Slf4j;   
 
 @Slf4j
 @Configuration
