@@ -1,9 +1,9 @@
-package com.mypet.mungmoong.mapper;
+package com.mypet.mungmoong.users.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.mypet.mungmoong.dto.UserAuth;
-import com.mypet.mungmoong.dto.Users;
+import com.mypet.mungmoong.users.dto.UserAuth;
+import com.mypet.mungmoong.users.dto.Users;
 
 @Mapper
 public interface UserMapper {

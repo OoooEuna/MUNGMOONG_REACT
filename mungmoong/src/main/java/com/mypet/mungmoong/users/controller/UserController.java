@@ -1,4 +1,4 @@
-package com.mypet.mungmoong.controller;
+package com.mypet.mungmoong.users.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mypet.mungmoong.dto.CustomUser;
-import com.mypet.mungmoong.dto.Users;
-import com.mypet.mungmoong.service.UserService;
+import com.mypet.mungmoong.users.dto.CustomUser;
+import com.mypet.mungmoong.users.dto.Users;
+import com.mypet.mungmoong.users.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
 

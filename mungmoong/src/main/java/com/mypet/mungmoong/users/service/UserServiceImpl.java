@@ -1,4 +1,4 @@
-package com.mypet.mungmoong.service;
+package com.mypet.mungmoong.users.service;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,9 +12,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Service;
 
-import com.mypet.mungmoong.dto.UserAuth;
-import com.mypet.mungmoong.dto.Users;
-import com.mypet.mungmoong.mapper.UserMapper;
+import com.mypet.mungmoong.users.dto.UserAuth;
+import com.mypet.mungmoong.users.dto.Users;
+import com.mypet.mungmoong.users.mapper.UserMapper;
 
 import lombok.extern.slf4j.Slf4j;
 

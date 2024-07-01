@@ -1,5 +1,6 @@
 package com.mypet.mungmoong.security.provider;
 
+
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,12 +13,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import com.mypet.mungmoong.dto.CustomUser;
-import com.mypet.mungmoong.dto.UserAuth;
-import com.mypet.mungmoong.dto.Users;
-import com.mypet.mungmoong.mapper.UserMapper;
 import com.mypet.mungmoong.prop.JwtProps;
 import com.mypet.mungmoong.security.constants.SecurityConstants;
+import com.mypet.mungmoong.users.dto.CustomUser;
+import com.mypet.mungmoong.users.dto.UserAuth;
+import com.mypet.mungmoong.users.dto.Users;
+import com.mypet.mungmoong.users.mapper.UserMapper;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
