@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{/layouts/main_layout}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>메인 화면</title>
+  <style>
+   .button{
+    font-size: 1.1rem;
+    width: 110px;
+    font-weight: bold;
+    padding: 0.6em 2em;
+    background-color: #FFE0B2;
+    color: #DAA414;
+    border-radius: 25px;
+    text-align: center;
+    text-decoration: none;
+  }
+  .button:hover{
+    background-color: #F6C542 !important;
+    color: snow !important;
+}
+  </style>
+</head>
+
+<body layout:fragment="content"class="d-flex flex-column h-100 bg-light">
+  <!-- 상품 목록 -->
+  <main class="flex-shrink-0">
+    <!-- Projects Section-->
+    <section>
+        <div class="container px-5 mb-5">
+            <div class="text-center mb-5">
+                <h1 class="display-5 fw-bolder mb-0"><span class="text-gradient d-inline">훈련사</span></h1>
+            </div>
+            <div class="row gx-5 justify-content-center">
+                <div class="col-lg-11 col-xl-9 col-xxl-8"th:each="product : ${products}">
+                    <!-- Project Card 1-->
+                    <div class="card overflow-hidden shadow rounded-4 border-0 mb-5">
+                        <div class="card-body p-0">
+                            <div class="d-flex align-items-center">
+                              <a  th:href="|/products/${product.id}|">
+                                 <!-- <img class="img-thumbnail img-fluid" th:src="|/files/img/${product.thumbnailId}|" alt="훈련사" /> -->
+                                 <img class="img-thumbnail img-fluid"  th:src="@{/img/trainer01.png}" alt="훈련사" style="max-width: 500px;"/>
+                              </a>
+                                <div class="p-5">
+                                    <h2 class="fw-bolder">
+                                      <a class="button" th:href="|/products/${product.id}|">더보기</a>
+                                      <h3 class="card-title fs-5" th:text="${product.name}"></h3>
+                                      <p class="card-text" th:text="${product.description}"></p>
+                                    </h2>
+                                    <button class="accordion-button" style="background: #fff;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne-[[${product.id}]]" aria-expanded="false"aria-controls="collapseOne-[[${product.id}]]">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+
+</html>
