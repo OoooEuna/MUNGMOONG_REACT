@@ -1,0 +1,21 @@
+/* src/fonts.css */
+@font-face {
+    font-family: 'SKYBORI';
+    src: url('../../public/fonts/SKYBORI.ttf') format('truetype'); /* 폰트 파일의 경로 지정 */
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  /* 전체적으로 폰트 적용 */
+  body {
+    font-family: 'SKYBORI', sans-serif; /* SKYBORI 글꼴 사용, 기본 글꼴은 sans-serif */
+  }
+  
+  /* 추가로 필요할 수 있는 스타일 */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'SKYBORI', sans-serif;
+  }
+  
+  p, div, span, a {
+    font-family: 'SKYBORI', sans-serif;
+  }

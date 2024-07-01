@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{/layouts/admin_layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 상품 등록</title>
+</head>
+
+<body layout:fragment="content">
+    <div class="container">
+        <div class="inner">
+            <h1>관리자 상품 정보 등록</h1>
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <div class="collapse navbar-collapse justify-content-start">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="tab-button" href="/admin/admin_info">회원관리</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="tab-button" href="/admin/admin_trainer">훈련사 관리</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="tab-button" href="/admin/admin_reserve">예약관리</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="tab-button" href="/admin/admin_board">공지사항 관리</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="tab-button active" href="/admin/admin_product">상품정보 등록</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="insertBtn ">
+                <a class="prBtn" href="/admin/admin_product_insert">훈련상품 등록</a>
+            </div>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>이름</th>
+                        <th>트레이너번호</th>
+                        <th>소개</th>
+                        <th>훈련 내용</th>
+                        <th>가격</th>
+                    </tr>
+                </thead>
+                <th:block th:each="products : ${productsList}">
+                    <tr>
+                        <td th:text="${products.id}"></td>
+                        <td><a th:href="| /admin/admin_product_read?id=${products.id} |" th:text="${products.name}"></a></td>
+                        <td th:text="${products.trainerNo}"></td>
+                        <td th:text="${products.description}"></td>
+                        <td th:text="${products.content}"></td>
+                        <td th:text="${products.price}"></td>
+                    </tr>
+                </th:block>
+            </table>
+        </div>
+    </div>
+
+</body>
+
+</html>
