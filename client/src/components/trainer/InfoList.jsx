@@ -1,5 +1,6 @@
 import React, { useState, useEffect  } from 'react';
 import { Link } from 'react-router-dom';
+import './trainer.css'
 
 const InfoList = () => {
   const [userId] = useState('sampleUserId'); // 임시 userId
