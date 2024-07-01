@@ -1,8 +1,8 @@
 // pages/RegisterPage.js
 import './css/register.css';
 import React, { useState } from 'react';
-import UserForm from '../../components/froms/UserForm';
-import PetForm from '../../components/froms/PetForm';
+import UserForm from '../../components/users/froms/UserForm';
+import PetForm from '../../components/users/froms/PetForm';
 
 
 const RegisterPage = () => {

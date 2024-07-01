@@ -1,8 +1,8 @@
 // components/forms/PetForm.js
 import React, { useState } from 'react';
-import Button from '../common/Button';
-import InputField from '../common/InputField';
-import RadioButton from '../common/RadioButton';
+import Button from '../../common/Button';
+import InputField from '../../common/InputField';
+import RadioButton from '../../common/RadioButton';
 
 const PetForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
