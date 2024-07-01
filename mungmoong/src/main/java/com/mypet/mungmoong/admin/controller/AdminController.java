@@ -66,17 +66,7 @@ public class AdminController {
      * @return
      * @throws Exception
      */
-    @GetMapping("/admin_info")
-    public String list(Model model, Page page, Option option) throws Exception {
-
-        List<Users> usersList = userService.list( page, option );
-
-        log.info("Users page 로그 : " + page);
-        // log.info(usersList.toString());
-        model.addAttribute("usersList", usersList);
-
-        return "/admin/admin_info";
-    }
+   
 
     /**
      * 관리자 회원정보 상세 페이지
@@ -149,27 +139,7 @@ public class AdminController {
         return "/admin/admin_info_read_pet";
     }
 
-    /**
-     * 관리자 훈련사 정보 삭제
-     * 
-     * @param userId
-     * @param model
-     * @return
-     * @throws Exception
-     */
-    @PostMapping("/delete")
-    public String delete(@RequestParam("userId") String userId) throws Exception {
-        log.info("userId : " + userId);
-        int result = userService.delete(userId);
-
-        if (result > 0) {
-            return "redirect:/admin/admin_info";
-        }
-
-        return "redirect:/admin/admin_info_read_update?userId=" + userId + "&error";
-    }
-
-
+ 
 
     /**
      * 관리자 훈련사 
@@ -382,25 +352,6 @@ public class AdminController {
         model.addAttribute("ordersList", ordersList);
         
         return "/admin/admin_reserve_pay";
-    }
-
-    /**
-     * 관리자 훈련사 권한 승인 처리
-     * @param user
-     * @param trainer
-     * @return
-     * @throws Exception
-     */
-    @PostMapping("/admin_trainer_role")
-    public String TrainerRole(Users user, Trainer trainer) throws Exception {
-
-        int result = userService.roleUp(user);
-
-        if(result > 0) {
-            return "redirect:/admin/admin_trainer";
-        }
-        int no = trainer.getNo();
-        return "redirect:/admin/admin_trainer?no=" + no + "&error";
     }
 
 

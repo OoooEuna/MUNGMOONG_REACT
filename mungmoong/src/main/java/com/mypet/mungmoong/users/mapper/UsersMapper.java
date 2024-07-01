@@ -17,12 +17,12 @@ import com.mypet.mungmoong.users.dto.Users;
 public interface UsersMapper {
 
     // 로그인
-    public Users login(String userId) throws Exception;
+    public Users login(String userId) ;
 
     // public List<Admin> list()
 
     // 회원 조회
-    public Users select(String userId) throws Exception;
+    public Users select(String userId);
 
     // 회원 가입
     public int join(Users user) throws Exception;
