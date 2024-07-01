@@ -1,0 +1,62 @@
+/* src/components/forms/UserForm.css */
+
+.input-group {
+    display: flex;
+    align-items: center;
+}
+
+.input-group .form-control {
+    flex: 1;
+    border-radius: 4px 0 0 4px; /* 좌측 모서리만 둥글게 */
+    border: 1px solid #ccc; /* 입력란의 경계선 */
+    padding: 10px; /* 입력란의 패딩 */
+    font-size: 16px; /* 입력란의 폰트 크기 */
+    height: 40px; /* 입력란의 높이 */
+    box-sizing: border-box; /* 패딩과 테두리를 포함하여 전체 너비와 높이 계산 */
+}
+
+.input-group .btn {
+    margin-bottom: -7px;
+    position: static;
+    flex-shrink: 0;
+    border-radius: 0 4px 4px 0; /* 우측 모서리만 둥글게 */
+    border: 1px solid #ccc; /* 버튼의 경계선 */
+    padding: 0 12px; /* 버튼의 패딩 (좌우만) */
+    font-size: 16px; /* 버튼의 폰트 크기 */
+    height: 40px; /* 버튼의 높이를 입력란과 같게 설정 */
+    line-height: 40px; /* 버튼의 텍스트 라인 높이 (높이와 맞춤) */
+    display: flex; /* 버튼 내부의 텍스트를 중앙 정렬하기 위한 flex 사용 */
+    align-items: center; /* 버튼 내부의 텍스트를 중앙 정렬 */
+    justify-content: center; /* 버튼 내부의 텍스트를 중앙 정렬 */
+    cursor: pointer; /* 버튼에 마우스를 올렸을 때 포인터 커서 표시 */
+}
+
+.input-group .btn-secondary {
+    background-color: #f0f0f0; /* 버튼의 배경색 */
+    color: #333; /* 버튼의 텍스트 색 */
+}
+
+.mb-3 ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .mb-3 li {
+    margin-bottom: 5px;
+  }
+  
+  .mb-3 .valid {
+    color: green;
+  }
+  
+  .mb-3 .invalid {
+    color: red;
+  }
+  
+  .text-danger {
+    color: red;
+  }
+  
+  .text-success {
+    color: green;
+  }
