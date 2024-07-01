@@ -8,11 +8,11 @@ import Products from './ProductsList'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-const ProductsRead = ({ id, products, fileList, isLoading}) => {
+const ProductsRead = ({ id, products, isLoading}) => {
 
-  const handleDownload = (no, fileName) => {    
-    onDownload(no, fileName)
-  }
+  // const handleDownload = (no, fileName) => {    
+  //   onDownload(no, fileName)
+  // }
 
   return (
     <div className='container'>
@@ -86,7 +86,7 @@ const ProductsRead = ({ id, products, fileList, isLoading}) => {
               </tr>
               <tr>
                 <td colSpan={2}>
-                  {fileList.map( (file) => (
+                  {/* {fileList.map( (file) => (
                     <div className="flex-box" key={file.no}>
                       <div className="item">
                         <img src={`/files/img/${file.no}`} alt={file.fileName} />
@@ -98,7 +98,7 @@ const ProductsRead = ({ id, products, fileList, isLoading}) => {
                                 onClick={ () => handleDownload(file.no, file.originName) }>다운로드</button>
                       </div>
                     </div>
-                  ))}
+                  ))} */}
                 </td>
               </tr>
             </tbody>
