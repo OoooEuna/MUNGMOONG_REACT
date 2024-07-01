@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import '../css/font.css';
 import styles from './css/Header.module.css'; // CSS 모듈을 import합니다.
 
 const CustomHeader = () => {
@@ -38,7 +39,7 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
           {isAnonymous && (
             <React.Fragment>
               <Link to="/api/login" className="btn btn-outline-secondary mx-1">로그인</Link>
-              <Link to="/users/register" className="btn btn-outline-secondary mx-1">회원가입</Link>
+              <Link to="/api/register" className="btn btn-outline-secondary mx-1">회원가입</Link>
             </React.Fragment>
           )}
           {isAuthenticated && (
