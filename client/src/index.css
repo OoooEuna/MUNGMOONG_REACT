@@ -1,13 +1,33 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.featurette {
+  padding: 5rem 0;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.review-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.review-box {
+  background-color: #f9f9f9;
+  padding: 1rem;
+  margin: 0.5rem;
+  border-radius: 5px;
+  width: 30%;
+}
+
+/* @font-face로 글꼴 정의 */
+@font-face {
+  font-family: 'SKYBORI';
+  src: url('../public/fonts/SKYBORI.ttf') format('truetype'); /* 글꼴 파일의 경로 지정 */
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 요소에 글꼴 적용 */
+body,
+.featurette,
+.review-container,
+.review-box {
+  font-family: 'SKYBORI', sans-serif; /* SKYBORI 글꼴 사용 */
 }

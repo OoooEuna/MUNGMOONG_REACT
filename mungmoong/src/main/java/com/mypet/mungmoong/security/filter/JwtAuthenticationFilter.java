@@ -1,6 +1,5 @@
 package com.mypet.mungmoong.security.filter;
 
-
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,9 +16,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.mypet.mungmoong.dto.CustomUser;
 import com.mypet.mungmoong.security.constants.SecurityConstants;
 import com.mypet.mungmoong.security.provider.JwtTokenProvider;
-import com.mypet.mungmoong.users.dto.CustomUser;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -107,8 +106,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         log.info("인증 성공 (auth SUCCESS) : ");
 
         CustomUser user = ((CustomUser) authentication.getPrincipal());
-        String username = user.getUser().getName();
-
+        int userNo = user.getUser().getNo();
+        String userId = user.getUser().getUserId();
 
         List<String> roles = user.getAuthorities()
                                 .stream()
@@ -116,16 +115,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                 .collect(Collectors.toList());
 
         // 🔐 JWT
-        String token;
-        try {
-            token = jwtTokenProvider.createToken(username, roles);
-            // 💍 { Authorization : Bearer + {jwt} } 
-            response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);
-            response.setStatus(200);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        String token = jwtTokenProvider.createToken(userNo, userId, roles);
 
+        // 💍 { Authorization : Bearer + {jwt} } 
+        response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);
+        response.setStatus(200);
     }
 
 

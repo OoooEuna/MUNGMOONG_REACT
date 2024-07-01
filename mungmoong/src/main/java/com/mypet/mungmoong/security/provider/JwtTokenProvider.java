@@ -1,6 +1,5 @@
 package com.mypet.mungmoong.security.provider;
 
-
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,12 +12,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import com.mypet.mungmoong.dto.CustomUser;
+import com.mypet.mungmoong.dto.UserAuth;
+import com.mypet.mungmoong.dto.Users;
+import com.mypet.mungmoong.mapper.UserMapper;
 import com.mypet.mungmoong.prop.JwtProps;
 import com.mypet.mungmoong.security.constants.SecurityConstants;
-import com.mypet.mungmoong.users.dto.CustomUser;
-import com.mypet.mungmoong.users.dto.UserAuth;
-import com.mypet.mungmoong.users.dto.Users;
-import com.mypet.mungmoong.users.mapper.UsersMapper;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -46,16 +45,13 @@ public class JwtTokenProvider {
     private JwtProps jwtProps;
 
     @Autowired
-    private UsersMapper userMapper;
+    private UserMapper userMapper;
 
     /*
      * 👩‍💼➡🔐 토큰 생성
      */
-    public String createToken(String username, List<String> roles) throws Exception {
+    public String createToken(int userNo, String userId, List<String> roles) {
         byte[] signingKey = getSigningKey();
-        Users userInfo = userMapper.select(username);
-        String phone = userInfo.getPhone();
-
 
         // JWT 토큰 생성
         String jwt = Jwts.builder()
@@ -65,8 +61,8 @@ public class JwtTokenProvider {
                     .add("typ", SecurityConstants.TOKEN_TYPE)              // 헤더 설정
                 .and()
                 .expiration(new Date(System.currentTimeMillis() + 864000000))  // 토큰 만료 시간 설정 (10일)
-                .claim("uid", username)                              // 클레임 설정: 사용자 아이디                          // 클레임 설정: 사용자 닉네임
-                .claim("phone", phone)                              // 클레임 설정: 사용자 전화번호
+                .claim("uno", "" + userNo)                                // 클레임 설정: 사용자 번호
+                .claim("uid", userId)                                     // 클레임 설정: 사용자 아이디
                 .claim("rol", roles)                                      // 클레임 설정: 권한
                 .compact();      
 
@@ -103,18 +99,14 @@ public class JwtTokenProvider {
 
             log.info("parsedToken : " + parsedToken);
 
-        
+            // 인증된 사용자 번호
+            String userNo = parsedToken.getPayload().get("uno").toString();
+            int no = ( userNo == null ? 0 : Integer.parseInt(userNo) );
+            log.info("userNo : " + userNo);
+
             // 인증된 사용자 아이디
             String userId = parsedToken.getPayload().get("uid").toString();
             log.info("userId : " + userId);
-
-            // 인증된 사용자 닉네임
-            String nickname = parsedToken.getPayload().get("nickname").toString();
-            log.info("nickname : " + nickname);
-
-            // 인증된 사용자 전화번호
-            String phone = parsedToken.getPayload().get("phone").toString();
-            log.info("phone : " + phone);
 
             // 인증된 사용자 권한
             Claims claims = parsedToken.getPayload();
@@ -128,8 +120,8 @@ public class JwtTokenProvider {
 
 
             Users user = new Users();
-            user.setPhone(phone);
-
+            user.setNo(no);
+            user.setUserId(userId);
             // OK: 권한도 바로 Users 객체에 담아보기
             List<UserAuth> authList = ((List<?>) roles )
                                             .stream()
@@ -147,11 +139,10 @@ public class JwtTokenProvider {
             // 토큰 유효하면
             // name, email 도 담아주기
             try {
-                Users userInfo = userMapper.select(userId);
+                Users userInfo = userMapper.select(no);
                 if( userInfo != null ) {
                     user.setName(userInfo.getName());
-                    user.setMail(userInfo.getMail());
-                    user.setUpdDate(userInfo.getUpdDate());
+                    user.setEmail(userInfo.getEmail());
                 }
             } catch (Exception e) {
                 log.error(e.getMessage());

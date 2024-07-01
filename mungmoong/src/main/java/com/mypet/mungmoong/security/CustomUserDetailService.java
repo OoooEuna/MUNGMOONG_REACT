@@ -6,9 +6,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.mypet.mungmoong.users.dto.CustomUser;
-import com.mypet.mungmoong.users.dto.Users;
-import com.mypet.mungmoong.users.mapper.UsersMapper;
+import com.mypet.mungmoong.dto.CustomUser;
+import com.mypet.mungmoong.dto.Users;
+import com.mypet.mungmoong.mapper.UserMapper;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomUserDetailService implements UserDetailsService {
 
     @Autowired
-    private UsersMapper userMapper;
+    private UserMapper userMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username)  {
@@ -36,8 +36,6 @@ public class CustomUserDetailService implements UserDetailsService {
 
         log.info("customuser :::::");
         log.info(customUser.toString());
-
-        // log.debug(username);
         return customUser;
 
     }
