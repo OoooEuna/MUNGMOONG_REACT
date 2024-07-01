@@ -1,89 +1,58 @@
 import React, { useState } from 'react';
-import './login.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import Login from '../../pages/users/LoginPage'; // 로그인 페이지의 컴포넌트 경로 확인
 
-function Login() {
-    const [userId, setUserId] = useState('user');
+function LoginContainer() {
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [rememberId, setRememberId] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
-    const [error, setError] = useState(false); // 이 상태는 실제 로그인 시 에러가 있을 때 설정해야 합니다.
+    const [error, setError] = useState(false);
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // 로그인 로직 추가
+        setError(false);
+
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password, rememberId, rememberMe })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const token = data.token; // 서버가 반환하는 JWT 토큰
+
+                // JWT 토큰을 로컬 스토리지에 저장하거나 쿠키에 저장
+                localStorage.setItem('token', token);
+
+                // 로그인 성공 후 페이지 이동 등
+                // 예: window.location.href = '/dashboard';
+            } else {
+                setError(true);
+            }
+        } catch (error) {
+            console.error('로그인 요청 중 오류 발생:', error);
+            setError(true);
+        }
     };
 
     return (
-        <div className="login-wrapper">
-            <img src="/img/logo.png" alt="댕댕이" style={{ width: '80%' }} />
-            <form id="user" className="login-form" onSubmit={handleSubmit}>
-                <input type="hidden" name="_csrf" value="{CSRF_TOKEN}" /> {/* CSRF 토큰 처리 필요 */}
-                <input
-                    type="text"
-                    placeholder="사용자 아이디"
-                    name="userId"
-                    value={userId}
-                    id="userId"
-                    onChange={(e) => setUserId(e.target.value)}
-                />
-                <input
-                    type="password"
-                    placeholder="비밀번호"
-                    name="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-
-                {error && (
-                    <p className="text-center text-danger">
-                        아이디 또는 비밀번호를 잘못 입력했습니다.
-                    </p>
-                )}
-                <div className="options">
-                    <label htmlFor="remember-id">
-                        <input
-                            type="checkbox"
-                            id="remember-id"
-                            name="remember-id"
-                            checked={rememberId}
-                            onChange={(e) => setRememberId(e.target.checked)}
-                        />
-                        아이디 저장
-                    </label>
-                    <h1> &nbsp;&nbsp;&nbsp;</h1>
-                    <label htmlFor="remember-me">
-                        <input
-                            type="checkbox"
-                            id="remember-me"
-                            name="remember-me"
-                            checked={rememberMe}
-                            onChange={(e) => setRememberMe(e.target.checked)}
-                        />
-                        로그인 상태 유지
-                    </label>
-                </div>
-                <button type="submit" className="login">로그인</button>
-            </form>
-            <div className="options">
-                <a href="/users/register">회원가입</a>
-                <a href="/users/findId">아이디/비밀번호 찾기</a>
-            </div>
-            <div className="social-login">
-                <h3>소셜로그인</h3>
-                <button className="naver">
-                    <a href="/oauth2/authorization/naver" style={{ color: 'white', textDecoration: 'none' }}>
-                        <img src="/img/naver.svg" style={{ width: '30px' }} /> 네이버로 로그인하기
-                    </a>
-                </button>
-                <button className="kakao">
-                    <a href="/oauth2/authorization/kakao" style={{ color: 'black', textDecoration: 'none' }}>
-                        <img src="/img/kakao.png" style={{ width: '30px' }} /> 카카오로 로그인하기
-                    </a>
-                </button>
-            </div>
-        </div>
+        <Login
+            username={username}
+            setUsername={setUsername}
+            password={password}
+            setPassword={setPassword}
+            rememberId={rememberId}
+            setRememberId={setRememberId}
+            rememberMe={rememberMe}
+            setRememberMe={setRememberMe}
+            error={error}
+            handleSubmit={handleSubmit}
+        />
     );
 }
 
-export default Login;
+export default LoginContainer;

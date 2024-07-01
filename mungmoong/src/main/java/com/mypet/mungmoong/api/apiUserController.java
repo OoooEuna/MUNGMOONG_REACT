@@ -1,4 +1,4 @@
-package com.mypet.mungmoong.controller;
+package com.mypet.mungmoong.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,33 +25,15 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/users")
-public class UserController {
+@RequestMapping("/api/users")
+public class ApiUserController {
 
     @Autowired
     private UserService userService;
 
-    /**
-     * 사용자 정보 조회
-     * @param customUser
-     * @return
-     */
-    @GetMapping("/info")
-    public ResponseEntity<?> userInfo(@AuthenticationPrincipal CustomUser customUser) {
-        
-        log.info("::::: customUser :::::");
-        log.info("customUser : "+ customUser);
+    
 
-        Users user = customUser.getUser();
-        log.info("user : " + user);
-
-        // 인증된 사용자 정보 
-        if( user != null )
-            return new ResponseEntity<>(user, HttpStatus.OK);
-
-        // 인증 되지 않음
-        return new ResponseEntity<>("UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
-    }
+   
 
     
     /**
