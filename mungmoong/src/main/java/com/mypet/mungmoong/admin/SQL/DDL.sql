@@ -1,4 +1,4 @@
--- Active: 1717721626738@@127.0.0.1@3306@mypet
+
 DROP TABLE IF EXISTS `pet`;
 
 CREATE TABLE `pet` (
