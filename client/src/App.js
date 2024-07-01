@@ -18,7 +18,7 @@ function App() {
       <Route path="/" element={<Home/>}></Route>
       {/* <Route path="/api/trainer/info/:userId" component={TrainerInfo}></Route> */}
       {/* <Route path="/api/products" element={ <ProductsList/> }></Route> */}
-      {/* <Route path="/api/login" element={ <LoginPage/> }></Route> */}
+      <Route path="/api/login" element={ <LoginPage/> }></Route>
       <Route path="/api/board" element={ <List/> }></Route>
       <Route path="/api/board/:no" element={ <Read/> }></Route>
       {/* <Route path="/api/board/update/:no" element={ <Update/> }></Route> */}
