@@ -1,8 +1,10 @@
-package com.mypet.mungmoong.service;
+package com.mypet.mungmoong.users.service;
+
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.mypet.mungmoong.dto.Users;
+import com.mypet.mungmoong.users.dto.Users;
+
 
 public interface UserService {
 

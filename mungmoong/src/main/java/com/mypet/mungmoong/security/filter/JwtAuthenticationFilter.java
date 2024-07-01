@@ -17,9 +17,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.mypet.mungmoong.dto.CustomUser;
 import com.mypet.mungmoong.security.constants.SecurityConstants;
 import com.mypet.mungmoong.security.provider.JwtTokenProvider;
+import com.mypet.mungmoong.users.dto.CustomUser;
 
 import lombok.extern.slf4j.Slf4j;
 

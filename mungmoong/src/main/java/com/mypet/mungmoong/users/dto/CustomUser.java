@@ -1,4 +1,4 @@
-package com.mypet.mungmoong.dto;
+package com.mypet.mungmoong.users.dto;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
