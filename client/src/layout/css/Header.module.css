@@ -151,4 +151,56 @@
     display: flex; /* 메뉴 표시 */
   }
   
+/* src/components/css/Header.module.css */
+
+/* 공통 버튼 스타일 */
+.btn {
+  display: inline-block;
+  padding: 6px 12px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 16px;
+  line-height: 1.5;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+/* 버튼 색상 */
+.btnOutlineSuccess {
+  color: #28a745;
+  border-color: #28a745;
+  background-color: transparent;
+}
+
+.btnOutlineSuccess:hover {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.btnOutlineSecondary {
+  color: #6c757d;
+  border-color: #6c757d;
+  background-color: transparent;
+}
+
+.btnOutlineSecondary:hover {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+/* 버튼 크기 및 정렬 */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px; /* 버튼의 높이 */
+}
+
+
 }
