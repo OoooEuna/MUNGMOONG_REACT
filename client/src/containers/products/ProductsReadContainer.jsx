@@ -1,21 +1,21 @@
 import React, { useEffect } from 'react'
 import ProductsRead from '../components/products/ProductsRead'
 import { useState } from 'react'
-import * as Products from '../apis/Products'
+import * as products from '../../apis/products'
 import * as files from '../apis/files'
 
 
-const ProductsReadContainer = ({ no }) => {
+const ProductsReadContainer = ({ id }) => {
   // 🧊 state
   const [products, setproducts] = useState({})
-  const [fileList, setFileList] = useState([])
+   const [fileList, setFileList] = useState([])
   const [isLoading, setLoading] = useState(false)
 
   // 🌞 함수
   const getproducts = async () => {
     // ⌚ 로딩 시작
     setLoading(true)
-    const response = await products.select(no)
+    const response = await products.select(id)
     const data = await response.data        // ⭐ 🎫products + 📄filelist
     console.log(data)
     

@@ -1,8 +1,8 @@
-import './App.css';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Header from './layout/Header';
+import './App.css';
 import Footer from './layout/Footer';
+import Header from './layout/Header';
 import Home from './pages/Home';
 import List from './pages/board/List';
 import Read from './pages/board/Read';
