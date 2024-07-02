@@ -22,7 +22,7 @@ function App() {
     <Header />
     <Routes>
       <Route path="/" element={<Home/>}></Route>
-      <Route path="/api/trainer/info/" element={ <InfoList/> }></Route>
+      <Route path="/api/trainer/info/" element={ <Orders/> }></Route>
       {/* <Route path="/api/products" element={ <ProductsList/> }></Route> */}
       {/* <Route path="/api/login" element={ <LoginPage/> }></Route> */}
       <Route path="/api/board" element={ <List/> }></Route>
