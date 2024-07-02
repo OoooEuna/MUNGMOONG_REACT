@@ -1,3 +1,0 @@
-DROP TABLE IF EXISTS user;
-DROP TABLE IF EXISTS user_auth;
-DROP TABLE IF EXISTS user_social;

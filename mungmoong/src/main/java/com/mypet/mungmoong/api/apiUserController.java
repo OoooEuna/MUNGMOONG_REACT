@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mypet.mungmoong.users.dto.Users;
-import com.mypet.mungmoong.users.service.UserService;
+import com.mypet.mungmoong.users.service.UsersService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,10 +23,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping("/api/users")
-public class ApiUserController {
+public class apiUserController {
 
     @Autowired
-    private UserService userService;
+    private UsersService userService;
     
     /**
      * 회원가입
