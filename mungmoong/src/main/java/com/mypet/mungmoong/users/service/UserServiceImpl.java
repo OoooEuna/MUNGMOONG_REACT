@@ -132,8 +132,9 @@ public class UserServiceImpl implements UsersService {
     }
 
     @Override
-    public List<Users> list(Page page, Option option) throws Exception {
-        return userMapper.list(page, option);
+    public List<Users> list() throws Exception{
+        List<Users> usersList =  userMapper.list();
+        return usersList;
     }
 
     @Override
