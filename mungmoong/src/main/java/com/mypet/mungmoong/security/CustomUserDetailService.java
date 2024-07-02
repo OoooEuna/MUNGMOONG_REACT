@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.mypet.mungmoong.users.dto.CustomUser;
 import com.mypet.mungmoong.users.dto.Users;
-import com.mypet.mungmoong.users.mapper.UserMapper;
+import com.mypet.mungmoong.users.mapper.UsersMapper;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomUserDetailService implements UserDetailsService {
 
     @Autowired
-    private UserMapper userMapper;
+    private UsersMapper userMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username)  {

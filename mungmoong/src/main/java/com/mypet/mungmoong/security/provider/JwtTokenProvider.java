@@ -18,7 +18,7 @@ import com.mypet.mungmoong.security.constants.SecurityConstants;
 import com.mypet.mungmoong.users.dto.CustomUser;
 import com.mypet.mungmoong.users.dto.UserAuth;
 import com.mypet.mungmoong.users.dto.Users;
-import com.mypet.mungmoong.users.mapper.UserMapper;
+import com.mypet.mungmoong.users.mapper.UsersMapper;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -46,7 +46,7 @@ public class JwtTokenProvider {
     private JwtProps jwtProps;
 
     @Autowired
-    private UserMapper userMapper;
+    private UsersMapper userMapper;
 
     /*
      * 👩‍💼➡🔐 토큰 생성
@@ -140,10 +140,10 @@ public class JwtTokenProvider {
             // 토큰 유효하면
             // name, email 도 담아주기
             try {
-                Users userInfo = userMapper.select(no);
+                Users userInfo = userMapper.selectByNo(no);
                 if( userInfo != null ) {
                     user.setName(userInfo.getName());
-                    user.setEmail(userInfo.getEmail());
+                    user.setMail(userInfo.getMail());
                 }
             } catch (Exception e) {
                 log.error(e.getMessage());
