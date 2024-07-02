@@ -6,6 +6,7 @@ import Header from './layout/Header';
 import Home from './pages/Home';
 import List from './pages/board/List';
 import Read from './pages/board/Read';
+
 import Update from './pages/board/Update';
 import TrainerInfo from './components/trainer/TrainerInfo';
 // QnA 관련 경로 추가
@@ -13,6 +14,14 @@ import TrainerInfo from './components/trainer/TrainerInfo';
 // import QnAList from './pages/qna/QnAList';
 // import QnARead from './pages/qna/QnARead';
 // import QnAUpdate from './pages/qna/QnAUpdate';
+=======
+import Orders from './components/trainer/Orders';
+import LoginPage from './pages/users/LoginPage';
+import LoginContextProvider from './contexts/LoginContextProvider';
+import RegisterPage from './pages/users/RegisterPage';
+import './css/font.css';
+
+
 
 function App() {
   return (
@@ -22,7 +31,7 @@ function App() {
     <Header />
     <Routes>
       <Route path="/" element={<Home/>}></Route>
-      <Route path="/api/trainer/info/" element={ <InfoList/> }></Route>
+      <Route path="/api/trainer/orders" element={ <Orders/> }></Route>
       {/* <Route path="/api/products" element={ <ProductsList/> }></Route> */}
       {/* <Route path="/api/login" element={ <LoginPage/> }></Route> */}
       <Route path="/api/board" element={ <List/> }></Route>
