@@ -32,23 +32,9 @@
 
 
     <!-- 회원 조회 -->
-     <select id="select" resultMap="userMap">
-        SELECT user_id
-              ,password
-              ,name
-              ,birth
-              ,address
-              ,email
-              ,phone
-              ,gender
-              ,reg_date
-              ,upd_date
-              ,enabled
-              ,role
-        FROM users
-        WHERE no = #{no} OR user_id = #{userId}
+    <select id="selectByNo" parameterType="int" >
+        SELECT * FROM users WHERE no = #{no}
     </select>
-
 
 
     <!-- 로그인 쿼리 -->

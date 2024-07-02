@@ -6,7 +6,7 @@ import Orders from '../../components/trainer/Orders';
 // 예약요청 리스트 조회
 const OrdersListContainer = () => {
   // Context에서 로그인된 유저 정보 가져오기
-  const { userInfo } = useContext(LoginContext);
+  const { isLogin, userInfo } = useContext(LoginContext);
   
   // state 설정
   const [ordersList, setOrdersList] = useState([]);
@@ -25,16 +25,19 @@ const OrdersListContainer = () => {
 
   // getOrdersList() 함수를 호출
   useEffect(() => {
-    if (userInfo && userInfo.no) {
+    if (isLogin && userInfo && userInfo.no) {
       getOrdersList(userInfo.no);
     }
-  }, [userInfo]);
+  }, [isLogin, userInfo]);
 
   return (
-    <>
-      {/* 예약요청 목록 내려주기 */}
-      <Orders ordersList={ordersList} />
-    </>
+    <div>
+      {isLogin ? (
+        <Orders ordersList={ordersList} />
+      ) : (
+        <p>Please log in to see the orders.</p>
+      )}
+    </div>
   );
 }
 
