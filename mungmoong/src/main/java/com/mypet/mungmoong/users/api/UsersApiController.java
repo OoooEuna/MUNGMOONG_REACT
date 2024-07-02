@@ -29,8 +29,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequestMapping("/users")
-public class UsersController {
+@RequestMapping("/api/users")
+public class UsersApiController {
 
     @Autowired
     private UsersService userService;
