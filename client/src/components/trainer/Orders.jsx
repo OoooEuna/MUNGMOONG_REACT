@@ -1,11 +1,10 @@
-import React, { useState, useEffect  } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import './trainer.css'
+import './trainer.css';
 import NavBar from './NavBar';
 
-const Orders = ( {ordersList} ) => {
-  console.log(ordersList);
-
+const Orders = ({ ordersList }) => {
+  console.log("Orders List in Orders Component: ", ordersList);
 
   const formatDate = (date) => {
     const d = new Date(date);
@@ -33,8 +32,8 @@ const Orders = ( {ordersList} ) => {
                   <td>
                     <Link to={`/trainer/orders_details?no=${orders.no}`}>{orders.userId}</Link>
                   </td>
-                  <td>{formatDate(orders.resDate)}</td>
-                  {/* <td>
+                  <td>{formatDate(orders.regDate)}</td>
+                  <td>
                     <div>
                       {orders.meaning === 0 && (
                         <form action="/trainer/orders" method="post">
@@ -69,7 +68,7 @@ const Orders = ( {ordersList} ) => {
                     {!['pending', 'paid', 'refund', 'approval'].includes(orders.status) && (
                       <span>알 수 없음</span>
                     )}
-                  </td> */}
+                  </td>
                 </tr>
               ))}
             </tbody>
