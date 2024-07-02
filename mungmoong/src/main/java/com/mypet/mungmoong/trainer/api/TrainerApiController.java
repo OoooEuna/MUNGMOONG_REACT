@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -88,20 +89,19 @@ public class TrainerApiController {
 
     // orders 목록
     @GetMapping("/orders")
-    public ResponseEntity<?> ordersList(HttpSession session) throws Exception {
+    public ResponseEntity<?> ordersList(@RequestParam("trainerNo") Integer trainerNo) throws Exception {
         log.info("[GET] - /api/orders");
-        Integer trainerNo = (Integer) session.getAttribute("trainerNo");
         if (trainerNo == null) {
-            log.error("트레이너 번호를 세션에서 찾을 수 없습니다.");
+            log.error("트레이너 번호를 찾을 수 없습니다.");
             // 트레이너 번호가 없을 경우 에러 처리
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                                 .body("트레이너 번호를 세션에서 찾을 수 없습니다.");
+                                 .body("트레이너 번호를 찾을 수 없습니다.");
         }
-
+    
         // 데이터 요청
         log.info("trainerNo : " + trainerNo);
         List<Orders> ordersList = ordersService.listByTrainer(trainerNo);
-
+    
         // 데이터와 함께 상태 코드 반환
         return ResponseEntity.ok(ordersList);
     }
@@ -145,7 +145,7 @@ public class TrainerApiController {
  
     
     // Meaning 수정 작업
-    @PostMapping("/orders")
+    @PutMapping("/orders")
     public ResponseEntity<?> updateOrderMeaning(@RequestParam("orderNo") int orderNo, @RequestParam("meaning") int meaning)
             throws Exception {
         ordersService.updateMeaning(orderNo, meaning);
@@ -259,40 +259,40 @@ public class TrainerApiController {
 
 
     // 훈련사 수정 처리
-    @PostMapping("/info_update")
+    @PutMapping("/info_update")
     public ResponseEntity<?> updatePro(@RequestBody Trainer trainer, @RequestParam("files") List<MultipartFile> files, HttpSession session) throws Exception {
         log.info(":::::::::::::::::: 훈련사 정보 수정 :::::::::::::::::::");
-        log.info("trainser : " + trainer.toString());
-    
+        log.info("trainer : " + trainer.toString());
+
         Integer trainerNo = (Integer) session.getAttribute("trainerNo");
         if (trainerNo == null) {
             log.error("트레이너 번호를 세션에서 찾을 수 없습니다.");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("트레이너 번호를 세션에서 찾을 수 없습니다.");
         }
         log.info("세션에서 가져온 트레이너 번호 : " + trainerNo);
-    
+
         List<Career> careerList = trainer.toCareerList();
         for (Career career : careerList) {
             career.setTrainerNo(trainerNo);
             int result = (career.getNo() > 0) ? careerService.update(career) : careerService.insert(career);
             log.info(result > 0 ? "성공!" : "실패..");
         }
-    
+
         List<Certificate> certificateList = trainer.toCertificateList();
         log.info("certificateList : " + certificateList);
         log.info("업로드 파일 목록 - files : " + files);
-    
+
         for (int i = 0; i < certificateList.size(); i++) {
             Certificate certificate = certificateList.get(i);
             certificate.setTrainerNo(trainerNo);
-    
+
             int result = (certificate.getNo() > 0) ? certificateService.update(certificate) : certificateService.insert(certificate);
             if (result > 0) {
                 log.info("자격증 성공");
             } else {
                 log.info("자격증 실패");
             }
-    
+
             if (i < files.size()) {
                 MultipartFile file = files.get(i);
                 if (!file.isEmpty()) {
@@ -306,10 +306,10 @@ public class TrainerApiController {
                 }
             }
         }
-    
+
         int result = trainerService.update(trainer);
         log.debug("Trainer data : {}", trainer);
-    
+
         if (result > 0) {
             return ResponseEntity.ok("Trainer information updated successfully.");
         } else {
