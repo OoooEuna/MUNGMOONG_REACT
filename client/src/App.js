@@ -6,7 +6,7 @@ import Header from './layout/Header';
 import Home from './pages/Home';
 import List from './pages/board/List';
 import Read from './pages/board/Read';
-import InfoList from './components/trainer/InfoList';
+import Orders from './components/trainer/Orders';
 import LoginPage from './pages/users/LoginPage';
 import LoginContextProvider from './contexts/LoginContextProvider';
 import RegisterPage from './pages/users/RegisterPage';
@@ -21,7 +21,7 @@ function App() {
     <Header />
     <Routes>
       <Route path="/" element={<Home/>}></Route>
-      <Route path="/api/trainer/info/" element={ <InfoList/> }></Route>
+      <Route path="/api/trainer/orders" element={ <Orders/> }></Route>
       {/* <Route path="/api/products" element={ <ProductsList/> }></Route> */}
       {/* <Route path="/api/login" element={ <LoginPage/> }></Route> */}
       <Route path="/api/board" element={ <List/> }></Route>
