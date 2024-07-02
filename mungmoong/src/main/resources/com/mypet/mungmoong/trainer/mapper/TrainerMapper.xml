@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace="매퍼 인터페이스 경로" --> 
+<!-- 밑의 베이스 패키지 경로가 잘 맞는지 확인하기 -->
+<mapper namespace="com.mypet.mungmoong.trainer.mapper.TrainerMapper">
+
+       <resultMap id="TrainerResultMap" type="com.mypet.mungmoong.trainer.dto.Trainer">
+        <id property="no" column="no"/>
+        <result property="userId" column="user_id"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="name" column="name"/>
+        <result property="gender" column="gender"/>
+        <result property="birth" column="birth"/>
+        <result property="mail" column="mail"/>
+        <result property="phone" column="phone"/>
+        <result property="address" column="address"/>
+        <result property="content" column="content"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="updDate" column="upd_date"/>
+        
+        <collection property="careers" column="no"
+                    select="com.mypet.mungmoong.trainer.mapper.CareerMapper.selectByTrainerId"/>
+        <collection property="certificates" column="no"
+                    select="com.mypet.mungmoong.trainer.mapper.CertificateMapper.selectByTrainerId"/>
+        <collection property="files" column="no"
+                    select="com.mypet.mungmoong.trainer.mapper.FileMapper.selectFilesByTrainerId"/>
+    </resultMap>
+
+    <!-- 훈련사 조회 -->
+    <!-- LEFT OUTER JOIN user_auth auth ON t.user_id = auth.user_id -->
+    <select id="select" resultType="Trainer">
+        SELECT *
+        FROM trainer
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 훈련사 등록 -->
+    <insert id="insert" parameterType="Trainer" useGeneratedKeys="true" keyProperty="no">
+        <!-- trainer 테이블에 데이터 삽입 -->
+        INSERT INTO trainer (user_id, name, gender, birth, mail, phone, 
+                            address, content, upd_date, reg_date) 
+        VALUES (#{userId}, #{name}, #{gender}, #{birth}, #{mail}, #{phone}, 
+                #{address}, #{content}, now(), now())
+    </insert>
+    
+    <!-- 훈련사 수정 -->
+    <update id="update">
+        UPDATE trainer
+        SET content = #{content}
+            ,upd_date = now()
+        WHERE user_id = #{userId}
+
+    </update>
+
+    <!-- 훈련사 삭제 -->
+    <delete id="delete">
+        DELETE FROM trainer
+        WHERE no = #{no}
+    </delete>
+
+    <!-- 훈련사 번호 최댓값 -->
+    <select id="maxPk" resultType="int">
+        SELECT MAX(no)
+        FROM trainer
+    </select>
+
+    <!-- 훈련사 번호 조회 -->
+    <select id="selectTrainerNo" resultType="int">
+        SELECT DISTINCT t.no
+        FROM trainer t, career c
+        WHERE t.no = c.trainer_no
+    </select>
+
+    <!-- 데이터 개수 조회 - [검색] -->
+    <select id="count" resultType="int">
+        SELECT COUNT(*)
+        FROM trainer
+        ORDER BY reg_date DESC
+    </select>
+
+    <!-- 훈련사 목록 - [검색] -->
+    <select id="search" resultType="trainer">
+        SELECT *
+        FROM trainer
+        ORDER BY reg_date DESC
+    </select>
+
+    <!-- 조회 수 증가 -->
+    <update id="view">
+        UPDATE trainer
+           SET views = views + 1
+        WHERE no = #{no}
+    </update>
+
+    <!-- 관리자 영역 -->
+    <select id="trainerList" resultType="trainer">
+        SELECT t.*
+        FROM trainer t
+        JOIN users u ON t.user_id = u.user_id
+        WHERE u.role IN (1, 2)
+        ORDER BY u.reg_date DESC
+    </select>
+
+
+    <!-- 훈련사 번호로 조회 -->
+    <select id="selectByNo" resultType="com.mypet.mungmoong.trainer.dto.Trainer">
+        SELECT *
+        FROM trainer
+        WHERE no = #{no}
+    </select>
+
+</mapper>

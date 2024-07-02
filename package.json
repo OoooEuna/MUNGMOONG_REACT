@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "axios": "^1.7.2",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "js-cookie": "^3.0.5",
+    "react-bootstrap": "^2.10.4",
+    "react-router-dom": "^6.24.0",
+    "styled-components": "^6.1.11",
+    "sweetalert2": "^11.12.1",
+    "sweetalert2-react-content": "^5.0.7"
+  }
+}

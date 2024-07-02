@@ -1,44 +1,11 @@
 import React, { useState, useEffect  } from 'react';
 import { Link } from 'react-router-dom';
 import './trainer.css'
+import NavBar from './NavBar';
 
-const InfoList = () => {
-  const [userId] = useState('sampleUserId'); // 임시 userId
-  const [ordersList, setOrdersList] = useState([]);
+const Orders = ( {ordersList} ) => {
+  console.log(ordersList);
 
-  useEffect(() => {
-    // 실제 API 호출 코드는 여기에 작성합니다.
-    // 예시:
-    // axios.get(`/api/trainer/orders?userId=${userId}`)
-    //   .then(response => setOrdersList(response.data));
-
-    // 샘플 데이터
-    const sampleOrdersList = [
-      {
-        no: 1,
-        userId: 'user1',
-        resDate: new Date().toISOString(),
-        meaning: 0,
-        status: 'pending',
-      },
-      {
-        no: 2,
-        userId: 'user2',
-        resDate: new Date().toISOString(),
-        meaning: 1,
-        status: 'paid',
-      },
-      {
-        no: 3,
-        userId: 'user3',
-        resDate: new Date().toISOString(),
-        meaning: 2,
-        status: 'approval',
-      },
-    ];
-
-    setOrdersList(sampleOrdersList);
-  }, []);
 
   const formatDate = (date) => {
     const d = new Date(date);
@@ -49,32 +16,7 @@ const InfoList = () => {
     <div className="container">
       <div className="inner">
         <h1 className="title">예약요청 반려동물</h1>
-        <nav className="navbar navbar-expand-lg navbar-light">
-          <div className="collapse navbar-collapse justify-content-start">
-            <ul className="navbar-nav">
-              <li className="nav-item">
-                <Link className="tab-button" to={`/trainer/info?userId=${userId}`}>
-                  훈련사 정보
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="tab-button" to="/trainer/schedule">
-                  스케쥴 관리
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="tab-button" to="/trainer/deposit">
-                  입금 내역서
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="tab-button active" to="/trainer/orders">
-                  예약
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </nav>
+        <NavBar />
         <div className="user_info">
           <table className="table table-bordered">
             <thead className="thead-light">
@@ -92,7 +34,7 @@ const InfoList = () => {
                     <Link to={`/trainer/orders_details?no=${orders.no}`}>{orders.userId}</Link>
                   </td>
                   <td>{formatDate(orders.resDate)}</td>
-                  <td>
+                  {/* <td>
                     <div>
                       {orders.meaning === 0 && (
                         <form action="/trainer/orders" method="post">
@@ -127,7 +69,7 @@ const InfoList = () => {
                     {!['pending', 'paid', 'refund', 'approval'].includes(orders.status) && (
                       <span>알 수 없음</span>
                     )}
-                  </td>
+                  </td> */}
                 </tr>
               ))}
             </tbody>
@@ -138,4 +80,4 @@ const InfoList = () => {
   );
 };
 
-export default InfoList;
+export default Orders;

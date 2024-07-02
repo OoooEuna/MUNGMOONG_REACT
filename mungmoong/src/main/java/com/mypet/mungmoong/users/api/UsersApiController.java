@@ -66,16 +66,22 @@ public class UsersApiController {
     }
 
     @PostMapping("/register")
-    public String registerUser(Users user, Pet pet, String userId) throws Exception {
-        user.setUserId(userId);
-        pet.setUserId(userId);
-        // user.setPet(pet);
+    public String registerUser(@ModelAttribute Users user) {
+        try {
+            if (user.getPassword() == null || user.getPassword().isEmpty()) {
+                throw new IllegalArgumentException("비밀번호가 누락되었습니다.");
+            }
 
-        int result = userService.join(user);
-        if (result > 0) {
-            return "redirect:/users/login";
+            int result = userService.insert(user); // Call the insert method from UserService
+
+            if (result > 0) {
+                return "redirect:/pets/register"; // Redirect to pet registration or another page
+            }
+            return "redirect:/register?error"; // Redirect to registration page with error
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/register?error"; // Redirect to registration page with error
         }
-        return "redirect:/register?error";
     }
 
     @GetMapping("/register/check/{userId}")

@@ -29,18 +29,27 @@
         <result property="auth" column="auth" />
     </resultMap>
 
-    <!-- 회원 등록 -->
-    <insert id="insert">
-        INSERT INTO user (user_id, user_pw, name, email)
-        VALUES (#{userId}, #{userPw}, #{name}, #{email})
-    </insert>
+
 
     <!-- 회원 조회 -->
-    <select id="select" resultType="com.mypet.mungmoong.users.dto.Users">
-        SELECT *
-        FROM user
-        WHERE no = #{no}
+     <select id="select" resultMap="userMap">
+        SELECT user_id
+              ,password
+              ,name
+              ,birth
+              ,address
+              ,email
+              ,phone
+              ,gender
+              ,reg_date
+              ,upd_date
+              ,enabled
+              ,role
+        FROM users
+        WHERE no = #{no} OR user_id = #{userId}
     </select>
+
+
 
     <!-- 로그인 쿼리 -->
     <select id="login" resultMap="userMap">
@@ -73,6 +82,13 @@
     <insert id="insertAuth">
         INSERT INTO user_auth (user_id, auth)
         VALUES (#{userId}, #{auth})
+    </insert>
+
+
+  <!-- 회원 가입 -->
+    <insert id="insert">
+        INSERT INTO users ( user_id, password, name, birth, address, email,phone, enabled ,gender,reg_date,upd_date,role)
+        VALUES ( #{userId}, #{password}, #{name}, #{birth}, #{address}, #{email}, #{phone}, 1, #{gender},now(),now(),0)
     </insert>
 
     <!-- 회원 수정 -->

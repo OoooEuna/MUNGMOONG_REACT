@@ -1,14 +1,12 @@
-import React from 'react'
-
+import React from 'react';
+import QnAListContainer from '../../containers/qna/QnAListContainer';
 
 const QnAList = () => {
   return (
     <>
-    {/* Header */}
-    <ListContainer />
-    {/* Footer */}
-  </>
-)
-}
+      <QnAListContainer />
+    </>
+  );
+};
 
-export default QnAList
+export default QnAList;
