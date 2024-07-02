@@ -1,9 +1,7 @@
-// pages/RegisterPage.js
 import './css/register.css';
 import React, { useState } from 'react';
 import UserForm from '../../components/users/froms/UserForm';
 import PetForm from '../../components/users/froms/PetForm';
-
 
 const RegisterPage = () => {
   const [activeTab, setActiveTab] = useState('A');
@@ -12,9 +10,26 @@ const RegisterPage = () => {
     setActiveTab(tab);
   };
 
-  const handleUserFormSubmit = (data) => {
-    console.log('User Data:', data);
-    // Handle user form submission
+  const handleUserFormSubmit = async (data) => {
+    try {
+      // Perform user registration
+      const response = await fetch('/api/users/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        // Registration successful, switch to PetForm
+        setActiveTab('B');
+      } else {
+        console.error('User registration failed');
+      }
+    } catch (error) {
+      console.error('User registration failed:', error);
+    }
   };
 
   const handlePetFormSubmit = (data) => {

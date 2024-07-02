@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mypet.mungmoong.trainer.mapper.CertificateMapper">
+    <resultMap id="CertificateResultMap" type="com.mypet.mungmoong.trainer.dto.Certificate">
+        <id property="no" column="no"/>
+        <result property="userId" column="user_id"/>
+        <result property="trainerNo" column="trainer_no"/>
+        <result property="name" column="name"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="updDate" column="upd_date"/>
+        <collection property="files" column="no" select="com.mypet.mungmoong.trainer.mapper.FileMapper.selectFilesByCertificateId"/>
+    </resultMap>
+
+    <select id="listByUserId" resultType="com.mypet.mungmoong.trainer.dto.Certificate">
+        SELECT * FROM certificate WHERE user_id = #{userId}
+    </select>
+
+    <insert id="insert" parameterType="com.mypet.mungmoong.trainer.dto.Certificate" useGeneratedKeys="true" keyProperty="no">
+        INSERT INTO certificate (user_id, trainer_no, name, reg_date, upd_date)
+        VALUES (#{userId}, #{trainerNo}, #{name}, now(), now())
+        <selectKey keyProperty="no" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID() no
+        </selectKey>
+    </insert>
+
+    <update id="update">
+        UPDATE certificate
+           SET name = #{name}, upd_date = now()
+    </update>
+
+    <delete id="delete">
+        DELETE FROM certificate WHERE no = #{no}
+    </delete>
+</mapper>

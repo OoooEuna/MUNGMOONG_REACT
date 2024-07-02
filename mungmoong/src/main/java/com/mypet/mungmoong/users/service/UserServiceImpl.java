@@ -132,8 +132,9 @@ public class UserServiceImpl implements UsersService {
     }
 
     @Override
-    public List<Users> list(Page page, Option option) throws Exception {
-        return userMapper.list(page, option);
+    public List<Users> list() throws Exception{
+        List<Users> usersList =  userMapper.list();
+        return usersList;
     }
 
     @Override
@@ -173,35 +174,7 @@ public class UserServiceImpl implements UsersService {
         return result;
     }
 
-    @Override
-    public int join(Users user) throws Exception {
-        String username = user.getUserId();
-        String password = user.getPassword();
-        String encodedPassword = passwordEncoder.encode(password); // 🔒 비밀번호 암호화
-        user.setPassword(encodedPassword);
-
-        // ############################## 06-14 수정 ##############################
-        // 계정 활성화 설정
-        user.setEnabled(1); // 수정된 부분
-        // #########################################################################
-
-
-        // 회원 등록
-        int result = userMapper.join(user);
-
-        if (result > 0) {
-            // 회원 기본 권한 등록
-            UserAuth userAuth = new UserAuth();
-            userAuth.setUserId(username);
-            userAuth.setAuth("ROLE_USER");
-            result = userMapper.insertAuth(userAuth);
-
-            // // 펫 등록
-            // Pet pet = user.getPet();
-            // petMapper.insertPet(pet);
-        }
-        return result;
-    }
+    
 
  
 

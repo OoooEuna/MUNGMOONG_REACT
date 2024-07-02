@@ -1,45 +1,10 @@
-import React, { useState, useEffect  } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import './trainer.css'
+import './trainer.css';
 import NavBar from './NavBar';
 
-const Orders = () => {
-  const [userId] = useState('sampleUserId'); // 임시 userId
-  const [ordersList, setOrdersList] = useState([]);
-
-  useEffect(() => {
-    // 실제 API 호출 코드는 여기에 작성합니다.
-    // 예시:
-    // axios.get(`/api/trainer/orders?userId=${userId}`)
-    //   .then(response => setOrdersList(response.data));
-
-    // 샘플 데이터
-    const sampleOrdersList = [
-      {
-        no: 1,
-        userId: 'user1',
-        resDate: new Date().toISOString(),
-        meaning: 0,
-        status: 'pending',
-      },
-      {
-        no: 2,
-        userId: 'user2',
-        resDate: new Date().toISOString(),
-        meaning: 1,
-        status: 'paid',
-      },
-      {
-        no: 3,
-        userId: 'user3',
-        resDate: new Date().toISOString(),
-        meaning: 2,
-        status: 'approval',
-      },
-    ];
-
-    setOrdersList(sampleOrdersList);
-  }, []);
+const Orders = ({ ordersList }) => {
+  console.log("Orders List in Orders Component: ", ordersList);
 
   const formatDate = (date) => {
     const d = new Date(date);
@@ -67,7 +32,7 @@ const Orders = () => {
                   <td>
                     <Link to={`/trainer/orders_details?no=${orders.no}`}>{orders.userId}</Link>
                   </td>
-                  <td>{formatDate(orders.resDate)}</td>
+                  <td>{formatDate(orders.regDate)}</td>
                   <td>
                     <div>
                       {orders.meaning === 0 && (
