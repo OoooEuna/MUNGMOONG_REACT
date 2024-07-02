@@ -1,4 +1,3 @@
-// components/forms/UserForm.js
 import React, { useState } from 'react';
 import Button from '../../common/Button';
 import InputField from '../../common/InputField';
@@ -21,15 +20,13 @@ const UserForm = ({ onSubmit }) => {
   const [passwordError, setPasswordError] = useState('');
   const [passwordChkError, setPasswordChkError] = useState('');
   const [passwordMatchMessage, setPasswordMatchMessage] = useState('');
+  const [emailVerificationStatus, setEmailVerificationStatus] = useState('');
+  const [emailVerificationCode, setEmailVerificationCode] = useState('');
+  const [userIdStatus, setUserIdStatus] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(formData);
   };
 
   const validatePassword = (password) => {
@@ -67,8 +64,102 @@ const UserForm = ({ onSubmit }) => {
     setPasswordMatchMessage(passwordMatchMessage);
   };
 
+  const handleEmailVerification = async () => {
+    try {
+      const response = await fetch('/api/send-email-verification', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: formData.mail }),
+      });
+
+      if (response.ok) {
+        setEmailVerificationStatus('이메일 인증 코드가 전송되었습니다.');
+      } else {
+        setEmailVerificationStatus('이메일 인증에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('이메일 인증 중 오류 발생:', error);
+      setEmailVerificationStatus('이메일 인증에 실패했습니다.');
+    }
+  };
+
+  const handleEmailVerificationCompletion = async () => {
+    if (!emailVerificationCode.trim()) {
+      setEmailVerificationStatus('인증 코드를 입력해주세요.');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/verify-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code: emailVerificationCode, email: formData.mail }),
+      });
+
+      if (response.ok) {
+        setEmailVerificationStatus('이메일 인증이 완료되었습니다.');
+      } else {
+        setEmailVerificationStatus('인증 코드가 일치하지 않습니다.');
+      }
+    } catch (error) {
+      console.error('이메일 인증 완료 중 오류 발생:', error);
+      setEmailVerificationStatus('이메일 인증에 실패했습니다.');
+    }
+  };
+
+  const handleUserIdCheck = async () => {
+    try {
+      const response = await fetch(`/api/users/register/check/${formData.userId}`);
+      if (response.ok) {
+        const isAvailable = await response.json();
+        setUserIdStatus(isAvailable ? '아이디를 사용할 수 있습니다.' : '아이디가 이미 사용 중입니다.');
+      } else {
+        setUserIdStatus('아이디 중복 확인 중 오류 발생');
+      }
+    } catch (error) {
+      console.error('아이디 중복 확인 중 오류 발생:', error);
+      setUserIdStatus('아이디 중복 확인 중 오류 발생');
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // 비밀번호 검증
+    let passwordError = validatePassword(formData.password);
+    setPasswordError(passwordError);
+    
+    if (passwordError) {
+      return; // 비밀번호 오류가 있는 경우 제출하지 않음
+    }
+
+    if (formData.password !== formData.passwordChk) {
+      setPasswordChkError('비밀번호가 일치하지 않습니다.');
+      return;
+    }
+
+    // 비밀번호 확인 오류가 없는 경우 제출
+    setPasswordChkError('');
+    
+    // 비밀번호 확인 필드를 제외한 데이터만 제출
+    const { passwordChk, ...dataToSubmit } = formData;
+
+    console.log('폼 데이터:', dataToSubmit); // 폼 데이터 확인
+
+    try {
+      await onSubmit(dataToSubmit); // onSubmit는 formData를 인자로 받아서 서버에 제출
+      // Success, redirect or show success message
+    } catch (error) {
+      console.error('User registration failed:', error);
+    }
+  };
+
   return (
-    <form onSubmit={handleSubmit} id="form" method="post" action="/users/register/">
+    <form onSubmit={handleSubmit} id="form" method="post" action="/api/users/register/">
       <input type="hidden" name="_csrf" />
       <InputField
         type="text"
@@ -87,16 +178,26 @@ const UserForm = ({ onSubmit }) => {
           <RadioButton id="female" name="gender" value="1" label="여자" onChange={handleChange} />
         </div>
       </div>
-      <InputField
-        type="text"
-        name="userId"
-        id="userId"
-        placeholder="아이디"
-        value={formData.userId}
-        onChange={handleChange}
-        required
-        feedback="아이디를 입력해주세요."
-      />
+      <div className="mb-3">
+        <InputField
+          type="text"
+          name="userId"
+          id="userId"
+          placeholder="아이디"
+          value={formData.userId}
+          onChange={handleChange}
+          required
+          feedback="아이디를 입력해주세요."
+        />
+        <Button type="button" className="btn btn-secondary" onClick={handleUserIdCheck}>
+          아이디 중복 확인
+        </Button>
+        {userIdStatus && (
+          <div className={userIdStatus.includes('오류') || userIdStatus.includes('중입니다.') ? 'text-error' : 'text-success'}>
+            {userIdStatus}
+          </div>
+        )}
+      </div>
       <InputField
         type="password"
         name="password"
@@ -123,21 +224,47 @@ const UserForm = ({ onSubmit }) => {
             확인
           </Button>
         </div>
-        {passwordError && <div className="text-danger">{passwordError}</div>}
-        {passwordChkError && <div className="text-danger">{passwordChkError}</div>}
+        {passwordError && <div className="text-error">{passwordError}</div>}
+        {passwordChkError && <div className="text-error">{passwordChkError}</div>}
         {passwordMatchMessage && <div className="text-success">{passwordMatchMessage}</div>}
       </div>
+      <div className="mb-3">
+        <div className="input-group">
+          <InputField
+            type="email"
+            name="mail"
+            id="mail"
+            placeholder="이메일"
+            value={formData.mail}
+            onChange={handleChange}
+            required
+          />
+          <Button type="button" className="btn btn-secondary" onClick={handleEmailVerification}>
+            인증하기
+          </Button>
+        </div>
+        {emailVerificationStatus && (
+          <div className={emailVerificationStatus.includes('실패') || emailVerificationStatus.includes('일치하지 않습니다.') ? 'text-error' : 'text-success'}>
+            {emailVerificationStatus}
+          </div>
+        )}
+      </div>
+      <div className="mb-3">
+        <InputField
+          type="text"
+          name="emailVerificationCode"
+          id="emailVerificationCode"
+          placeholder="인증 코드"
+          value={emailVerificationCode}
+          onChange={(e) => setEmailVerificationCode(e.target.value)}
+          required
+        />
+        <Button type="button" className="btn btn-secondary" onClick={handleEmailVerificationCompletion}>
+          인증 완료
+        </Button>
+      </div>
       <InputField
-        type="email"
-        name="mail"
-        id="mail"
-        placeholder="이메일"
-        value={formData.mail}
-        onChange={handleChange}
-        required
-      />
-      <InputField
-        type="phone"
+        type="text"
         name="phone"
         id="phone"
         placeholder="전화"
@@ -173,10 +300,9 @@ const UserForm = ({ onSubmit }) => {
         onChange={handleChange}
       />
       <div className="mb-4" style={{ textAlign: 'center', padding: '3% 0' }}>
-        <Button type="submit" className="btn btn-outline-warning" id="save-btn" disabled>
+        <Button type="submit" className="btn btn-outline-warning" id="save-btn">
           가입하기
         </Button>
-        <Button type="button" className="btn btn-outline-warning">메인</Button>
       </div>
     </form>
   );
