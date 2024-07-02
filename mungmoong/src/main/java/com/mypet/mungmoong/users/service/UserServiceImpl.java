@@ -34,9 +34,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public int insert(Users user) throws Exception {
         // 비밀번호 암호화
-        String userPw = user.getUserPw();
+        String userPw = user.getPassword();
         String encodedPw = passwordEncoder.encode(userPw);
-        user.setUserPw(encodedPw);
+        user.setPassword(encodedPw);
         // 회원 등록
         int result = userMapper.insert(user);
 
@@ -83,9 +83,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public int update(Users user) throws Exception {
         // 비밀번호 암호화
-        String userPw = user.getUserPw();
+        String userPw = user.getPassword();
         String encodedPw = passwordEncoder.encode(userPw);
-        user.setUserPw(encodedPw);
+        user.setPassword(encodedPw);
 
         int result = userMapper.update(user);
 

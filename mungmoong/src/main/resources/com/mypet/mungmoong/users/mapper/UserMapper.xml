@@ -6,20 +6,23 @@
 <mapper namespace="com.mypet.mungmoong.users.mapper.UserMapper">
 
     <!-- Users 매핑-->
-    <resultMap type="Users" id="userMap">
-        <id property="no" column="no" />
-        
-        <result property="no" column="no" />
-        <result property="userId" column="user_id" />
-        <result property="userPw" column="user_pw" />
-        <result property="name" column="name" />
-        <result property="email" column="email" />
-        <result property="enabled" column="enabled" />
-        <result property="regDate" column="reg_date" />
-        <result property="updDate" column="upd_date" />
-        
-        <collection property="authList" resultMap="authMap"></collection>
-    </resultMap>
+    <resultMap id="userMap" type="com.mypet.mungmoong.users.dto.Users">
+    <id property="userId" column="user_id" />
+    <result property="password" column="password" />
+    <result property="name" column="name" />
+    <result property="birth" column="birth" />
+    <result property="gender" column="gender" />
+    <result property="address" column="address" />
+    <result property="email" column="mail" />
+    <result property="phone" column="phone" />
+    <result property="regDate" column="reg_date" />
+    <result property="updDate" column="upd_date" />
+    <result property="enabled" column="enabled" />
+    <result property="role" column="role" />
+    <collection property="authList" column="user_id" 
+                javaType="ArrayList" ofType="com.mypet.mungmoong.users.dto.UserAuth"
+                select="selectUserAuths"/>
+  </resultMap>
         
     <!-- UserAuth 매핑 -->
     <resultMap type="UserAuth" id="authMap">
@@ -41,21 +44,32 @@
         WHERE no = #{no}
     </select>
 
-    <!-- 회원 조회 - id -->
-    <select id="login" resultMap="userMap">
-        SELECT u.no
-              ,u.user_id
-              ,user_pw
-              ,name
-              ,email
-              ,enabled
-              ,reg_date
-              ,upd_date
-              ,auth
-        FROM user u LEFT OUTER JOIN user_auth auth 
-                    ON u.user_id = auth.user_id
-        WHERE u.user_id = #{userId}
-    </select>
+   <!-- 로그인 쿼리 -->
+  <select id="login" resultMap="userMap">
+    SELECT u.no,
+           u.user_id,
+           u.password,
+           u.name,
+           u.birth,
+           u.gender,
+           u.address,
+           u.email,
+           u.phone,
+           u.reg_date,
+           u.upd_date,
+           u.enabled,
+           u.role
+    FROM users u
+    LEFT OUTER JOIN user_auth auth ON u.user_id = auth.user_id 
+    WHERE u.user_id = #{userId}
+  </select>
+
+  <!-- 사용자 권한 조회 쿼리 -->
+  <select id="selectUserAuths" resultType="com.mypet.mungmoong.users.dto.UserAuth">
+    SELECT user_id, auth
+    FROM user_auth
+    WHERE user_id = #{userId}
+  </select>
 
     <!-- 회원 권한 등록 -->
     <insert id="insertAuth">
