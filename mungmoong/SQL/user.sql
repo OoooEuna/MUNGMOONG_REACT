@@ -1,4 +1,4 @@
--- Active: 1717721626738@@127.0.0.1@3306@mypet
+-- Active: 1717746144890@@127.0.0.1@3306@mypet
 
 -- 👩‍💼 USERS  --
 
@@ -37,12 +37,6 @@ CREATE TABLE `user_auth` (
 -- 기본 데이터
 -- NoOpPasswordEncoder - 암호화 없이 로그인
 -- 사용자
-INSERT INTO users (user_id, password, name, birth, address, email, phone, reg_date, upd_date, enabled, role, gender)
-VALUES ('user', '123456', '사용자', '1990-01-01', '서울시 강남구', 'user@mail.com', '010-1234-5678', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 0, 'M');
-
--- 관리자
-INSERT INTO users (user_id, password, name, birth, address, email, phone, reg_date, upd_date, enabled, role, gender)
-VALUES ('admin', '123456', '관리자', '1985-05-15', '서울시 강북구', 'admin@mail.com', '010-8765-4321', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 'F');
 
 -- BCryptPasswordEncoder - 암호화 시
 -- 사용자
