@@ -18,7 +18,7 @@ const LoginContextProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState(null)
 
   // 권한 정보
-  const [roles, setRoles] = useState({isUser : false, isAmdin : false})
+  const [roles, setRoles] = useState({isUser : false, isAdmin : false})
 
   /* -------------------------------------------------------- */
 

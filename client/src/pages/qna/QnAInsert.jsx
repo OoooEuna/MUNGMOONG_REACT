@@ -1,14 +1,12 @@
-import React from 'react'
-
+import React from 'react';
+import QnAInsertContainer from '../../containers/qna/QnAInsertContainer';
 
 const QnAInsert = () => {
   return (
     <>
-    {/* Header */}
-    <InsertContainer/>
-    {/* Footer */}
-  </>
-  )
-}
+      <QnAInsertContainer />
+    </>
+  );
+};
 
-export default QnAInsert
+export default QnAInsert;
