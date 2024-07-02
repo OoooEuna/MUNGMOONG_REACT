@@ -1,3 +1,18 @@
+/* @font-face로 글꼴 정의 */
+@font-face {
+  font-family: 'SKYBORI';
+  src: url('../public/fonts/SKYBORI.ttf') format('truetype'); /* 글꼴 파일의 경로 지정 */
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 요소에 글꼴 적용 */
+body,
+.featurette,
+.review-container,
+.review-box {
+  font-family: 'SKYBORI', sans-serif; /* SKYBORI 글꼴 사용 */
+}
 
 #scrollToTopBtn {
 

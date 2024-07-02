@@ -2,16 +2,15 @@ package com.mypet.mungmoong.orders.api;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-
-import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,8 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mypet.mungmoong.board.dto.Board;
-import com.mypet.mungmoong.board.dto.Reply;
-import com.mypet.mungmoong.board.service.ReplyService;
+import com.mypet.mungmoong.main.model.Files;
+import com.mypet.mungmoong.main.service.FilesService;
 import com.mypet.mungmoong.orders.dto.Products;
 import com.mypet.mungmoong.orders.service.ProductsService;
 
@@ -45,9 +44,6 @@ public class ProductsController {
 
     @Autowired
     private ProductsService productsService;
-
-
-
 
     
       @InitBinder
@@ -70,7 +66,19 @@ public class ProductsController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getOne(@PathVariable("id") String id) {
         try {
+            // 🎫 게시글
             Products products = productsService.select(id);
+            // 📄 파일 목록
+            Files file = new Files();
+            file.setParentTable("board");
+            file.setParentId(id);
+           // List<Files> fileList = FilesService.listByParent(no);
+          //  log.info("fileList :" + fileList);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("products", products);
+          //  response.put("fileList", fileList);
+            Products product = productsService.select(id);
             return new ResponseEntity<>(products, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

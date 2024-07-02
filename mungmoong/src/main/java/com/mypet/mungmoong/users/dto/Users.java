@@ -1,63 +1,62 @@
-    package com.mypet.mungmoong.users.dto;
+package com.mypet.mungmoong.users.dto;
 
 import java.util.Date;
 import java.util.List;
 
-
 import org.springframework.format.annotation.DateTimeFormat;
-
-
-import com.mypet.mungmoong.trainer.dto.Trainer;
-import com.mypet.mungmoong.pet.dto.Pet;
-
-
 
 import lombok.Data;
 
 @Data
 public class Users {
+    private int no;
     private String userId;
     private String password;
+    private String userPwCheck;     // 비밀번호 확인
     private String name;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birth;
     private String address;
-    private String mail;
+    private String mail;           // 이메일 (mail과 동일)
     private String phone;
     private Date regDate;
     private Date updDate;
-    private int enabled;
+    private int enabled;            // 휴면여부
     private int role;
     private String gender;
 
-
-
-    private Trainer trainer;
+    // private Trainer trainer;
     private List<UserAuth> authList;
-    private List<Pet> petList;
-
-    private Pet pet;
+    // private List<Pet> petList;
+    // private Pet pet;
 
     public Users() {
-    
     }
 
     public Users(String userId, String mail, String name) {
         this.userId = userId;
-        this.mail = mail;
+        this.mail = mail;          // 이메일 초기화
         this.name = name;
     }
-    // ############################## 06-14 수정 ##############################
 
-    // enabled 필드의 게터 메서드 수정
-    public int getEnabled() {
-        return enabled;
+    public Users(Users user) {
+        this.no = user.getNo();
+        this.userId = user.getUserId();
+        this.password = user.getPassword();
+        this.userPwCheck = user.getUserPwCheck();
+        this.name = user.getName();
+        this.birth = user.getBirth();
+        this.address = user.getAddress();
+        this.mail = user.getMail();
+        this.phone = user.getPhone();
+        this.regDate = user.getRegDate();
+        this.updDate = user.getUpdDate();
+        this.enabled = user.getEnabled();
+        this.role = user.getRole();
+        this.gender = user.getGender();
+        // this.trainer = user.getTrainer();
+        this.authList = user.getAuthList();
+        // this.petList = user.getPetList();
+        // this.pet = user.getPet();
     }
-
-    // enabled 필드의 세터 메서드
-    public void setEnabled(int enabled) {
-        this.enabled = enabled;
-    }
-
-
-    }
+}

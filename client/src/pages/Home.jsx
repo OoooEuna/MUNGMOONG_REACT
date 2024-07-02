@@ -2,6 +2,7 @@ import React from 'react';
 import CarouselComponent from '../components/CarouselComponent';
 import FeaturetteComponent from '../components/FeaturetteComponent';
 import {Link} from 'react-router-dom'
+import '../css/font.css';
 
 function App() {
   return (

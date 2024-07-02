@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import UpdateForm from '../../components/board/UpdateForm'
-import * as boards from '../../apis/board'
 import { useNavigate } from 'react-router-dom'
+// import * as board from '../../apis/board'
+import * as board from '../../apis/board'
 
 
 const UpdateContainer = ({ no }) => {
@@ -15,7 +16,7 @@ const UpdateContainer = ({ no }) => {
   const getBoard = async () => {
     // ⌚ 로딩 시작
     setLoading(true)
-    const response = await boards.select(no)
+    const response = await board.select(no)
     const data = await response.data        // ⭐ board
     console.log(data);
     setBoard(data)
@@ -26,7 +27,7 @@ const UpdateContainer = ({ no }) => {
   
   const onUpdate = async (no, title, writer, content) => {
     try {
-      const response = await boards.update(no, title, writer, content)
+      const response = await board.update(no, title, writer, content)
       const status = await response.status
       console.log(`게시글 수정 요청 결과 : ${status}`);
       alert("게시글 수정 완료!")
@@ -40,7 +41,7 @@ const UpdateContainer = ({ no }) => {
   }
 
   const onDelete = async (no) => {
-    const response = await boards.remove(no)
+    const response = await board.remove(no)
     const status = await response.status
     console.log(`게시글 삭제 요청 결과 : ${status}`);
     alert("삭제 완료!")
