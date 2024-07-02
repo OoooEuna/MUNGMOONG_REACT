@@ -22,15 +22,18 @@ configurations {
 
 repositories {
    mavenCentral()
+
 }
 dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:2021.0.6"
-	}
+   imports {
+      mavenBom "org.springframework.cloud:spring-cloud-dependencies:2021.0.6"
+   }
 }
+
 
 
 dependencies {
+
 
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -56,6 +59,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.json:json:20220320'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
 
 
 
