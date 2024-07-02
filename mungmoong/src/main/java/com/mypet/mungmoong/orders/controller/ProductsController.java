@@ -23,8 +23,6 @@ import com.mypet.mungmoong.board.dto.Reply;
 import com.mypet.mungmoong.board.service.ReplyService;
 import com.mypet.mungmoong.orders.dto.Products;
 import com.mypet.mungmoong.orders.service.ProductsService;
-
-
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -87,7 +85,6 @@ public class ProductsController {
         
         return "/products/detail";
     }
-
 
     /**
      * 훈련사 댓글 목록

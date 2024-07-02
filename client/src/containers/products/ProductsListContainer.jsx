@@ -6,7 +6,6 @@ const ProductsListContainer = () => {
   // 🧊 state
   const [productList, setProductList] = useState([])
 
-
   // 🌞 함수
   const getProductList = async () => {
     // ⌚ 로딩 시작
