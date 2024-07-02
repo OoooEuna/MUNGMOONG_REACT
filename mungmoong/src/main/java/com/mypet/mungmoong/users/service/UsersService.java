@@ -28,8 +28,6 @@ public interface UsersService {
     // 회원 등록
     public int insert(Users user) throws Exception;
 
-     // 회원 가입
-     public int join(Users user) throws Exception;
 
     // 회원 수정
     public int update(Users user) throws Exception;
