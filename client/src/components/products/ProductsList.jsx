@@ -34,7 +34,7 @@ const ProductsList = ({ productList, isLoading }) => {
                                         <img src={'/img/trainer01.png'} className="col-4 img-thumbnail img-fluid" alt="훈련사"/>
                                           <div className="col-8">
                                               <h2 className="fw-bolder" style={{padding:'3% 10%',fontSize : "1.01rem"}}>
-                                              <Link className="btn btn-warning" style={{marginBottom: "13%"}} to={`/prodcuts/${product.id}`}>
+                                              <Link className="btn btn-warning" style={{marginBottom: "13%"}} to={`/api/products/${product.id}`}>
                                                 더보기
                                               </Link>
                                                 <p className="card-title fs-5">{product.description}</p>

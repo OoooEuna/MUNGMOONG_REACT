@@ -34,18 +34,20 @@ public class ProductsServiceImpl implements ProductsService {
     @Override
     public Products select(String id) throws Exception {
         Products products = productsMapper.select(id);
-        Files thumbnail = new Files();
-        thumbnail.setParentTable(Products.TABLE_NAME);
-        thumbnail.setParentId(id);
-        List<Files> files = filesService.listByParent(thumbnail);
-        for (Files file : files) {
-            log.info("썸네일 : " + file);
-            if( file.getIsMain() ) {
-                thumbnail = file;
-            }
-        }
-        String thumbnailId = thumbnail.getId();
-        products.setThumbnailId(thumbnailId);
+        log.info("서비스에서 가져와라 : " + products);
+        log.info("서비스에서 아이디: " + id);
+        // Files thumbnail = new Files();
+        // thumbnail.setParentTable(Products.TABLE_NAME);
+        // thumbnail.setParentId(id);
+        // List<Files> files = filesService.listByParent(thumbnail);
+        // for (Files file : files) {
+        //     log.info("썸네일 : " + file);
+        //     if( file.getIsMain() ) {
+        //         thumbnail = file;
+        //     }
+        // }
+        // String thumbnailId = thumbnail.getId();
+        // products.setThumbnailId(thumbnailId);
         return products;
     }
 

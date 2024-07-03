@@ -1,25 +1,18 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import '../products/css/ProductsRead.css'
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-
-const ProductsRead = ({ id, products, isLoading}) => {
+const ProductsRead = ({ id, products }) => {
+  console.log("read 아이디 뜨니");
   console.log(id);
+
   return (
     <div className='container'>
       <h1 className="title">게시글 조회</h1>
-      <h3>훈련사아이디 : {id}</h3>
+      <h3>훈련사아이디</h3>
       <hr />
 
-      {
-        isLoading &&
-        <div>
-          <img src="/img/loading.webp" alt="loading" width="100%" />
-        </div>
-      }
-      {
-        !isLoading && products && (
-          <table>
+      {products && (
+        <table>
           <tbody>
             <tr>
               <td>아이디</td>
@@ -60,25 +53,43 @@ const ProductsRead = ({ id, products, isLoading}) => {
             <tr>
               <td>작성일</td>
               <td>
-                <input type="text" value={products.createdAt} readOnly />
+                <input type="date" value={products.createdAt} readOnly />
               </td>
             </tr>
             <tr>
               <td>수정일</td>
               <td>
-                <input type="text" value={products.updatedAt} readOnly />
+                <input type="date" value={products.updatedAt} readOnly />
               </td>
             </tr>
+            {/* <tr>
+              <td>썸네일</td>
+              <td>
+                <input type="" value={products.thumbnail} readOnly />
+              </td>
+            </tr>
+            <tr>
+              <td>썸네일아이디</td>
+              <td>
+                <input type="text" value={products.thumbnailId} readOnly />
+              </td>
+            </tr>
+            <tr>
+              <td>파일</td>
+              <td>
+                <input type="" value={products.files} readOnly />
+              </td>
+            </tr> */}
           </tbody>
         </table>
-  )
-}
-       <hr />
+      )}
+      
+      <hr />
       <div className="btn-box">
         <Link to="/api/products" className='btn'>목록</Link>
       </div>
-  </div>
-  )
-}
+    </div>
+  );
+};
 
-export default ProductsRead
+export default ProductsRead;

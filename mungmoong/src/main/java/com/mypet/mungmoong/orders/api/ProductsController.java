@@ -1,10 +1,12 @@
 package com.mypet.mungmoong.orders.api;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -23,11 +25,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mypet.mungmoong.board.dto.Board;
 import com.mypet.mungmoong.board.dto.Reply;
 import com.mypet.mungmoong.board.service.ReplyService;
-import com.mypet.mungmoong.main.model.Files;
-import com.mypet.mungmoong.main.service.FilesService;
 import com.mypet.mungmoong.orders.dto.Products;
 import com.mypet.mungmoong.orders.service.ProductsService;
 import com.mypet.mungmoong.users.dto.CustomUser;
@@ -75,10 +74,13 @@ public class ProductsController {
         try {
             log.info("::::: customUser :::::");
             log.info("customUser : "+ customUser);
+            // Products products = productsService.select(id);
             Products products = productsService.select(id);
+            log.info("컨트롤러에서 아이디 : " + id);
+            log.info("products : " + products);
             Map<String, Object> response = new HashMap<>();
             response.put("products", products);
-            return new ResponseEntity<>(products, HttpStatus.OK);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
        }
@@ -153,11 +155,17 @@ public class ProductsController {
     }
     
     @DeleteMapping("/{deleteIdList}")
-    public ResponseEntity<?> destroy(@PathVariable("deleteIdList") String deleteIdList) {
-        try {
-            int result = productsService.delete(deleteIdList);
-            if(result > 0)
+    public ResponseEntity<?> destroy(String[] deleteIdList
+                                     ,@AuthenticationPrincipal CustomUser customUser) {
+        try { 
+            String ids = Arrays.stream(deleteIdList)
+                            .map(s -> "'" + s + "'")
+                            .collect(Collectors.joining(","));
+                             log.info("ids : " + ids);
+                             int result = productsService.delete(ids);
+            if(result > 0){
                 return new ResponseEntity<>("Delete Result", HttpStatus.OK);
+            }
             else
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {

@@ -14,7 +14,6 @@ import AdminUserList from './pages/admin/AdminUserList';
 import AdminTrainerList from './pages/admin/AdminTrainerList';
 import AdminBoardList from './pages/admin/AdminBoardList';
 import OrdersListContainer from './containers/trainer/OrdersListContainer';
-import ProductsList from './pages/products/ProductsList';
 import Update from './pages/board/Update';
 
 // QnA 관련 경로 추가
@@ -31,6 +30,9 @@ import UpdatePage from './pages/users/UpdatePage';
 import AdminProductsList from './pages/admin/AdminProductsList';
 import OrdersList from './pages/trainer/OrdersList';
 import OrdersDetails from './pages/trainer/OrdersDetails';
+
+import ProductsList from './pages/products/ProductsList';
+import ProductsRead from './pages/products/ProductsRead';
 
 
 function App() {
@@ -50,6 +52,7 @@ function App() {
 
             {/* 상품 결재 영역 */}
             <Route path="/api/products" element={<ProductsList />} />
+            <Route path="/api/products/:id" element={<ProductsRead />} />
 
             {/* 로그인 영역 */}
             <Route path="/api/login" element={<LoginPage />} />
