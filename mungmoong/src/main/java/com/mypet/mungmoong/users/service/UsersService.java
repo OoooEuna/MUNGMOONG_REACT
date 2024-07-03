@@ -28,8 +28,6 @@ public interface UsersService {
     // 회원 등록
     public int insert(Users user) throws Exception;
 
-     // 회원 가입
-     public int join(Users user) throws Exception;
 
     // 회원 수정
     public int update(Users user) throws Exception;
@@ -44,7 +42,7 @@ public interface UsersService {
     public  int insertAuth(UserAuth userAuth) throws Exception;
 
     // 어드민 회원 조회
-    public  List<Users> list(Page page, Option option) throws Exception;
+    public  List<Users> list() throws Exception;
 
     // 이름과 이메일로 아이디 찾기
     public Users findId(String name, String mail) throws Exception;

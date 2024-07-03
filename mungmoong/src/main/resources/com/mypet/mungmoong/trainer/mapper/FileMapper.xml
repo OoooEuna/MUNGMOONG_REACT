@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mypet.mungmoong.trainer.mapper.FileMapper">
+    <resultMap id="FilesResultMap" type="com.mypet.mungmoong.trainer.dto.Files">
+        <id property="no" column="no"/>
+        <result property="parentTable" column="parent_table"/>
+        <result property="parentNo" column="parent_no"/>
+        <result property="fileName" column="file_name"/>
+        <result property="filePath" column="file_path"/>
+        <result property="fileSize" column="file_size"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="updDate" column="upd_date"/>
+        <result property="fileCode" column="file_code"/>
+    </resultMap>
+
+    <!-- 파일 목록 -->
+    <select id="list" resultType="Files">
+        SELECT *
+        FROM img_file
+        ORDER BY reg_date DESC
+    </select>
+
+    <!-- 부모 테이블 기준으로 파일 조회 -->
+    <select id="selectByParent" resultType="Files">
+        SELECT *
+        FROM img_file
+        WHERE parent_table = #{parentTable}
+          AND parent_no = #{parentNo}
+          AND file_code = 1
+    </select>
+
+    <!-- 부모 테이블 기준으로 파일 리스트 조회 -->
+    <select id="listByParent" resultType="Files">
+        SELECT *
+        FROM img_file
+        WHERE parent_table = #{parentTable}
+          AND parent_no = #{parentNo}
+          AND file_code = 0
+        ORDER BY reg_date DESC
+    </select>    
+
+    <!-- 파일 조회 -->
+    <select id="select" resultType="Files">
+        SELECT *
+        FROM img_file
+        WHERE no = #{no}
+    </select>
+
+    <!-- 파일 등록 -->
+    <insert id="insert">
+        INSERT INTO img_file(parent_table, parent_no, file_name, file_path, file_size, file_code)
+        VALUES (#{parentTable}, #{parentNo}, #{fileName}, #{filePath}, #{fileSize}, #{fileCode})
+    </insert>
+
+
+    <!-- 파일 삭제 -->
+    <delete id="delete">
+        DELETE FROM img_file 
+        WHERE no = #{no}
+    </delete>
+
+    <!-- 부모 테이블 기준으로 파일 삭제 -->
+    <delete id="deleteByParent">
+        DELETE FROM img_file 
+        WHERE parent_table = #{parentTable} AND parent_no = #{parentNo}
+    </delete>
+</mapper>

@@ -69,7 +69,7 @@ public class AdminController {
     @GetMapping("/admin_info")
     public String list(Model model, Page page, Option option) throws Exception {
 
-        List<Users> usersList = userService.list( page, option );
+        List<Users> usersList = userService.list();
 
         log.info("Users page 로그 : " + page);
         // log.info(usersList.toString());
@@ -180,14 +180,9 @@ public class AdminController {
      */
     @GetMapping("/admin_trainer")
     public String trainerList(Model model, Page page, Option option) throws Exception {
-
-
         List<Trainer> trainerList = trainerService.adminTrainerList(page, option);
         log.info("트레이너 " + trainerList.toString());
-
-
         model.addAttribute("trainerList", trainerList);
-
         return "/admin/admin_trainer";
     }
 
