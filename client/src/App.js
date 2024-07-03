@@ -23,9 +23,15 @@ import QnAList from './pages/qna/QnAList';
 import QnARead from './pages/qna/QnARead';
 import QnAUpdate from './pages/qna/QnAUpdate';
 import AdminProductsList from './pages/admin/AdminProductsList';
+
+// trainer
 import OrdersList from './pages/trainer/OrdersList';
 import OrdersDetails from './pages/trainer/OrdersDetails';
 import Deposit from './pages/trainer/Deposit';
+import Schedule from './components/trainer/Schedule';
+import Info from './pages/trainer/Info';
+import InfoUpdate from './pages/trainer/InfoUpdate';
+import Join from './pages/trainer/Join';
 
 function App() {
   return (
@@ -49,7 +55,10 @@ function App() {
             <Route path="/orders/:trainerNo" element={<OrdersList />} />
             <Route path="/orders_details/:no" element={<OrdersDetails />} />
             <Route path="/deposit" element={<Deposit />} />
-
+            <Route path="/schedule" element={<Schedule />} />
+            <Route path="/info/:userId" element={<Info />} />
+            <Route path="/info_update/:userId" element={<InfoUpdate />} />
+            <Route path="/info/:join_data" element={<Join />} />
 
 
             {/* 관리자영역 */}
