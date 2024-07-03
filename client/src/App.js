@@ -10,9 +10,7 @@ import LoginPage from './pages/users/LoginPage';
 import LoginContextProvider from './contexts/LoginContextProvider';
 import RegisterPage from './pages/users/RegisterPage';
 import './css/font.css';
-import AdminUserList from './pages/admin/AdminUserList';
-import AdminTrainerList from './pages/admin/AdminTrainerList';
-import AdminBoardList from './pages/admin/AdminBoardList';
+
 import OrdersListContainer from './containers/trainer/OrdersListContainer';
 import Update from './pages/board/Update';
 
@@ -22,9 +20,31 @@ import QnAList from './pages/qna/QnAList';
 import QnARead from './pages/qna/QnARead';
 import QnAUpdate from './pages/qna/QnAUpdate';
 
+// 관리자 영역------------------------------------------------------
+
+/* 회원정보 관리 */
+import AdminUserRead from './pages/admin/AdminUserRead';
+import AdminUserList from './pages/admin/AdminUserList';
+
+/* 훈련사 관리 */
+import AdminTrainerList from './pages/admin/AdminTrainerList';
+
+/* 예약정보 관리 */
+
+/* 게시판 관리 */
+import AdminBoardList from './pages/admin/AdminBoardList';
+import AdminBoardRead from './pages/admin/AdminBoardRead';
+import AdminBoardUpdate from './pages/admin/AdminBoardUpdate';
+
+/* 훈련코스 관리 */
+import AdminProductsList from './pages/admin/AdminProductsList';
+import AdminProductsRead from './pages/admin/AdminProductsRead';
+
+// 관리자 영역------------------------------------------------------
 // MyPage 경로 추가
 import UserIndex from './pages/users/Index'; 
 import UpdatePage from './pages/users/UpdatePage';
+
 
 
 import AdminProductsList from './pages/admin/AdminProductsList';
@@ -71,11 +91,21 @@ function App() {
 
           <Route path="/" element={<Home />}></Route>
 
-            {/* 관리자영역 */}
-            {/* <Route path="/api/admin/admin_info" element={<AdminUserList />} />
+            {/* -----관리자영역----- */}
+            
+            <Route path="/api/admin/admin_info" element={<AdminUserList />} />
+            <Route path="/api/admin/admin_info_read" element={<AdminUserRead />} />
+
             <Route path="/api/admin/admin_trainer" element={<AdminTrainerList />} />
+
             <Route path="/api/admin/admin_board" element={<AdminBoardList />} />
-            <Route path="/api/admin/admin_product" element={<AdminProductsList />} /> */}
+            <Route path="/api/admin/admin_board_read/:no" element={<AdminBoardRead />} />
+            <Route path="/api/admin/admin_board_update/:no" element={<AdminBoardUpdate />} />
+
+            <Route path="/api/admin/admin_product" element={<AdminProductsList />} />
+            <Route path="/api/admin/admin_product_read/:id" element={<AdminProductsRead />} />
+
+            {/* ----- 관리자 영역 ----- */}
 
             {/* 상품 결재 영역 */}
             <Route path="/api/products" element={<ProductsList />} />
