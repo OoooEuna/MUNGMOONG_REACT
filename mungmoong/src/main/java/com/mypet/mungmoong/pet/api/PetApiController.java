@@ -51,8 +51,8 @@ public class PetApiController {
     public ResponseEntity<?> updatePet(@RequestParam("petNo") int petNo,
                                        @RequestParam("petname") String petname,
                                        @RequestParam("age") int age,
-                                       @RequestParam("petgender") int petgender,
-                                       @RequestParam("character") String character,
+                                       @RequestParam("petgender") String petgender,
+                                       @RequestParam("petcharacter") String petcharacter,
                                        @RequestParam("type") String type,
                                        @RequestParam("specialNotes") String specialNotes,
                                        @RequestPart(value = "upload-photo", required = false) MultipartFile file,
@@ -70,7 +70,7 @@ public class PetApiController {
         pet.setPetname(petname);
         pet.setAge(age);
         pet.setPetgender(petgender);
-        pet.setCharacter(character);
+        pet.setPetcharacter(petcharacter);
         pet.setType(type);
         pet.setSpecialNotes(specialNotes);
         pet.setUpdDate(new Date());
@@ -110,55 +110,29 @@ public class PetApiController {
 
     // ################################################################ 펫 추가 ################################################################
 
-    @GetMapping("/add")
-    public ResponseEntity<?> showAddPetForm(HttpSession session) {
-        String userId = (String) session.getAttribute("userId");
-        logger.info("showAddPetForm called, session userId: {}", userId);
-        if (userId == null) {
-            logger.warn("User ID is null");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not logged in");
-        }
-        return ResponseEntity.ok(userId);
-    }
-
+   
     @PostMapping("/add")
     public ResponseEntity<?> insertPet(@RequestParam("petname") String petname,
                                        @RequestParam("age") int age,
-                                       @RequestParam("petgender") int petgender,
-                                       @RequestParam("character") String character,
+                                       @RequestParam("petgender") String petgender,
+                                       @RequestParam("petcharacter") String petcharacter,
                                        @RequestParam("type") String type,
                                        @RequestParam("specialNotes") String specialNotes,
-                                       HttpSession session) {
-
-        String userId = (String) session.getAttribute("userId");
-        logger.info("insertPet called, session userId: {}", userId);
-        if (userId == null) {
-            logger.warn("User not logged in");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not logged in");
-        }
-
+                                       @RequestParam("userId") String userId) {
         Pet pet = new Pet();
-        pet.setUserId(userId); // 현재 사용자 ID 설정
+        pet.setUserId(userId);
         pet.setPetname(petname);
         pet.setAge(age);
         pet.setPetgender(petgender);
-        pet.setCharacter(character);
+        pet.setPetcharacter(petcharacter);
         pet.setType(type);
-        pet.setSpecialNotes(specialNotes); // 특이사항 추가함
-
-        // 현재 시간을 설정
+        pet.setSpecialNotes(specialNotes);
         pet.setRegDate(new Date());
         pet.setUpdDate(new Date());
-
+    
         petService.insertPet(pet);
-
-        // 갱신된 펫 목록을 세션에 업데이트
-        List<Pet> pets = petService.findPetByUserId(userId);
-        session.setAttribute("pets", pets);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(pet);
     }
-
     // ################################################################ 펫 삭제 ################################################################
 
     @DeleteMapping("/delete")

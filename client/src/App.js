@@ -16,16 +16,21 @@ import AdminBoardList from './pages/admin/AdminBoardList';
 import OrdersListContainer from './containers/trainer/OrdersListContainer';
 import ProductsList from './pages/products/ProductsList';
 import Update from './pages/board/Update';
-import Orders from './components/trainer/Orders';
 
 // QnA 관련 경로 추가
 import QnAInsert from './pages/qna/QnAInsert';
 import QnAList from './pages/qna/QnAList';
 import QnARead from './pages/qna/QnARead';
 import QnAUpdate from './pages/qna/QnAUpdate';
+
 // MyPage 경로 추가
 import UserIndex from './pages/users/Index'; 
 import UpdatePage from './pages/users/UpdatePage';
+
+
+import AdminProductsList from './pages/admin/AdminProductsList';
+import OrdersList from './pages/trainer/OrdersList';
+import OrdersDetails from './pages/trainer/OrdersDetails';
 
 
 function App() {
@@ -35,24 +40,13 @@ function App() {
         <div className='App'>
           <Header />
           <Routes>
-            {/* 메인 */}
-            <Route path="/" element={<Home />} />
-
-            {/* 유저영역 */}
-
-            {/* 보드영역 */}
-            <Route path="/api/trainer/orders" element={<OrdersListContainer />} />
-            <Route path="/api/board" element={<List />} />
-            <Route path="/api/board/:no" element={<Read />} />
-            <Route path="/api/board/update/:no" element={<Update />} />
-
-            {/* 훈련사영역 */}
-            <Route path="/api/trainer/info/" element={<Orders />} />
+          <Route path="/" element={<Home />}></Route>
 
             {/* 관리자영역 */}
-            <Route path="/api/admin/admin_info" element={<AdminUserList />} />
+            {/* <Route path="/api/admin/admin_info" element={<AdminUserList />} />
             <Route path="/api/admin/admin_trainer" element={<AdminTrainerList />} />
             <Route path="/api/admin/admin_board" element={<AdminBoardList />} />
+            <Route path="/api/admin/admin_product" element={<AdminProductsList />} /> */}
 
             {/* 상품 결재 영역 */}
             <Route path="/api/products" element={<ProductsList />} />

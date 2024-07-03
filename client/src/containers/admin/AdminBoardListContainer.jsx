@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import AdminUserList from '../../components/admin/AdminUserList';
+import AdminBoardList from '../../components/admin/AdminBoardList';
 import * as admins from '../../apis/admins';
 
 const AdminBoardListContainer = () => {
@@ -27,7 +27,7 @@ useEffect( ()=> {
 return (
   <>
     {/* 게시글 목록 */}
-    <AdminUserList boardList={boardList} isLoading={isLoading} />
+    <AdminBoardList boardList={boardList} isLoading={isLoading} />
   </>
 )
 }

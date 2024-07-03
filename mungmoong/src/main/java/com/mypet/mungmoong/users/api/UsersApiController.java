@@ -21,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.mypet.mungmoong.pet.dto.Pet;
+import com.mypet.mungmoong.users.dto.CustomUser;
 import com.mypet.mungmoong.users.dto.Users;
 
 import com.mypet.mungmoong.users.service.UsersService;
@@ -42,6 +43,30 @@ public class UsersApiController {
     private PasswordEncoder passwordEncoder;
 
     private Map<String, Integer> otpStorage = new HashMap<>();
+
+
+      /**
+     * 사용자 정보 조회
+     * @param customUser
+     * @return
+     */
+    @GetMapping("/info")
+    public ResponseEntity<?> userInfo(@AuthenticationPrincipal CustomUser customUser) {
+        
+        log.info("::::: customUser :::::");
+        log.info("customUser : "+ customUser);
+
+        Users user = customUser.getUser();
+        log.info("user : " + user);
+
+        // 인증된 사용자 정보 
+        if( user != null )
+            return new ResponseEntity<>(user, HttpStatus.OK);
+
+        // 인증 되지 않음
+        return new ResponseEntity<>("UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+    }
+
 
     // 웹 페이지 요청
     @GetMapping("/{page}")
@@ -66,21 +91,22 @@ public class UsersApiController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute Users user) {
+    public ResponseEntity<?> registerUser(@RequestBody Users user) {
         try {
             if (user.getPassword() == null || user.getPassword().isEmpty()) {
-                throw new IllegalArgumentException("비밀번호가 누락되었습니다.");
+                return ResponseEntity.badRequest().body("비밀번호가 누락되었습니다.");
             }
-
-            int result = userService.insert(user); // Call the insert method from UserService
+            user.setPassword(passwordEncoder.encode(user.getPassword())); // 비밀번호 암호화
+            int result = userService.insert(user);
 
             if (result > 0) {
-                return "redirect:/pets/register"; // Redirect to pet registration or another page
+                return ResponseEntity.ok("회원가입 성공");
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("회원가입 실패");
             }
-            return "redirect:/register?error"; // Redirect to registration page with error
         } catch (Exception e) {
             e.printStackTrace();
-            return "redirect:/register?error"; // Redirect to registration page with error
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류");
         }
     }
 

@@ -156,7 +156,7 @@ public class AdminApiController {
     public ResponseEntity<?> getBoardList(Page page, Option option) {
         try {
             List<Board> boardList = boardService.list(page, option);
-            log.info("Board page 로그 : " + page);
+            log.info("Board page 로그 : " + boardList);
             return new ResponseEntity<>(boardList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -249,7 +249,7 @@ public class AdminApiController {
     @GetMapping("/admin_product")
     public ResponseEntity<?> getProductList() {
         try {
-            List<Products> productsList = productsService.list();
+            List<Products> productsList = productsService.adminList();
             return new ResponseEntity<>(productsList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

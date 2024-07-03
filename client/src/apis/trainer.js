@@ -27,6 +27,9 @@ export const delete_schedule = (no) => axios.delete(`/api/trainer/schedule/event
 // 훈련사 입금 내역 목록    -  [GET]    
 export const deposit = () => axios.get("/api/trainer/deposit")
 
+// 훈련사 정보 조회         - [GET]
+export const getTrainerInfo = (userId) => axios.get(`/api/trainer`, { params: { userId } })
+
 // 훈련사 orders 목록       -  [GET] 
 export const ordersList = (trainerNo) => axios.get(`/api/trainer/orders?trainerNo=${trainerNo}`)
 
@@ -34,7 +37,7 @@ export const ordersList = (trainerNo) => axios.get(`/api/trainer/orders?trainerN
 export const orders = (no) => axios.get(`/api/trainer/orders_details?no=${no}`)
 
 // 훈련사 Meaning 수정 처리 -  [PUT]   
-export const meaning = (orderNo, meaning) => axios.put("/api/trainer/orders", { orderNo, meaning })
+export const meaning = (no, meaning) => axios.put("/api/trainer/orders", { no, meaning })
 
 // 자격증 삭제 처리         - [DELETE]
 export const certificate_delete = (certificateNo) => axios.delete(`/api/certificate/${certificateNo}`)
