@@ -18,7 +18,7 @@ export const AdminTrainerList = () => axios.get("/api/admin/admin_trainer")
 
 
 // ------------------------- 예약정보 -------------------------
-export const AdminProductsList = () => axios.get("/api/admin/admin_reserve")
+export const AdminReserveList = () => axios.get("/api/admin/admin_reserve")
 
 
 // ------------------------- 게시판 정보 -------------------------
@@ -26,3 +26,4 @@ export const AdminBoardList = () => axios.get("/api/admin/admin_board")
 
 
 // ------------------------- 판매상품 정보 -------------------------
+export const AdminProductsList = () => axios.get("/api/admin/admin_product")

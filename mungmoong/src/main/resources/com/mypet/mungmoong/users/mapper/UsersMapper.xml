@@ -93,4 +93,10 @@
         WHERE user_id = #{userId}
     </delete>
 
+    <select id="list" resultMap="userMap">
+        SELECT  *
+        FROM users
+        ORDER BY reg_date DESC
+    </select>
+
 </mapper>

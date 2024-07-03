@@ -23,6 +23,7 @@ import QnAInsert from './pages/qna/QnAInsert';
 import QnAList from './pages/qna/QnAList';
 import QnARead from './pages/qna/QnARead';
 import QnAUpdate from './pages/qna/QnAUpdate';
+import AdminProductsList from './pages/admin/AdminProductsList';
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
             <Route path="/api/admin/admin_info" element={<AdminUserList />} />
             <Route path="/api/admin/admin_trainer" element={<AdminTrainerList />} />
             <Route path="/api/admin/admin_board" element={<AdminBoardList />} />
+            <Route path="/api/admin/admin_product" element={<AdminProductsList />} />
 
             {/* 상품 결재 영역 */}
             <Route path="/api/products" element={<ProductsList />} />
