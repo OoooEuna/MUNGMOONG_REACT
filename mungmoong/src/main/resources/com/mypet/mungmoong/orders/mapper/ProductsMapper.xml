@@ -21,9 +21,9 @@
     </select>
 
     <!-- 조회 -->
-    <select id="select">
+    <select id="select" resultType="Products">
         SELECT *
-        FROM products p
+        FROM products
         WHERE id = #{id}
     </select>
     <!-- 조회 -->

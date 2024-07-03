@@ -18,13 +18,14 @@ public interface UsersMapper {
     Users login(String username);
 
     // 회원 조회 (ID로 조회)
-    Users select(String userId) throws Exception;
+    Users selectByUserId(String userId) throws Exception;
 
-    // 회원 조회 (UserNo로 조회)
-    Users selectByNo(int userNo) throws Exception;
+    Users selectByNo(int no);
 
-    // 회원 가입
-    public int join(Users user) throws Exception;
+    
+
+       // 회원 등록
+       public int insert(Users user);
 
     // 회원 수정
     public int update(Users user) throws Exception;

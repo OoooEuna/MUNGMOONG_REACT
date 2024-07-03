@@ -54,6 +54,10 @@ public class SecurityConfig  {
         // CSRF(Cross-Site Request Forgery) 공격 방어 기능 비활성화
         http.csrf( csrf -> csrf.disable() );
 
+        http.cors(cors -> cors.disable());
+
+        
+
         // 필터 설정
         // ✅ JWT 요청 필터 1️⃣
         // ✅ JWT 인증 필터 2️⃣
