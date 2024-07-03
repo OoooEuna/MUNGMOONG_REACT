@@ -46,9 +46,17 @@ import UserIndex from './pages/users/Index';
 import UpdatePage from './pages/users/UpdatePage';
 
 
+
+import AdminProductsList from './pages/admin/AdminProductsList';
+
+// trainer
 import OrdersList from './pages/trainer/OrdersList';
 import OrdersDetails from './pages/trainer/OrdersDetails';
 import Deposit from './pages/trainer/Deposit';
+import Schedule from './components/trainer/Schedule';
+import Info from './pages/trainer/Info';
+import InfoUpdate from './pages/trainer/InfoUpdate';
+import Join from './pages/trainer/Join';
 
 import ProductsList from './pages/products/ProductsList';
 import ProductsRead from './pages/products/ProductsRead';
@@ -76,7 +84,10 @@ function App() {
             <Route path="/orders/:trainerNo" element={<OrdersList />} />
             <Route path="/orders_details/:no" element={<OrdersDetails />} />
             <Route path="/deposit" element={<Deposit />} />
-
+            <Route path="/schedule" element={<Schedule />} />
+            <Route path="/info/:userId" element={<Info />} />
+            <Route path="/info_update/:userId" element={<InfoUpdate />} />
+            <Route path="/info/:join_data" element={<Join />} />
 
           <Route path="/" element={<Home />}></Route>
 
