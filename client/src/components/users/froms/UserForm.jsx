@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // useNavigate를 추가했습니다.
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import Button from '../../common/Button';
 import InputField from '../../common/InputField';
@@ -27,7 +27,7 @@ const DateSelector = ({ selectedDate, onChange }) => {
 
 const UserForm = ({ onSubmit }) => {
   const [error, setError] = useState('');
-  const [activeTab, setActiveTab] = useState(0); // 탭 상태 정의
+  const [activeTab, setActiveTab] = useState(0);
   const [formData, setFormData] = useState({
     name: '',
     gender: '',
@@ -38,7 +38,7 @@ const UserForm = ({ onSubmit }) => {
     phone: '',
     address2: '',
     address3: '',
-    birth: new Date(), // 기본 생년월일을 현재 날짜로 설정
+    birth: new Date(),
   });
   const [passwordError, setPasswordError] = useState('');
   const [passwordChkError, setPasswordChkError] = useState('');
@@ -157,11 +157,12 @@ const UserForm = ({ onSubmit }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('')
+    setError('');
+
     // 비밀번호 검증
     let passwordError = validatePassword(formData.password);
     setPasswordError(passwordError);
-    
+
     if (passwordError) {
       return; // 비밀번호 오류가 있는 경우 제출하지 않음
     }
@@ -173,15 +174,15 @@ const UserForm = ({ onSubmit }) => {
 
     // 비밀번호 확인 오류가 없는 경우 제출
     setPasswordChkError('');
-    
+
     // 주소를 합쳐서 하나의 필드로 설정
     const address = `${formData.address2} ${formData.address3}`;
-    
+
     // 비밀번호 확인 필드를 제외한 데이터만 제출
     const { passwordChk, address2, address3, ...dataToSubmit } = formData;
     dataToSubmit.address = address;
     dataToSubmit.birth = format(formData.birth, 'yyyy-MM-dd'); // 날짜를 'yyyy-MM-dd' 형식으로 변환
-    
+
     console.log('폼 데이터:', dataToSubmit); // 폼 데이터 확인
 
     try {
@@ -190,7 +191,7 @@ const UserForm = ({ onSubmit }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(dataToSubmit), // 수정된 데이터 전송
       });
 
       let result;
@@ -203,27 +204,20 @@ const UserForm = ({ onSubmit }) => {
         result = { message: text };
       }
 
-      if (response.ok) {
-        // 성공 시 상위 컴포넌트로 결과를 전달
-        onSubmit(result);
-      } else {
-        // 실패 시 사용자에게 오류 메시지 표시
-        Swal.fire({
-          icon: 'error',
-          title: '회원가입 실패',
-          text: result.message || '회원가입 중 오류가 발생했습니다.',
-        });
+        if (response.ok) {
+          localStorage.setItem('userId', formData.userId);
+          localStorage.setItem('password', formData.password);
+          // 성공 시 상위 컴포넌트로 결과를 전달
+          onSubmit({ success: true, message: result.message });
+        } else {
+          // 실패 시 사용자에게 오류 메시지 표시
+          onSubmit({ success: false, message: result.message || '회원가입 중 오류가 발생했습니다.' });
+        }
+      } catch (error) {
+        console.error('회원가입 중 오류 발생:', error);
+        onSubmit({ success: false, message: '서버와의 연결에 문제가 발생했습니다.' });
       }
-    } catch (error) {
-      console.error('회원가입 중 오류 발생:', error);
-      Swal.fire({
-        icon: 'error',
-        title: '회원가입 실패',
-        text: '서버와의 연결에 문제가 발생했습니다.',
-      });
-    }
-  };
-
+    };
 
   return (
     <form onSubmit={handleSubmit} id="form" method="Post" action="/api/users/register/">
@@ -241,8 +235,22 @@ const UserForm = ({ onSubmit }) => {
       <div className="mb-3">
         <label>성별</label>
         <div className="input-group">
-          <RadioButton id="male" name="gender" value="0" label="남자" onChange={handleChange} />
-          <RadioButton id="female" name="gender" value="1" label="여자" onChange={handleChange} />
+        <RadioButton
+            id="male"
+            name="gender"
+            value="M" // 남자 선택 시 'M'
+            label="남자"
+            checked={formData.gender === 'M'}
+            onChange={handleChange}
+          />
+          <RadioButton
+            id="female"
+            name="gender"
+            value="F" // 여자 선택 시 'F'
+            label="여자"
+            checked={formData.gender === 'F'}
+            onChange={handleChange}
+          />
         </div>
       </div>
       <div className="mb-3">
@@ -302,7 +310,7 @@ const UserForm = ({ onSubmit }) => {
             name="email"
             id="email"
             placeholder="이메일"
-            value={formData.mail}
+            value={formData.email}
             onChange={handleChange}
             required
           />
