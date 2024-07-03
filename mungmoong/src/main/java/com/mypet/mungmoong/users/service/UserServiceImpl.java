@@ -65,7 +65,7 @@ public class UserServiceImpl implements UsersService {
 
     @Override
     public Users select(String username) throws Exception {
-        return userMapper.select(username);
+        return userMapper.selectByUserId(username);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UsersService {
         user.setEnabled(1); // 계정 활성화 설정
 
         // 회원 등록
-        int result = userMapper.join(user);
+        int result = userMapper.insert(user);
 
         if (result > 0) {
             // 회원 기본 권한 등록
@@ -108,7 +108,7 @@ public class UserServiceImpl implements UsersService {
 
     @Override
     public int Myupdate(Users user) throws Exception {
-        Users currentUser = userMapper.select(user.getUserId());
+        Users currentUser = userMapper.selectByUserId(user.getUserId());
 
         if (currentUser == null) {
             throw new Exception("User not found");

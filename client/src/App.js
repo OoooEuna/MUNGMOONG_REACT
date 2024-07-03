@@ -33,21 +33,6 @@ function App() {
         <div className='App'>
           <Header />
           <Routes>
-            {/* 메인 */}
-            <Route path="/" element={<Home />} />
-
-            {/* 유저영역 */}
-
-            {/* 보드영역 */}
-            <Route path="/api/trainer/orders" element={<OrdersListContainer />} />
-            <Route path="/api/board" element={<List />} />
-            <Route path="/api/board/:no" element={<Read />} />
-            <Route path="/api/board/update/:no" element={<Update />} />
-
-            {/* 훈련사영역 */}
-            <Route path="/api/trainer/orders?trainerNo=:trainerNo" element={<OrdersList />} />
-            <Route path="/api/trainer/orders_details?no=:no" element={<OrdersDetails />} />
-
 
             {/* 관리자영역 */}
             <Route path="/api/admin/admin_info" element={<AdminUserList />} />
