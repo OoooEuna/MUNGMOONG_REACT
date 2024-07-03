@@ -25,6 +25,7 @@ import QnAUpdate from './pages/qna/QnAUpdate';
 import AdminProductsList from './pages/admin/AdminProductsList';
 import OrdersList from './pages/trainer/OrdersList';
 import OrdersDetails from './pages/trainer/OrdersDetails';
+import Deposit from './pages/trainer/Deposit';
 
 function App() {
   return (
@@ -45,8 +46,10 @@ function App() {
             <Route path="/api/board/update/:no" element={<Update />} />
 
             {/* 훈련사영역 */}
-            <Route path="/api/trainer/orders?trainerNo=:trainerNo" element={<OrdersList />} />
-            <Route path="/api/trainer/orders_details?no=:no" element={<OrdersDetails />} />
+            <Route path="/orders/:trainerNo" element={<OrdersList />} />
+            <Route path="/orders_details/:no" element={<OrdersDetails />} />
+            <Route path="/deposit" element={<Deposit />} />
+
 
 
             {/* 관리자영역 */}

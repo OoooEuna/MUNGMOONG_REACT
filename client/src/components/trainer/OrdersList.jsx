@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './trainer.css';
-import NavBar from './NavBar';
+import NavBarContainer from '../../containers/trainer/NavBarContainer';
 
 const OrdersList = ({ ordersList, isLoading, onMeaning }) => {
 
@@ -28,7 +28,7 @@ const OrdersList = ({ ordersList, isLoading, onMeaning }) => {
     <div className="container">
       <div className="inner">
         <h1 className="title">예약요청 반려동물</h1>
-        <NavBar />
+        <NavBarContainer />
         <div className="user_info">
           <table className="table table-bordered">
             <thead className="thead-light">
@@ -43,7 +43,7 @@ const OrdersList = ({ ordersList, isLoading, onMeaning }) => {
               {ordersList.map((orders) => (
                 <tr key={orders.no}>
                   <td>
-                    <Link to={`/trainer/orders_details?no=${orders.no}`}>{orders.userId}</Link>
+                    <Link to={`/orders_details/${orders.no}`}>{orders.userId}</Link>
                   </td>
                   <td>{formatDate(orders.resDate)}</td>
                   <td>
