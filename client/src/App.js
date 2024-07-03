@@ -16,7 +16,6 @@ import AdminBoardList from './pages/admin/AdminBoardList';
 import OrdersListContainer from './containers/trainer/OrdersListContainer';
 import ProductsList from './pages/products/ProductsList';
 import Update from './pages/board/Update';
-import Orders from './components/trainer/Orders';
 
 // QnA 관련 경로 추가
 import QnAInsert from './pages/qna/QnAInsert';
@@ -24,6 +23,8 @@ import QnAList from './pages/qna/QnAList';
 import QnARead from './pages/qna/QnARead';
 import QnAUpdate from './pages/qna/QnAUpdate';
 import AdminProductsList from './pages/admin/AdminProductsList';
+import OrdersList from './pages/trainer/OrdersList';
+import OrdersDetails from './pages/trainer/OrdersDetails';
 
 function App() {
   return (
@@ -44,7 +45,9 @@ function App() {
             <Route path="/api/board/update/:no" element={<Update />} />
 
             {/* 훈련사영역 */}
-            <Route path="/api/trainer/info/" element={<Orders />} />
+            <Route path="/api/trainer/orders?trainerNo=:trainerNo" element={<OrdersList />} />
+            <Route path="/api/trainer/orders_details?no=:no" element={<OrdersDetails />} />
+
 
             {/* 관리자영역 */}
             <Route path="/api/admin/admin_info" element={<AdminUserList />} />
