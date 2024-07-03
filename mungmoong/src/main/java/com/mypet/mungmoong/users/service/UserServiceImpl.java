@@ -63,6 +63,14 @@ public class UserServiceImpl implements UsersService {
 //         return result;
 //     }
 
+    // 번호로 조회
+    @Override
+    public Users selectByNo(int no) {
+        
+        return userMapper.selectByNo(no);
+    }
+
+    // 아이디로 조회
     @Override
     public Users select(String username) throws Exception {
         return userMapper.selectByUserId(username);
@@ -174,6 +182,7 @@ public class UserServiceImpl implements UsersService {
         return result;
     }
 
+ 
     
 
  

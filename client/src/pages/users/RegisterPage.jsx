@@ -1,10 +1,13 @@
+// RegisterPage.jsx
 import React, { useState } from 'react';
 import UserForm from '../../components/users/froms/UserForm';
 import PetForm from '../../components/users/froms/PetForm';
+import Swal from 'sweetalert2'; // 알림 라이브러리 추가
 import './css/register.css';
 
 const RegisterPage = () => {
   const [activeTab, setActiveTab] = useState('A'); // 현재 활성화된 탭
+  const [error, setError] = useState(null); // 에러 상태
 
   const showContent = (tab) => {
     setActiveTab(tab);
@@ -20,18 +23,47 @@ const RegisterPage = () => {
         body: JSON.stringify(data),
       });
 
-      if (response.ok) {
-        // 사용자 등록 성공 시 반려견 탭으로 전환
-        setActiveTab('B');
+      let result;
+      const contentType = response.headers.get('Content-Type');
+
+      // 서버 응답이 JSON 형식인 경우 JSON으로 파싱
+      if (contentType && contentType.includes('application/json')) {
+        result = await response.json();
       } else {
-        console.error('사용자 등록 실패');
+        // JSON 형식이 아닌 경우 텍스트로 응답 처리
+        const text = await response.text();
+        result = { message: text }; // 기본 오류 메시지
+      }
+
+      if (response.ok) {
+        // 성공 처리
+        Swal.fire({
+          icon: 'success',
+          title: '회원가입 성공!',
+          text: result.message || '회원가입이 완료되었습니다.',
+        }).then(() => {
+          setActiveTab('B'); // 탭을 'B'로 변경
+        });
+      } else {
+        // 실패 처리
+        Swal.fire({
+          icon: 'error',
+          title: '회원가입 실패',
+          text: result.message || '회원가입 중 오류가 발생했습니다.',
+        });
       }
     } catch (error) {
-      console.error('사용자 등록 실패:', error);
+      console.error('회원가입 중 오류 발생:', error);
+      // 네트워크 오류 처리
+      Swal.fire({
+        icon: 'error',
+        title: '회원가입 실패',
+        text: '서버와의 연결에 문제가 발생했습니다.',
+      });
     }
   };
 
-  const handlePetFormSubmit = (data) => {
+  const handlePetFormSubmit = async (data) => {
     console.log('반려견 데이터:', data);
     // PetForm 제출 처리
   };
@@ -46,7 +78,7 @@ const RegisterPage = () => {
               id="buttonA"
               className={`tab-button ${activeTab === 'A' ? 'active' : ''}`}
               onClick={() => showContent('A')}
-              disabled={activeTab === 'A' ? false : true} // 현재 탭이 'A'일 때만 활성화
+              disabled={activeTab === 'A'}
             >
               사용자
             </button>
@@ -54,7 +86,7 @@ const RegisterPage = () => {
               id="buttonB"
               className={`tab-button ${activeTab === 'B' ? 'active' : ''}`}
               onClick={() => showContent('B')}
-              disabled={activeTab === 'B' ? false : true} // 현재 탭이 'B'일 때만 활성화
+              disabled={activeTab === 'B'}
             >
               반려견
             </button>

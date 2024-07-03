@@ -33,12 +33,13 @@ function App() {
         <div className='App'>
           <Header />
           <Routes>
+          <Route path="/" element={<Home />}></Route>
 
             {/* 관리자영역 */}
-            <Route path="/api/admin/admin_info" element={<AdminUserList />} />
+            {/* <Route path="/api/admin/admin_info" element={<AdminUserList />} />
             <Route path="/api/admin/admin_trainer" element={<AdminTrainerList />} />
             <Route path="/api/admin/admin_board" element={<AdminBoardList />} />
-            <Route path="/api/admin/admin_product" element={<AdminProductsList />} />
+            <Route path="/api/admin/admin_product" element={<AdminProductsList />} /> */}
 
             {/* 상품 결재 영역 */}
             <Route path="/api/products" element={<ProductsList />} />

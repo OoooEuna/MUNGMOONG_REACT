@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // useNavigate를 추가했습니다.
 import Swal from 'sweetalert2';
 import Button from '../../common/Button';
 import InputField from '../../common/InputField';
@@ -7,27 +7,27 @@ import RadioButton from '../../common/RadioButton';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format } from 'date-fns';
-import { ko } from 'date-fns/locale'; // 한국어 로케일
 import './css/UserForm.css';
 
+const DateSelector = ({ selectedDate, onChange }) => {
+  return (
+    <DatePicker
+      selected={selectedDate}
+      onChange={onChange}
+      dateFormat="yyyy-MM-dd"
+      className="form-control"
+      showYearDropdown
+      showMonthDropdown
+      scrollableYearDropdown
+      scrollableMonthDropdown
+      dropdownMode="select"
+    />
+  );
+};
+
 const UserForm = ({ onSubmit }) => {
-  const DateSelector = ({ selectedDate, onChange }) => {
-    return (
-      <DatePicker
-        selected={selectedDate}
-        onChange={onChange}
-        dateFormat="yyyy-MM-dd"
-        className="form-control"
-        showYearDropdown
-        showMonthDropdown
-        scrollableYearDropdown
-        scrollableMonthDropdown
-        dropdownMode="select"
-        locale={ko} // 한국어 로케일 설정
-      />
-    );
-  };
-  const navigate = useNavigate();
+  const [error, setError] = useState('');
+  const [activeTab, setActiveTab] = useState(0); // 탭 상태 정의
   const [formData, setFormData] = useState({
     name: '',
     gender: '',
@@ -46,6 +46,8 @@ const UserForm = ({ onSubmit }) => {
   const [emailVerificationStatus, setEmailVerificationStatus] = useState('');
   const [emailVerificationCode, setEmailVerificationCode] = useState('');
   const [userIdStatus, setUserIdStatus] = useState('');
+
+  const navigate = useNavigate(); // useNavigate 추가
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -155,7 +157,7 @@ const UserForm = ({ onSubmit }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setError('')
     // 비밀번호 검증
     let passwordError = validatePassword(formData.password);
     setPasswordError(passwordError);
@@ -183,41 +185,47 @@ const UserForm = ({ onSubmit }) => {
     console.log('폼 데이터:', dataToSubmit); // 폼 데이터 확인
 
     try {
-       // 데이터 제출
-       const response = await onSubmit(dataToSubmit); // onSubmit은 formData를 인자로 받아서 서버에 제출
-    
-       if (response.ok) {
-         Swal.fire({
-           title: '회원가입 성공!',
-           text: '펫정보 페이지로 이동합니다',
-           icon: 'success',
-           confirmButtonText: '확인'
-         }).then(() => {
-           localStorage.setItem('userId', formData.userId);
-           navigate('/pet-info'); // 성공 시 이동할 페이지
-         });
-       } else {
-         // 서버에서 반환한 JSON 응답에서 오류 메시지 추출
-         const errorData = await response.json();
-         Swal.fire({
-           title: '회원가입 실패',
-           text: errorData.message || '회원가입 과정에서 오류가 발생했습니다.',
-           icon: 'error',
-           confirmButtonText: '확인'
-         });
-       }
-     } catch (error) {
-       console.error('User registration failed:', error);
-       Swal.fire({
-         title: '회원가입 실패',
-         text: '회원가입 과정에서 오류가 발생했습니다.',
-         icon: 'error',
-         confirmButtonText: '확인'
-       });
-     }
-    };
+      const response = await fetch('/api/users/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      let result;
+      const contentType = response.headers.get('Content-Type');
+
+      if (contentType && contentType.includes('application/json')) {
+        result = await response.json();
+      } else {
+        const text = await response.text();
+        result = { message: text };
+      }
+
+      if (response.ok) {
+        // 성공 시 상위 컴포넌트로 결과를 전달
+        onSubmit(result);
+      } else {
+        // 실패 시 사용자에게 오류 메시지 표시
+        Swal.fire({
+          icon: 'error',
+          title: '회원가입 실패',
+          text: result.message || '회원가입 중 오류가 발생했습니다.',
+        });
+      }
+    } catch (error) {
+      console.error('회원가입 중 오류 발생:', error);
+      Swal.fire({
+        icon: 'error',
+        title: '회원가입 실패',
+        text: '서버와의 연결에 문제가 발생했습니다.',
+      });
+    }
+  };
+
+
   return (
-    
     <form onSubmit={handleSubmit} id="form" method="Post" action="/api/users/register/">
       <input type="hidden" name="_csrf" />
       <InputField
