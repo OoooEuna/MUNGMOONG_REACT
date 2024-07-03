@@ -89,15 +89,26 @@ public class TrainerApiController {
     @Autowired
     private UsersService userService;
 
+    // 트레이너 정보 조회
+    @GetMapping("")
+    public ResponseEntity<?> getTrainerInfo(@RequestParam("userId") String userId) throws Exception {
+        Trainer trainer = trainerService.select(userId);
+        if (trainer == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("트레이너를 찾을 수 없습니다......");
+        }
+        return ResponseEntity.ok(trainer);
+    }
+
+
     // orders 목록
     @GetMapping("/orders")
     public ResponseEntity<?> ordersList(@RequestParam("trainerNo") Integer trainerNo) throws Exception {
         log.info("[GET] - /api/orders");
         if (trainerNo == null) {
-            log.error("트레이너 번호를 찾을 수 없습니다.");
+            log.error("트레이너 번호를 찾을 수 없습니다. :(");
             // 트레이너 번호가 없을 경우 에러 처리
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                                 .body("트레이너 번호를 찾을 수 없습니다.");
+                                 .body("트레이너 번호를 찾을 수 없습니다. :(");
         }
     
         // 데이터 요청
@@ -111,13 +122,13 @@ public class TrainerApiController {
     
     // 입금 내역 목록
     @GetMapping("/deposit")
-    public ResponseEntity<?> deposit(HttpSession session) throws Exception {
+    public ResponseEntity<?> deposit(@RequestParam("trainerNo") Integer trainerNo) throws Exception {
         log.info("[GET] - /api/deposit");
-        Integer trainerNo = (Integer) session.getAttribute("trainerNo");
         if (trainerNo == null) {
-            log.error("트레이너 번호를 세션에서 찾을 수 없습니다.");
+            log.error("트레이너 번호를 찾을 수 없습니다 :(");
+            // 트레이너 번호가 없을 경우 에러 처리
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                                 .body("트레이너 번호를 세션에서 찾을 수 없습니다.");
+                                 .body("트레이너 번호를 찾을 수 없습니다. :( ");
         }
 
         // 데이터 요청
@@ -137,9 +148,9 @@ public class TrainerApiController {
         // 응답 데이터 생성
         Map<String, Object> response = new HashMap<>();
         response.put("ordersList", ordersList);
-        response.put("totalAmount", totalAmount);
-        response.put("approvedOrdersList", approvedOrdersList);
-        response.put("totalApprovedAmount", totalApprovedAmount);
+        response.put("totalAmount", totalAmount);                  
+        // response.put("approvedOrdersList", approvedOrdersList);    
+        response.put("totalApprovedAmount", totalApprovedAmount);  
 
         // JSON 형식으로 데이터 반환
         return ResponseEntity.ok(response);
@@ -148,11 +159,13 @@ public class TrainerApiController {
     
     // Meaning 수정 작업
     @PutMapping("/orders")
-    public ResponseEntity<?> updateOrderMeaning(@RequestParam("orderNo") int orderNo, @RequestParam("meaning") int meaning)
-            throws Exception {
-        ordersService.updateMeaning(orderNo, meaning);
-        return ResponseEntity.ok("Order meaning updated successfully.");
+    public ResponseEntity<?> updateOrderMeaning(@RequestBody Map<String, Integer> request) throws Exception {
+        int no = request.get("no");
+        int meaning = request.get("meaning");
+        ordersService.updateMeaning(no, meaning);
+        return ResponseEntity.ok("Order의 meaning이 성공적으로 수정되었습니다!! ヽ(✿ﾟ▽ﾟ)ノ");
     }
+    
     
 
     // Orders 조회

@@ -17,7 +17,7 @@ public class Users {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birth;
     private String address;
-    private String mail;           // 이메일 (mail과 동일)
+    private String email;           // 이메일 (mail과 동일)
     private String phone;
     private Date regDate;
     private Date updDate;
@@ -35,7 +35,7 @@ public class Users {
 
     public Users(String userId, String mail, String name) {
         this.userId = userId;
-        this.mail = mail;          // 이메일 초기화
+        this.email = mail;          // 이메일 초기화
         this.name = name;
     }
 
@@ -47,7 +47,7 @@ public class Users {
         this.name = user.getName();
         this.birth = user.getBirth();
         this.address = user.getAddress();
-        this.mail = user.getMail();
+        this.email = user.getEmail();
         this.phone = user.getPhone();
         this.regDate = user.getRegDate();
         this.updDate = user.getUpdDate();

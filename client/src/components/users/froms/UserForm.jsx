@@ -1,21 +1,44 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import Button from '../../common/Button';
 import InputField from '../../common/InputField';
 import RadioButton from '../../common/RadioButton';
-import './css/UserForm.css'; // CSS import
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { format } from 'date-fns';
+import './css/UserForm.css';
+
+const DateSelector = ({ selectedDate, onChange }) => {
+  return (
+    <DatePicker
+      selected={selectedDate}
+      onChange={onChange}
+      dateFormat="yyyy-MM-dd"
+      className="form-control"
+      showYearDropdown
+      showMonthDropdown
+      scrollableYearDropdown
+      scrollableMonthDropdown
+      dropdownMode="select"
+    />
+  );
+};
 
 const UserForm = ({ onSubmit }) => {
+  const [error, setError] = useState('');
+  const [activeTab, setActiveTab] = useState(0);
   const [formData, setFormData] = useState({
     name: '',
     gender: '',
     userId: '',
     password: '',
     passwordChk: '',
-    mail: '',
+    email: '',
     phone: '',
     address2: '',
     address3: '',
-    birth: '2000-01-01',
+    birth: new Date(),
   });
   const [passwordError, setPasswordError] = useState('');
   const [passwordChkError, setPasswordChkError] = useState('');
@@ -24,9 +47,15 @@ const UserForm = ({ onSubmit }) => {
   const [emailVerificationCode, setEmailVerificationCode] = useState('');
   const [userIdStatus, setUserIdStatus] = useState('');
 
+  const navigate = useNavigate(); // useNavigate 추가
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleDateChange = (date) => {
+    setFormData({ ...formData, birth: date });
   };
 
   const validatePassword = (password) => {
@@ -71,7 +100,7 @@ const UserForm = ({ onSubmit }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: formData.mail }),
+        body: JSON.stringify({ email: formData.email }),
       });
 
       if (response.ok) {
@@ -97,7 +126,7 @@ const UserForm = ({ onSubmit }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ code: emailVerificationCode, email: formData.mail }),
+        body: JSON.stringify({ code: emailVerificationCode, email: formData.email }),
       });
 
       if (response.ok) {
@@ -128,11 +157,12 @@ const UserForm = ({ onSubmit }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
 
     // 비밀번호 검증
     let passwordError = validatePassword(formData.password);
     setPasswordError(passwordError);
-    
+
     if (passwordError) {
       return; // 비밀번호 오류가 있는 경우 제출하지 않음
     }
@@ -144,22 +174,53 @@ const UserForm = ({ onSubmit }) => {
 
     // 비밀번호 확인 오류가 없는 경우 제출
     setPasswordChkError('');
-    
+
+    // 주소를 합쳐서 하나의 필드로 설정
+    const address = `${formData.address2} ${formData.address3}`;
+
     // 비밀번호 확인 필드를 제외한 데이터만 제출
-    const { passwordChk, ...dataToSubmit } = formData;
+    const { passwordChk, address2, address3, ...dataToSubmit } = formData;
+    dataToSubmit.address = address;
+    dataToSubmit.birth = format(formData.birth, 'yyyy-MM-dd'); // 날짜를 'yyyy-MM-dd' 형식으로 변환
 
     console.log('폼 데이터:', dataToSubmit); // 폼 데이터 확인
 
     try {
-      await onSubmit(dataToSubmit); // onSubmit는 formData를 인자로 받아서 서버에 제출
-      // Success, redirect or show success message
-    } catch (error) {
-      console.error('User registration failed:', error);
-    }
-  };
+      const response = await fetch('/api/users/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSubmit), // 수정된 데이터 전송
+      });
+
+      let result;
+      const contentType = response.headers.get('Content-Type');
+
+      if (contentType && contentType.includes('application/json')) {
+        result = await response.json();
+      } else {
+        const text = await response.text();
+        result = { message: text };
+      }
+
+        if (response.ok) {
+          localStorage.setItem('userId', formData.userId);
+          localStorage.setItem('password', formData.password);
+          // 성공 시 상위 컴포넌트로 결과를 전달
+          onSubmit({ success: true, message: result.message });
+        } else {
+          // 실패 시 사용자에게 오류 메시지 표시
+          onSubmit({ success: false, message: result.message || '회원가입 중 오류가 발생했습니다.' });
+        }
+      } catch (error) {
+        console.error('회원가입 중 오류 발생:', error);
+        onSubmit({ success: false, message: '서버와의 연결에 문제가 발생했습니다.' });
+      }
+    };
 
   return (
-    <form onSubmit={handleSubmit} id="form" method="post" action="/api/users/register/">
+    <form onSubmit={handleSubmit} id="form" method="Post" action="/api/users/register/">
       <input type="hidden" name="_csrf" />
       <InputField
         type="text"
@@ -174,8 +235,22 @@ const UserForm = ({ onSubmit }) => {
       <div className="mb-3">
         <label>성별</label>
         <div className="input-group">
-          <RadioButton id="male" name="gender" value="0" label="남자" onChange={handleChange} />
-          <RadioButton id="female" name="gender" value="1" label="여자" onChange={handleChange} />
+        <RadioButton
+            id="male"
+            name="gender"
+            value="M" // 남자 선택 시 'M'
+            label="남자"
+            checked={formData.gender === 'M'}
+            onChange={handleChange}
+          />
+          <RadioButton
+            id="female"
+            name="gender"
+            value="F" // 여자 선택 시 'F'
+            label="여자"
+            checked={formData.gender === 'F'}
+            onChange={handleChange}
+          />
         </div>
       </div>
       <div className="mb-3">
@@ -232,10 +307,10 @@ const UserForm = ({ onSubmit }) => {
         <div className="input-group">
           <InputField
             type="email"
-            name="mail"
-            id="mail"
+            name="email"
+            id="email"
             placeholder="이메일"
-            value={formData.mail}
+            value={formData.email}
             onChange={handleChange}
             required
           />
@@ -273,32 +348,33 @@ const UserForm = ({ onSubmit }) => {
         required
         feedback="전화번호를 입력해주세요."
       />
-      <InputField
-        type="text"
-        name="address2"
-        id="address2"
-        placeholder="주소"
-        value={formData.address2}
-        onChange={handleChange}
-        required
-        feedback="주소를 입력해주세요."
-      />
-      <InputField
-        type="text"
-        name="address3"
-        id="address3"
-        placeholder="상세주소"
-        value={formData.address3}
-        onChange={handleChange}
-      />
-      <InputField
-        type="text"
-        name="birth"
-        id="birth"
-        placeholder="생년월일"
-        value={formData.birth}
-        onChange={handleChange}
-      />
+      <div className="mb-3">
+        <InputField
+          type="text"
+          name="address2"
+          id="address2"
+          placeholder="주소"
+          value={formData.address2}
+          onChange={handleChange}
+          required
+          feedback="주소를 입력해주세요."
+        />
+        <InputField
+          type="text"
+          name="address3"
+          id="address3"
+          placeholder="상세주소"
+          value={formData.address3}
+          onChange={handleChange}
+        />
+      </div>
+      <div className="mb-3">
+        <label htmlFor="birth">생년월일</label>
+        <DateSelector
+          selectedDate={formData.birth}
+          onChange={handleDateChange}
+        />
+      </div>
       <div className="mb-4" style={{ textAlign: 'center', padding: '3% 0' }}>
         <Button type="submit" className="btn btn-outline-warning" id="save-btn">
           가입하기

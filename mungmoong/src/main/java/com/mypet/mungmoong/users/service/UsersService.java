@@ -22,8 +22,11 @@ public interface UsersService {
     // // 로그인
     // boolean login(Users user, HttpServletRequest request) throws Exception;
 
-    // 조회
+    // 아이디로 회원 조회
     public Users select(String id) throws Exception;
+
+    // 번호로 회원 조회
+    public Users selectByNo(int no);
 
     // 회원 등록
     public int insert(Users user) throws Exception;

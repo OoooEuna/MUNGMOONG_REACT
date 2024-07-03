@@ -1,21 +1,34 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './trainer.css';
-import NavBar from './NavBar';
+import NavBarContainer from '../../containers/trainer/NavBarContainer';
 
-const Orders = ({ ordersList }) => {
-  console.log("Orders List in Orders Component: ", ordersList);
+const OrdersList = ({ ordersList, isLoading, onMeaning }) => {
 
   const formatDate = (date) => {
     const d = new Date(date);
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}:${String(d.getSeconds()).padStart(2, '0')}`;
   };
 
+  const handleStatusChange = async (no, meaning) => {
+    const newMeaning = meaning + 1;
+    try {
+      const response = await onMeaning(no, newMeaning);
+      if (response.status === 200) {
+        console.log(`Meaning updated successfully:`, response);
+      } else {
+        console.error('Failed to update meaning');
+      }
+    } catch (error) {
+      console.error('Error updating meaning:', error);
+    }
+  };
+
   return (
     <div className="container">
       <div className="inner">
         <h1 className="title">예약요청 반려동물</h1>
-        <NavBar />
+        <NavBarContainer />
         <div className="user_info">
           <table className="table table-bordered">
             <thead className="thead-light">
@@ -30,33 +43,33 @@ const Orders = ({ ordersList }) => {
               {ordersList.map((orders) => (
                 <tr key={orders.no}>
                   <td>
-                    <Link to={`/trainer/orders_details?no=${orders.no}`}>{orders.userId}</Link>
+                    <Link to={`/orders_details/${orders.no}`}>{orders.userId}</Link>
                   </td>
-                  <td>{formatDate(orders.regDate)}</td>
+                  <td>{formatDate(orders.resDate)}</td>
                   <td>
                     <div>
                       {orders.meaning === 0 && (
-                        <form action="/trainer/orders" method="post">
-                          <input type="hidden" name="orderNo" value={orders.no} />
-                          <input type="hidden" name="meaning" value="1" />
-                          <button type="submit" className="btn button_sta">진행</button>
-                        </form>
+                        <button
+                          type="button"
+                          className="btn button_sta"
+                          onClick={() => handleStatusChange(orders.no, 0)}
+                        >
+                          진행
+                        </button>
                       )}
                       {orders.meaning === 1 && (
-                        <form action="/trainer/orders" method="post">
-                          <input type="hidden" name="orderNo" value={orders.no} />
-                          <input type="hidden" name="meaning" value="2" />
-                          <button type="submit" className="btn button_sta">완료</button>
-                        </form>
+                        <button
+                          type="button"
+                          className="btn button_sta"
+                          onClick={() => handleStatusChange(orders.no, 1)}
+                        >
+                          완료
+                        </button>
                       )}
                       {orders.meaning === 2 && (
-                        <form action="/trainer/orders" method="post">
-                          <input type="hidden" name="orderNo" value={orders.no} />
-                          <input type="hidden" name="meaning" value="2" />
-                          <button type="submit" className="btn button_sta" disabled>
-                            완료
-                          </button>
-                        </form>
+                        <button type="button" className="btn button_sta" disabled>
+                          완료
+                        </button>
                       )}
                     </div>
                   </td>
@@ -79,4 +92,4 @@ const Orders = ({ ordersList }) => {
   );
 };
 
-export default Orders;
+export default OrdersList;

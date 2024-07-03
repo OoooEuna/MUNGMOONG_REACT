@@ -16,3 +16,5 @@ export const update = (products) => axios.put("/api/products", {products})
 // 삭제
 export const remove = (deleteIdList) => axios.delete(`/api/products/${deleteIdList}`)
 
+
+
