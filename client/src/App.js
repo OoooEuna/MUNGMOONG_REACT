@@ -30,6 +30,7 @@ import UpdatePage from './pages/users/UpdatePage';
 import AdminProductsList from './pages/admin/AdminProductsList';
 import OrdersList from './pages/trainer/OrdersList';
 import OrdersDetails from './pages/trainer/OrdersDetails';
+import Deposit from './pages/trainer/Deposit';
 
 import ProductsList from './pages/products/ProductsList';
 import ProductsRead from './pages/products/ProductsRead';
@@ -42,6 +43,23 @@ function App() {
         <div className='App'>
           <Header />
           <Routes>
+            {/* 메인 */}
+            <Route path="/" element={<Home />} />
+
+            {/* 유저영역 */}
+
+            {/* 보드영역 */}
+            <Route path="/api/trainer/orders" element={<OrdersListContainer />} />
+            <Route path="/api/board" element={<List />} />
+            <Route path="/api/board/:no" element={<Read />} />
+            <Route path="/api/board/update/:no" element={<Update />} />
+
+            {/* 훈련사영역 */}
+            <Route path="/orders/:trainerNo" element={<OrdersList />} />
+            <Route path="/orders_details/:no" element={<OrdersDetails />} />
+            <Route path="/deposit" element={<Deposit />} />
+
+
           <Route path="/" element={<Home />}></Route>
 
             {/* 관리자영역 */}

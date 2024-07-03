@@ -25,7 +25,7 @@ export const insert_schedule = (scheduleData) => axios.post("/api/trainer/schedu
 export const delete_schedule = (no) => axios.delete(`/api/trainer/schedule/event/${no}`)
 
 // 훈련사 입금 내역 목록    -  [GET]    
-export const deposit = () => axios.get("/api/trainer/deposit")
+export const deposit = (trainerNo) => axios.get(`/api/trainer/deposit?trainerNo=${trainerNo}`)
 
 // 훈련사 정보 조회         - [GET]
 export const getTrainerInfo = (userId) => axios.get(`/api/trainer`, { params: { userId } })

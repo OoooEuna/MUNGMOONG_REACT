@@ -105,10 +105,10 @@ public class TrainerApiController {
     public ResponseEntity<?> ordersList(@RequestParam("trainerNo") Integer trainerNo) throws Exception {
         log.info("[GET] - /api/orders");
         if (trainerNo == null) {
-            log.error("트레이너 번호를 찾을 수 없습니다.");
+            log.error("트레이너 번호를 찾을 수 없습니다. :(");
             // 트레이너 번호가 없을 경우 에러 처리
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                                 .body("트레이너 번호를 찾을 수 없습니다.");
+                                 .body("트레이너 번호를 찾을 수 없습니다. :(");
         }
     
         // 데이터 요청
@@ -122,13 +122,13 @@ public class TrainerApiController {
     
     // 입금 내역 목록
     @GetMapping("/deposit")
-    public ResponseEntity<?> deposit(HttpSession session) throws Exception {
+    public ResponseEntity<?> deposit(@RequestParam("trainerNo") Integer trainerNo) throws Exception {
         log.info("[GET] - /api/deposit");
-        Integer trainerNo = (Integer) session.getAttribute("trainerNo");
         if (trainerNo == null) {
-            log.error("트레이너 번호를 세션에서 찾을 수 없습니다.");
+            log.error("트레이너 번호를 찾을 수 없습니다 :(");
+            // 트레이너 번호가 없을 경우 에러 처리
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                                 .body("트레이너 번호를 세션에서 찾을 수 없습니다.");
+                                 .body("트레이너 번호를 찾을 수 없습니다. :( ");
         }
 
         // 데이터 요청
@@ -148,9 +148,9 @@ public class TrainerApiController {
         // 응답 데이터 생성
         Map<String, Object> response = new HashMap<>();
         response.put("ordersList", ordersList);
-        response.put("totalAmount", totalAmount);
-        response.put("approvedOrdersList", approvedOrdersList);
-        response.put("totalApprovedAmount", totalApprovedAmount);
+        response.put("totalAmount", totalAmount);                  
+        // response.put("approvedOrdersList", approvedOrdersList);    
+        response.put("totalApprovedAmount", totalApprovedAmount);  
 
         // JSON 형식으로 데이터 반환
         return ResponseEntity.ok(response);
