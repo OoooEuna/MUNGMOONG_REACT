@@ -71,7 +71,7 @@ const CustomHeader = () => {
               {userRole === 3 && <Link to="/admin/admin_info" className={`${styles.btn} ${styles.btnOutlineSuccess} mx-1`} style={{ padding: '6px 12px', border: '1px solid #6c757d' }}>관리자</Link>}
               
               <Link
-                to="/users/index"
+                to="/api/users/index"
                 className={`${styles.btn} ${styles.btnOutlineSecondary} mx-1`}
                 style={{ 
                   padding: '6px 12px', 
