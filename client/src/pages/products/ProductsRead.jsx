@@ -9,7 +9,7 @@ const ProductsRead = () => {
   return (
     <>
       {/* Header */}
-      <ProductsReadContainer id={id} />
+        <ProductsReadContainer id={id}  />
       {/* Footer */}
     </>
   )

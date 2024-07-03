@@ -5,12 +5,10 @@
 
 <mapper namespace="com.mypet.mungmoong.pet.mapper.PetMapper">
     
-    <!-- 새로운 반려동물 추가 -->
     <insert id="insertPet">
-    INSERT INTO pet (petname, age, petgender, type, `character`, special_notes, reg_date, upd_date, user_id)
-    VALUES (#{petname}, #{age}, #{petgender}, #{type}, #{character}, #{specialNotes}, now(), now(), #{userId})
-    </insert>
-
+    INSERT INTO Pet (petname, age, petgender, type, petcharacter, specialNotes, reg_date, upd_date, user_id)
+    VALUES (#{petname}, #{age}, #{petgender}, #{type}, #{petcharacter}, #{specialNotes}, now(), now(), #{userId})
+</insert>
     
     <!-- 반려동물 정보 수정 -->
     <update id="updatePet">
