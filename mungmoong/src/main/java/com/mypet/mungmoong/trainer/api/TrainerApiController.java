@@ -89,6 +89,17 @@ public class TrainerApiController {
     @Autowired
     private UsersService userService;
 
+    // 트레이너 정보 조회
+    @GetMapping("")
+    public ResponseEntity<?> getTrainerInfo(@RequestParam("userId") String userId) throws Exception {
+        Trainer trainer = trainerService.select(userId);
+        if (trainer == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("트레이너를 찾을 수 없습니다......");
+        }
+        return ResponseEntity.ok(trainer);
+    }
+
+
     // orders 목록
     @GetMapping("/orders")
     public ResponseEntity<?> ordersList(@RequestParam("trainerNo") Integer trainerNo) throws Exception {
@@ -148,11 +159,13 @@ public class TrainerApiController {
     
     // Meaning 수정 작업
     @PutMapping("/orders")
-    public ResponseEntity<?> updateOrderMeaning(@RequestParam("orderNo") int orderNo, @RequestParam("meaning") int meaning)
-            throws Exception {
-        ordersService.updateMeaning(orderNo, meaning);
-        return ResponseEntity.ok("Order meaning updated successfully.");
+    public ResponseEntity<?> updateOrderMeaning(@RequestBody Map<String, Integer> request) throws Exception {
+        int no = request.get("no");
+        int meaning = request.get("meaning");
+        ordersService.updateMeaning(no, meaning);
+        return ResponseEntity.ok("Order의 meaning이 성공적으로 수정되었습니다!! ヽ(✿ﾟ▽ﾟ)ノ");
     }
+    
     
 
     // Orders 조회

@@ -42,7 +42,7 @@ public interface UsersService {
     public  int insertAuth(UserAuth userAuth) throws Exception;
 
     // 어드민 회원 조회
-    public  List<Users> list(Page page, Option option) throws Exception;
+    public  List<Users> list() throws Exception;
 
     // 이름과 이메일로 아이디 찾기
     public Users findId(String name, String mail) throws Exception;

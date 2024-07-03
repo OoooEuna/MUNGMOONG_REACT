@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const NavBar = ({ userId }) => (
+const NavBar = ({ userId, trainerNo }) => (
   <nav className="navbar navbar-expand-lg navbar-light">
     <div className="collapse navbar-collapse justify-content-start">
       <ul className="navbar-nav">
@@ -15,7 +15,7 @@ const NavBar = ({ userId }) => (
           <Link className="tab-button" to="/api/trainer/deposit">입금 내역서</Link>
         </li>
         <li className="nav-item">
-          <Link className="tab-button active" to="/api/trainer/orders">예약</Link>
+          <Link className="tab-button active" to={`/api/trainer/orders?trainerNo=${trainerNo}`}>예약</Link>
         </li>
       </ul>
     </div>

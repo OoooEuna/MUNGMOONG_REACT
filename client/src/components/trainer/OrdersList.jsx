@@ -1,15 +1,27 @@
-import React, { useState, useEffect  } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import './trainer.css'
+import './trainer.css';
 import NavBar from './NavBar';
 
-const Orders = ( {ordersList} ) => {
-  console.log(ordersList);
-
+const OrdersList = ({ ordersList, isLoading, onMeaning }) => {
 
   const formatDate = (date) => {
     const d = new Date(date);
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}:${String(d.getSeconds()).padStart(2, '0')}`;
+  };
+
+  const handleStatusChange = async (no, meaning) => {
+    const newMeaning = meaning + 1;
+    try {
+      const response = await onMeaning(no, newMeaning);
+      if (response.status === 200) {
+        console.log(`Meaning updated successfully:`, response);
+      } else {
+        console.error('Failed to update meaning');
+      }
+    } catch (error) {
+      console.error('Error updating meaning:', error);
+    }
   };
 
   return (
@@ -34,30 +46,30 @@ const Orders = ( {ordersList} ) => {
                     <Link to={`/trainer/orders_details?no=${orders.no}`}>{orders.userId}</Link>
                   </td>
                   <td>{formatDate(orders.resDate)}</td>
-                  {/* <td>
+                  <td>
                     <div>
                       {orders.meaning === 0 && (
-                        <form action="/trainer/orders" method="post">
-                          <input type="hidden" name="orderNo" value={orders.no} />
-                          <input type="hidden" name="meaning" value="1" />
-                          <button type="submit" className="btn button_sta">진행</button>
-                        </form>
+                        <button
+                          type="button"
+                          className="btn button_sta"
+                          onClick={() => handleStatusChange(orders.no, 0)}
+                        >
+                          진행
+                        </button>
                       )}
                       {orders.meaning === 1 && (
-                        <form action="/trainer/orders" method="post">
-                          <input type="hidden" name="orderNo" value={orders.no} />
-                          <input type="hidden" name="meaning" value="2" />
-                          <button type="submit" className="btn button_sta">완료</button>
-                        </form>
+                        <button
+                          type="button"
+                          className="btn button_sta"
+                          onClick={() => handleStatusChange(orders.no, 1)}
+                        >
+                          완료
+                        </button>
                       )}
                       {orders.meaning === 2 && (
-                        <form action="/trainer/orders" method="post">
-                          <input type="hidden" name="orderNo" value={orders.no} />
-                          <input type="hidden" name="meaning" value="2" />
-                          <button type="submit" className="btn button_sta" disabled>
-                            완료
-                          </button>
-                        </form>
+                        <button type="button" className="btn button_sta" disabled>
+                          완료
+                        </button>
                       )}
                     </div>
                   </td>
@@ -69,7 +81,7 @@ const Orders = ( {ordersList} ) => {
                     {!['pending', 'paid', 'refund', 'approval'].includes(orders.status) && (
                       <span>알 수 없음</span>
                     )}
-                  </td> */}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -80,4 +92,4 @@ const Orders = ( {ordersList} ) => {
   );
 };
 
-export default Orders;
+export default OrdersList;

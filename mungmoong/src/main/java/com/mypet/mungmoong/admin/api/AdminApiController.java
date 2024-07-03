@@ -64,13 +64,14 @@ public class AdminApiController {
     private QnAService qnaService;
 
     @GetMapping("/admin_info")
-    public ResponseEntity<?> list(Page page, Option option) {
+    public ResponseEntity<?> list() {
         log.info("이건 들와 지겠지");
         try {
-            List<Users> usersList = userService.list(page, option);
-            log.info("Users page 로그 : " + page);
+            List<Users> usersList = userService.list();
+            log.info("Users page 로그 : " + usersList);
             return new ResponseEntity<>(usersList, HttpStatus.OK);
         } catch (Exception e) {
+            log.info("Users page 로그 : " + 1);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -129,11 +130,14 @@ public class AdminApiController {
 
     @GetMapping("/admin_trainer")
     public ResponseEntity<?> trainerList(Page page, Option option) {
+        log.info("여기인가?");
         try {
             List<Trainer> trainerList = trainerService.adminTrainerList(page, option);
+            log.info("로그 찍히는거 : " + trainerList);
             log.info("트레이너 " + trainerList.toString());
             return new ResponseEntity<>(trainerList, HttpStatus.OK);
         } catch (Exception e) {
+            log.info("로그 찍히는거 : " + 1);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -152,7 +156,7 @@ public class AdminApiController {
     public ResponseEntity<?> getBoardList(Page page, Option option) {
         try {
             List<Board> boardList = boardService.list(page, option);
-            log.info("Board page 로그 : " + page);
+            log.info("Board page 로그 : " + boardList);
             return new ResponseEntity<>(boardList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -245,7 +249,7 @@ public class AdminApiController {
     @GetMapping("/admin_product")
     public ResponseEntity<?> getProductList() {
         try {
-            List<Products> productsList = productsService.list();
+            List<Products> productsList = productsService.adminList();
             return new ResponseEntity<>(productsList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

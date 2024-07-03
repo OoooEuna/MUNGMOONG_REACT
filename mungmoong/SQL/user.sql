@@ -1,4 +1,4 @@
--- Active: 1717721626738@@127.0.0.1@3306@mypet
+-- Active: 1713353106333@@127.0.0.1@3306@mypet
 
 -- 👩‍💼 USERS  --
 
@@ -34,6 +34,7 @@ CREATE TABLE `user_auth` (
   PRIMARY KEY (`user_id`, `auth`),
   FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`) ON DELETE CASCADE
 ) COMMENT='사용자 권한';
+
 
 -- BCryptPasswordEncoder - 암호화 시
 -- 사용자

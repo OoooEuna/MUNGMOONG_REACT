@@ -40,7 +40,7 @@ public interface UsersMapper {
     public int insertAuth(UserAuth userAuth) throws Exception;
 
     // 관리자 회원 목록 조회
-    public  List<Users> list(Page page, Option option) throws Exception;
+    public  List<Users> list() throws Exception;
 
     // 이름과 이메일로 아이디 찾기
     public  Users findId(@Param("name") String name, @Param("mail") String mail) throws Exception;

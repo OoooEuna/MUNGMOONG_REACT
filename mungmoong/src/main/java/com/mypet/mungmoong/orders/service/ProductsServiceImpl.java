@@ -34,18 +34,18 @@ public class ProductsServiceImpl implements ProductsService {
     @Override
     public Products select(String id) throws Exception {
         Products products = productsMapper.select(id);
-        // Files thumbnail = new Files();
-        // thumbnail.setParentTable(Products.TABLE_NAME);
-        // thumbnail.setParentId(id);
-        // List<Files> files = filesService.listByParent(thumbnail);
-        // for (Files file : files) {
-        //     log.info("썸네일 : " + file);
-        //     if( file.getIsMain() ) {
-        //         thumbnail = file;
-        //     }
-        // }
-        // String thumbnailId = thumbnail.getId();
-        // products.setThumbnailId(thumbnailId);
+        Files thumbnail = new Files();
+        thumbnail.setParentTable(Products.TABLE_NAME);
+        thumbnail.setParentId(id);
+        List<Files> files = filesService.listByParent(thumbnail);
+        for (Files file : files) {
+            log.info("썸네일 : " + file);
+            if( file.getIsMain() ) {
+                thumbnail = file;
+            }
+        }
+        String thumbnailId = thumbnail.getId();
+        products.setThumbnailId(thumbnailId);
         return products;
     }
 
@@ -83,8 +83,8 @@ public class ProductsServiceImpl implements ProductsService {
         // - 부모테이블, 부모ID, 멀티파트파일, 대표 파일, 순서:1
         MultipartFile thumbnailFile = products.getThumbnail();
         // // 썸네일 파일 업로드한 경우만
-        // if( thumbnailFile != null && !thumbnailFile.isEmpty() ) {
-        //     log.info("썸네일 파일 : " + thumbnailFile.getOriginalFilename());
+        if( thumbnailFile != null && !thumbnailFile.isEmpty() ) {
+            log.info("썸네일 파일 : " + thumbnailFile.getOriginalFilename());
 
         //     // 기존 썸네일 삭제
 
@@ -95,7 +95,7 @@ public class ProductsServiceImpl implements ProductsService {
             thumbnail.setParentId(products.getId());
             thumbnail.setIsMain(true);        // 대표 파일 (isMain=true)
             thumbnail.setSeq(1);               // 순서 : 1
-            filesService.upload(thumbnail);        // 썸네일 파일 업로드
+            filesService.upload(thumbnail);}       // 썸네일 파일 업로드
         }
 
     @Override

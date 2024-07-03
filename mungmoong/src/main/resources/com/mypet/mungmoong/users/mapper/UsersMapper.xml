@@ -30,7 +30,6 @@
     </resultMap>
 
 
-
     <!-- 로그인 쿼리 -->
     <select id="login" resultMap="userMap">
         SELECT u.no,
@@ -86,6 +85,7 @@
         DELETE FROM user
         WHERE user_id = #{userId}
     </delete>
+
 
   <select id="selectByNo" parameterType="int" >
         SELECT * FROM users WHERE no = #{no}
