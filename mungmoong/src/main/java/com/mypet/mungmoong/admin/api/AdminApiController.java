@@ -77,11 +77,14 @@ public class AdminApiController {
     }
 
     @GetMapping("/admin_info_read/{userId}")
-    public ResponseEntity<?> read(@PathVariable("userId") String userId) {
+    public ResponseEntity<?> read(@PathVariable("userId") String id) {
+        log.info("여기 조회화면임");
         try {
-            Users users = userService.select(userId);
+            Users users = userService.select(id);
+            log.info("정상적인 조회화면 : " + users.toString());
             return new ResponseEntity<>(users, HttpStatus.OK);
         } catch (Exception e) {
+            log.info("정상적이지 않은화면 : " + 1);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -250,6 +253,7 @@ public class AdminApiController {
     public ResponseEntity<?> getProductList() {
         try {
             List<Products> productsList = productsService.adminList();
+            log.info("리스트;;;;;;;;;;;;;;" + productsList);
             return new ResponseEntity<>(productsList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
