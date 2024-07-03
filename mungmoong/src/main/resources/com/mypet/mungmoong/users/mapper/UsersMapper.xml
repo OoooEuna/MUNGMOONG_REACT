@@ -31,26 +31,6 @@
 
 
 
-    <!-- 회원 조회 -->
-     <select id="select" resultMap="userMap">
-        SELECT user_id
-              ,password
-              ,name
-              ,birth
-              ,address
-              ,email
-              ,phone
-              ,gender
-              ,reg_date
-              ,upd_date
-              ,enabled
-              ,role
-        FROM users
-        WHERE no = #{no} OR user_id = #{userId}
-    </select>
-
-
-
     <!-- 로그인 쿼리 -->
     <select id="login" resultMap="userMap">
         SELECT u.no,
@@ -106,5 +86,14 @@
         DELETE FROM user
         WHERE user_id = #{userId}
     </delete>
+
+  <select id="selectByNo" parameterType="int" >
+        SELECT * FROM users WHERE no = #{no}
+    </select>
+
+      <!-- 사용자 ID로 조회 -->
+    <select id="selectByUserId" parameterType="string">
+        SELECT * FROM users WHERE user_id = #{userId}
+    </select>
 
 </mapper>

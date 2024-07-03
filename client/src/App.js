@@ -13,7 +13,7 @@ import LoginContextProvider from './contexts/LoginContextProvider';
 import RegisterPage from './pages/users/RegisterPage';
 import './css/font.css';
 import Update from './pages/board/Update';
-import TrainerInfo from './components/trainer/TrainerInfo';
+
 // QnA 관련 경로 추가
 // import QnAInsert from './pages/qna/QnAInsert';
 // import QnAList from './pages/qna/QnAList';
@@ -31,7 +31,7 @@ function App() {
             {/* <Route path="/api/trainer/orders" element={ <Orders/> }></Route> */}
             <Route path="/api/trainer/orders" element={<OrdersListContainer />}></Route>
             {/* <Route path="/api/products" element={ <ProductsList/> }></Route> */}
-            {/* <Route path="/api/login" element={ <LoginPage/> }></Route> */}
+            <Route path="/api/login" element={ <LoginPage/> }></Route>
             <Route path="/api/board" element={<List />}></Route>
             <Route path="/api/board/:no" element={<Read />}></Route>
             {/* <Route path="/api/board/update/:no" element={ <Update/> }></Route> */}
@@ -40,16 +40,12 @@ function App() {
             <Route path="/api/register" element={<RegisterPage />}></Route>
             <Route path="/api/board" element={<List />}></Route>
             <Route path="/api/board/:no" element={<Read />}></Route>
-<LoginContextProvider>
-    <div className='App'>
-    <Header />
-    <Routes>
-      <Route path="/" element={<Home/>}></Route>
-      <Route path="/api/trainer/info/" element={ <InfoList/> }></Route>
+    
+      {/* <Route path="/api/trainer/info/" element={ <InfoList/> }></Route> */}
       {/* <Route path="/api/products" element={ <ProductsList/> }></Route> */}
       {/* <Route path="/api/login" element={ <LoginPage/> }></Route> */}
       <Route path="/api/board" element={ <List/> }></Route>
-      <Route path="/api/board/insert" element={ <Insert/> }></Route>
+      {/* <Route path="/api/board/insert" element={ <Insert/> }></Route> */}
       <Route path="/api/board/:no" element={ <Read/> }></Route>
       <Route path="/api/board/update/:no" element={ <Update/> }></Route>
       {/* QnA 관련 경로 추가 */}
