@@ -96,4 +96,10 @@
         SELECT * FROM users WHERE user_id = #{userId}
     </select>
 
+    <select id="list" resultMap="userMap">
+        SELECT *
+        FROM users
+        ORDER BY reg_date DESC
+    </select>
+
 </mapper>

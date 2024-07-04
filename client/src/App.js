@@ -23,8 +23,8 @@ import QnAUpdate from './pages/qna/QnAUpdate';
 // 관리자 영역------------------------------------------------------
 
 /* 회원정보 관리 */
-import AdminUserRead from './pages/admin/AdminUserRead';
 import AdminUserList from './pages/admin/AdminUserList';
+import AdminUserRead from './pages/admin/AdminUserRead';
 
 /* 훈련사 관리 */
 import AdminTrainerList from './pages/admin/AdminTrainerList';
@@ -37,7 +37,7 @@ import AdminBoardRead from './pages/admin/AdminBoardRead';
 import AdminBoardUpdate from './pages/admin/AdminBoardUpdate';
 
 /* 훈련코스 관리 */
-// import AdminProductsList from './pages/admin/AdminProductsList';
+import AdminProductsList from './pages/admin/AdminProductsList';
 import AdminProductsRead from './pages/admin/AdminProductsRead';
 import AdminProductsUpdate from './pages/admin/AdminProductsUpdate';
 import AdminProductsInsert from './pages/admin/AdminProductsInsert';
@@ -61,6 +61,7 @@ import Join from './pages/trainer/Join';
 import ProductsList from './pages/products/ProductsList';
 import ProductsRead from './pages/products/ProductsRead';
 import OrdersList from './components/trainer/OrdersList';
+import AdminTriainerRead from './pages/admin/AdminTriainerRead';
 
 
 function App() {
@@ -95,15 +96,16 @@ function App() {
             {/* -----관리자영역----- */}
             
             <Route path="/api/admin/admin_info" element={<AdminUserList />} />
-            <Route path="/api/admin/admin_info_read" element={<AdminUserRead />} />
+            <Route path="/api/admin/admin_info_read/:id" element={<AdminUserRead />} />
 
             <Route path="/api/admin/admin_trainer" element={<AdminTrainerList />} />
+            <Route path="/api/admin/admin_trainer_read/:id" element={<AdminTriainerRead />} />
 
             <Route path="/api/admin/admin_board" element={<AdminBoardList />} />
             <Route path="/api/admin/admin_board_read/:no" element={<AdminBoardRead />} />
             <Route path="/api/admin/admin_board_update/:no" element={<AdminBoardUpdate />} />
 
-            {/* <Route path="/api/admin/admin_product" element={<AdminProductsList />} /> */}
+            <Route path="/api/admin/admin_product" element={<AdminProductsList />} />
             <Route path="/api/admin/admin_product_read/:id" element={<AdminProductsRead />} />
             <Route path="/api/admin/admin_product_update/:id" element={<AdminProductsUpdate />} />
             <Route path="/api/admin/admin_product_insert" element={<AdminProductsInsert />} />
