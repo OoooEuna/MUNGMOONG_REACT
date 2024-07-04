@@ -15,6 +15,9 @@ export const update = (trainer) => axios.put("/api/trainer/info_update", trainer
 // 훈련사 경력 추가         -  [POST]   
 export const addCareer = (trainer) => axios.post("/api/trainer/career", trainer)
 
+// 훈련사 경력 삭제         -  [DELETE]
+export const deleteCareer = (no) => axios.delete(`/api/trainer/career/${no}`)
+
 // 훈련사 휴무일            -  [GET]  
 export const schedule = () => axios.get("/api/trainer/schedule")
 

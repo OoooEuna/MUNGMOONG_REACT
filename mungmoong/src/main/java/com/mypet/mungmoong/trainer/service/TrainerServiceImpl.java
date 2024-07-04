@@ -149,7 +149,6 @@ public class TrainerServiceImpl implements TrainerService {
         try {
             String userId = trainer.getUserId();
 
-
     
             Trainer existingTrainer = trainerMapper.select(userId);
             if (existingTrainer == null) {
