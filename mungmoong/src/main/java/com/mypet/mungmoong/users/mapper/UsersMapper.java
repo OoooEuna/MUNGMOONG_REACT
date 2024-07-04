@@ -20,12 +20,13 @@ public interface UsersMapper {
     // 회원 조회 (ID로 조회)
     Users selectByUserId(String userId) throws Exception;
 
+    // 회원 조회 (번호로 조회)
     Users selectByNo(int no);
 
     
 
-       // 회원 등록
-       public int insert(Users user);
+    // 회원 등록
+    public int insert(Users user);
 
     // 회원 수정
     public int update(Users user) throws Exception;

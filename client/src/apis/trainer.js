@@ -10,7 +10,13 @@ export const info = (userId) => axios.get(`/api/trainer/info?userId=${userId}`)
 export const getUpdate = (userId) => axios.get(`/api/trainer/info_update?userId=${userId}`)
 
 // 훈련사 수정              -  [PUT]   
-export const update = (trainerData) => axios.put("/api/trainer/info_update", trainerData)
+export const update = (trainer) => axios.put("/api/trainer/info_update", trainer)
+
+// 훈련사 경력 추가         -  [POST]   
+export const addCareer = (trainer) => axios.post("/api/trainer/career", trainer)
+
+// 훈련사 경력 삭제         -  [DELETE]
+export const deleteCareer = (no) => axios.delete(`/api/trainer/career/${no}`)
 
 // 훈련사 휴무일            -  [GET]  
 export const schedule = () => axios.get("/api/trainer/schedule")
@@ -25,7 +31,7 @@ export const insert_schedule = (scheduleData) => axios.post("/api/trainer/schedu
 export const delete_schedule = (no) => axios.delete(`/api/trainer/schedule/event/${no}`)
 
 // 훈련사 입금 내역 목록    -  [GET]    
-export const deposit = () => axios.get("/api/trainer/deposit")
+export const deposit = (trainerNo) => axios.get(`/api/trainer/deposit?trainerNo=${trainerNo}`)
 
 // 훈련사 정보 조회         - [GET]
 export const getTrainerInfo = (userId) => axios.get(`/api/trainer`, { params: { userId } })

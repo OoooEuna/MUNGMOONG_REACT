@@ -65,7 +65,7 @@ public class AdminApiController {
 
     @GetMapping("/admin_info")
     public ResponseEntity<?> list() {
-        log.info("이건 들와 지겠지");
+        log.info("이건 들와 지겠지" + userService.toString());
         try {
             List<Users> usersList = userService.list();
             log.info("Users page 로그 : " + usersList);
@@ -77,11 +77,14 @@ public class AdminApiController {
     }
 
     @GetMapping("/admin_info_read/{userId}")
-    public ResponseEntity<?> read(@PathVariable("userId") String userId) {
+    public ResponseEntity<?> read(@PathVariable("userId") String id) {
+        log.info("여기 조회화면임");
         try {
-            Users users = userService.select(userId);
+            Users users = userService.select(id);
+            log.info("정상적인 조회화면 : " + users.toString());
             return new ResponseEntity<>(users, HttpStatus.OK);
         } catch (Exception e) {
+            log.info("정상적이지 않은화면 : " + 1);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -250,6 +253,7 @@ public class AdminApiController {
     public ResponseEntity<?> getProductList() {
         try {
             List<Products> productsList = productsService.adminList();
+            log.info("리스트;;;;;;;;;;;;;;" + productsList);
             return new ResponseEntity<>(productsList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -268,13 +272,17 @@ public class AdminApiController {
 
     @PostMapping("/admin_product_insert")
     public ResponseEntity<?> insertProduct(@RequestBody Products products) {
+        log.info("여기 넘오옴?" + products);
         try {
             int result = productsService.adminInsert(products);
+            log.info("result : " + result);
+            
             if (result > 0) {
                 return new ResponseEntity<>("Insert Success", HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
+            log.info("예외로 넘어옴");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
