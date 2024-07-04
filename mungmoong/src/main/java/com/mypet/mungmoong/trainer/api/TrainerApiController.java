@@ -242,24 +242,10 @@ public class TrainerApiController {
         List<Career> careerList = trainer.getCareerList();
         for (Career career : careerList) {
             career.setTrainerNo(trainerNo);
-            int result = (career.getNo() > 0) ? careerService.update(career) : careerService.insert(career);
+            int result = careerService.update(career);
             log.info(result > 0 ? "성공!" : "실패..");
         }
 
-        // List<Certificate> certificateList = trainer.toCertificateList();
-        // log.info("certificateList : " + certificateList);
-
-        // for (int i = 0; i < certificateList.size(); i++) {
-        //     Certificate certificate = certificateList.get(i);
-        //     certificate.setTrainerNo(trainerNo);
-
-        //     int result = (certificate.getNo() > 0) ? certificateService.update(certificate): certificateService.insert(certificate);
-        //     if (result > 0) {
-        //         log.info("자격증 성공");
-        //     } else {
-        //         log.info("자격증 실패");
-        //     }
-        // }
 
         int result = trainerService.update(trainer);
         log.debug("Trainer data : {}", trainer);
@@ -297,6 +283,20 @@ public class TrainerApiController {
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Trainer 경력 수정 실패.");
+        }
+    }
+
+    // 경력 삭제
+    @DeleteMapping("/career/{no}")
+    public ResponseEntity<?> deleteCareer(@PathVariable("no") int no) {
+        try {
+            int result = careerService.delete(no);
+            if(result > 0) 
+                return new ResponseEntity<>("Deletre Result", HttpStatus.OK);
+            else
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

@@ -44,4 +44,9 @@ public class CareerServiceImpl implements CareerService {
         return career;
     }
 
+    @Override
+    public int delete(int no) throws Exception {
+        return careerMapper.delete(no);
+    }
+
 }

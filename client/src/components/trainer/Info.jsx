@@ -8,7 +8,7 @@ const Info = ({ userId, careerList, trainer, certificateList }) => {
       <div className="inner">
         <h1 className="title">훈련사 정보</h1>
         <NavBarContainer />
-        <form action={`/trainer/info?userId=${userId}`} method="get">
+        <form>
           <div className="info">
             <table className="table table-bordered">
               <thead className="thead-light">

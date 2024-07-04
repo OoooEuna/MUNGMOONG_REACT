@@ -48,7 +48,6 @@ import UserIndex from './pages/users/Index';
 import UpdatePage from './pages/users/UpdatePage';
 
 
-// 
 // import AdminProductsList from './pages/admin/AdminProductsList';
 
 // trainer
@@ -59,8 +58,7 @@ import Schedule from './components/trainer/Schedule';
 import Info from './pages/trainer/Info';
 import InfoUpdate from './pages/trainer/InfoUpdate';
 import Join from './pages/trainer/Join';
-
-
+import ProductsList from './pages/products/ProductsList';
 import ProductsRead from './pages/products/ProductsRead';
 import OrdersList from './components/trainer/OrdersList';
 
