@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const AdminUserList = ({ usersList, isLoading }) => {
+const AdminUserList = ({ usersList, isLoading, id }) => {
   console.log(";;;;;;;;;;;;;;;;;;;" + usersList);
   return (
     <div className='container'>
@@ -23,10 +23,10 @@ const AdminUserList = ({ usersList, isLoading }) => {
 
               {usersList.map((users) =>
                   (
-                    <tr key={users.no}>
+                    <tr key={users.id}>
                       <td>{users.no}</td>
                       <td>
-                        <Link to={`/api/admin/${users.no}`}>
+                        <Link to={`/api/admin/admin_info_read/${users.userId}`}>
                           {users.userId}
                         </Link>
                       </td>
