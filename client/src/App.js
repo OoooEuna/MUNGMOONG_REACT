@@ -15,10 +15,11 @@ import OrdersListContainer from './containers/trainer/OrdersListContainer';
 import Update from './pages/board/Update';
 
 // QnA 관련 경로 추가
-import QnAInsert from './pages/qna/QnAInsert';
-import QnAList from './pages/qna/QnAList';
-import QnARead from './pages/qna/QnARead';
-import QnAUpdate from './pages/qna/QnAUpdate';
+import QnAList from './components/qna/QnAListComponent';
+import QnARead from './components/qna/QnAReadComponent';
+import QnAInsert from './components/qna/QnAInsertComponent';
+import QnAUpdate from './components/qna/QnAUpdateComponent';
+import QnADelete from './components/qna/QnADeleteComponent';
 
 // 관리자 영역------------------------------------------------------
 
@@ -41,6 +42,7 @@ import AdminBoardUpdate from './pages/admin/AdminBoardUpdate';
 import AdminProductsRead from './pages/admin/AdminProductsRead';
 
 // 관리자 영역------------------------------------------------------
+
 // MyPage 경로 추가
 import UserIndex from './pages/users/Index'; 
 import UpdatePage from './pages/users/UpdatePage';
@@ -117,10 +119,12 @@ function App() {
             <Route path="/api/register" element={<RegisterPage />} />
 
             {/* QnA 관련 경로 추가 */}
-            <Route path='/api/qna/list' element={<QnAList />} />
-            <Route path='/api/qna/read/:no' element={<QnARead />} />
-            <Route path='/api/qna/update/:no' element={<QnAUpdate />} />
-            <Route path='/api/qna/insert' element={<QnAInsert />} />
+            <Route path="/qna" element={<QnAList />} />
+            <Route path="/qna/read/:no" element={<QnARead />} />
+            <Route path="/qna/insert" element={<QnAInsert />} />
+            <Route path="/qna/update/:no" element={<QnAUpdate />} />
+            <Route path="/qna/delete/:no" element={<QnADelete />} />
+                
             {/* MyPage 관련 경로 추가 */}
             <Route path='/api/users' element={<UserIndex />} />
             <Route path='/api/users/index' element={<UserIndex />} />
