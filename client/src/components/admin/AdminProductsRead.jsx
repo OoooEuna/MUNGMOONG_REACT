@@ -19,27 +19,21 @@ const AdminProductsRead = ({id, products, isLoading}) => {
           <table>
             <tbody>
               <tr>
-                <td>번호</td>
+                <td>트레이너번호</td>
                 <td>
-                  <input type="text" value={id} readOnly />
-                </td>
-              </tr>
-              <tr>
-                <td>등록일자</td>
-                <td>
-                  <input type="text" value={products.regDate} readOnly />
+                  <input type="text" value={products.trainerNo} readOnly />
                 </td>
               </tr>
               <tr>
                 <td>제목</td>
                 <td>
-                  <input type="text" value={products.title} readOnly />
+                  <input type="text" value={products.name} readOnly />
                 </td>
               </tr>
               <tr>
-                <td>작성자</td>
+                <td>가격</td>
                 <td>
-                  <input type="text" value={products.userId} readOnly />
+                  <input type="text" value={products.price} readOnly />
                 </td>
               </tr>
               <tr>

@@ -46,14 +46,13 @@ export const AdminProductsList = () => axios.get("/api/admin/admin_product")
 export const AdminProductsRead = (id) => axios.get(`/api/admin/admin_product_read/${id}`)
 
 // 관리자 판매상품 등록
-export const AdminProductsInsert = () => axios.get("/api/admin/admin_product_insert")
+export const AdminProductsInsert = (id, name, trainerNo, description, content, price) => axios.post("/api/admin/admin_product_insert", {id, name, trainerNo, description, content, price})
 
 // 관리자 판매상품 수정
-export const AdminProductsUpdate = () => axios.get("/api/admin/admin_product_update")
+export const AdminProductsUpdate = (id, name, trainerNo, content, price) => axios.put("/api/admin/admin_product_update", {id, name, trainerNo, content, price})
 
 // 관리자 판매상품 삭제
-export const AdminProductsDelete = () => axios.get("/api/admin/admin_product")
-
+export const AdminProductsDelete = (id) => axios.delete(`/api/admin/admin_product_delete/${id}`)
 
 
 

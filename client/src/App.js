@@ -39,6 +39,8 @@ import AdminBoardUpdate from './pages/admin/AdminBoardUpdate';
 /* 훈련코스 관리 */
 // import AdminProductsList from './pages/admin/AdminProductsList';
 import AdminProductsRead from './pages/admin/AdminProductsRead';
+import AdminProductsUpdate from './pages/admin/AdminProductsUpdate';
+import AdminProductsInsert from './pages/admin/AdminProductsInsert';
 
 // 관리자 영역------------------------------------------------------
 // MyPage 경로 추가
@@ -105,6 +107,8 @@ function App() {
 
             {/* <Route path="/api/admin/admin_product" element={<AdminProductsList />} /> */}
             <Route path="/api/admin/admin_product_read/:id" element={<AdminProductsRead />} />
+            <Route path="/api/admin/admin_product_update/:id" element={<AdminProductsUpdate />} />
+            <Route path="/api/admin/admin_product_insert" element={<AdminProductsInsert />} />
 
             {/* ----- 관리자 영역 ----- */}
 
