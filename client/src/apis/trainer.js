@@ -1,7 +1,14 @@
 import axios from 'axios';
 
+// 훈련사 등록 시 정보 조회 -  [GET]   
+export const getUserInfo = (no) => axios.get(`/api/trainer/join_data?no=${no}`);
+
 // 훈련사 정보 등록         -  [POST]  
-export const join = (trainerData) => axios.post("/api/trainer/join_data", trainerData)
+export const join = ({no, trainer}) => axios.post(`/api/trainer/join_data?no=${no}`, trainer, {
+    headers: {
+        'Content-Type': 'multipart/form-data',
+    },
+});
 
 // 훈련사 정보 조회         -  [GET]   
 export const info = (userId) => axios.get(`/api/trainer/info?userId=${userId}`)

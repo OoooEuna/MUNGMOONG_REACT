@@ -119,7 +119,7 @@ const LoginContextProvider = ({ children }) => {
   const loginSetting = (userData, accessToken) => {
 
     // 👧🏻 Users (DTO) [JSON]
-    const { no, userId, authList } = userData
+    const { no, userId, password, userPwCheck, name, birth, address, email, phone, regDate, updDate, enabled, role, gender, authList } = userData;
     // 💳 [ROLE_USER, ROLE_ADMIN]
     const roleList = authList.map((auth) => auth.auth)
     
@@ -136,7 +136,7 @@ const LoginContextProvider = ({ children }) => {
     setLogin(true)
 
     // 👧🏻 [유저 정보] 세팅
-    const updatedUserInfo = {no, userId, roleList}
+    const updatedUserInfo = { no, userId, password, userPwCheck, name, birth, address, email, phone, regDate, updDate, enabled, role, gender, roleList }
     setUserInfo(updatedUserInfo)
 
     // 👮🏻‍♀️ [권한 정보] 세팅
