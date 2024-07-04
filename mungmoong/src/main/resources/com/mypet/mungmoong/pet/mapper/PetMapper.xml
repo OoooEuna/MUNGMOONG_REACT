@@ -30,7 +30,7 @@
     <select id="findPetById" parameterType="int" resultType="com.mypet.mungmoong.pet.dto.Pet">
         SELECT *
         FROM pet
-        WHERE pet_no = #{petNo}
+        WHERE petNo = #{petNo}
     </select>
 
 

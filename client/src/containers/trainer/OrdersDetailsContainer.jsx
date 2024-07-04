@@ -17,10 +17,10 @@ const OrdersDetailsContainer = ( {no} ) => {
     setLoading(true);
     const response = await trainer.orders(no)
     const data = await response.data        // ⭐ orders
-    console.log(`data!! : ${data}`);
+    console.log(`data : ${data}`);
 
-    console.log(`orders!! : ${data.orders}`);
-    console.log(`pet!! : ${data.pet}`);
+    console.log(`orders : ${data.orders}`);
+    console.log(`pet : ${data.pet}`);
     console.dir(data.pet);
 
     setOrders(data.orders)

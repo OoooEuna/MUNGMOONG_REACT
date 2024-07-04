@@ -55,7 +55,7 @@ const Info = ({ userId, careerList, trainer, certificateList }) => {
               </tbody>
             </table>
             <div className="text-end">
-              <Link to={`/trainer/info_update?userId=${userId}`}>
+              <Link to={`/info_update/${userId}`}>
                 <button type="button" className="btn-custom2">수정</button>
               </Link>
             </div>

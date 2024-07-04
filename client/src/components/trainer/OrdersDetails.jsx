@@ -28,6 +28,7 @@ const OrderDetails = ({ pet, orders }) => {
                 </li>
                 <li>
                   <label className="dog_label" htmlFor="character">성격</label>
+                  <input type="text" name="character" id="character" value={pet.petcharacter} readOnly />
                   <input type="text" name="petcharacter" id="petcharacter" value={pet.petcharacter} readOnly />
                 </li>
                 <li>

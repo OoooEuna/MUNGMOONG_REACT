@@ -10,7 +10,10 @@ export const info = (userId) => axios.get(`/api/trainer/info?userId=${userId}`)
 export const getUpdate = (userId) => axios.get(`/api/trainer/info_update?userId=${userId}`)
 
 // 훈련사 수정              -  [PUT]   
-export const update = (trainerData) => axios.put("/api/trainer/info_update", trainerData)
+export const update = (trainer) => axios.put("/api/trainer/info_update", trainer)
+
+// 훈련사 경력 추가         -  [POST]   
+export const addCareer = (trainer) => axios.post("/api/trainer/career", trainer)
 
 // 훈련사 휴무일            -  [GET]  
 export const schedule = () => axios.get("/api/trainer/schedule")
