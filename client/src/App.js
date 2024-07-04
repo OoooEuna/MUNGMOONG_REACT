@@ -30,6 +30,8 @@ import AdminUserRead from './pages/admin/AdminUserRead';
 import AdminTrainerList from './pages/admin/AdminTrainerList';
 
 /* 예약정보 관리 */
+import ProductsList from './pages/products/ProductsList';
+import ProductsRead from './pages/products/ProductsRead';
 
 /* 게시판 관리 */
 import AdminBoardList from './pages/admin/AdminBoardList';
@@ -41,6 +43,7 @@ import AdminProductsList from './pages/admin/AdminProductsList';
 import AdminProductsRead from './pages/admin/AdminProductsRead';
 import AdminProductsUpdate from './pages/admin/AdminProductsUpdate';
 import AdminProductsInsert from './pages/admin/AdminProductsInsert';
+import AdminTriainerRead from './pages/admin/AdminTriainerRead';
 
 // 관리자 영역------------------------------------------------------
 // MyPage 경로 추가
@@ -51,17 +54,13 @@ import UpdatePage from './pages/users/UpdatePage';
 // import AdminProductsList from './pages/admin/AdminProductsList';
 
 // trainer
-
 import OrdersDetails from './pages/trainer/OrdersDetails';
 import Deposit from './pages/trainer/Deposit';
 import Schedule from './components/trainer/Schedule';
 import Info from './pages/trainer/Info';
 import InfoUpdate from './pages/trainer/InfoUpdate';
 import Join from './pages/trainer/Join';
-import ProductsList from './pages/products/ProductsList';
-import ProductsRead from './pages/products/ProductsRead';
-import OrdersList from './components/trainer/OrdersList';
-import AdminTriainerRead from './pages/admin/AdminTriainerRead';
+import OrdersList from './pages/trainer/OrdersList';
 
 
 function App() {

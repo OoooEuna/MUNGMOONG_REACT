@@ -110,11 +110,6 @@ const InfoUpdate = ({ trainer, careerList, newCareerList, certificateList, addCa
             <button type="button" className="btn btn-lg btn-custom2" onClick={onSubmit}>
               저장
             </button>
-            <a href="/trainer/info">
-              <button type="button" className="btn btn-lg btn-custom3">
-                목록
-              </button>
-            </a>
           </div>
         </form>
       </div>
