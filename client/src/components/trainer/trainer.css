@@ -238,6 +238,13 @@ body {
     background-color: #FFF7E5;
 }
 
+.container {
+    width: 100%;
+    margin: 0 auto;
+    font-weight: bold;
+    padding: 50px 0;
+}
+
 
 .inner {
     background-color: #FFF;
