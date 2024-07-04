@@ -60,7 +60,7 @@ import InfoUpdate from './pages/trainer/InfoUpdate';
 import Join from './pages/trainer/Join';
 import ProductsList from './pages/products/ProductsList';
 import ProductsRead from './pages/products/ProductsRead';
-import OrdersList from './components/trainer/OrdersList';
+import OrdersList from './pages/trainer/OrdersList';
 
 
 function App() {
