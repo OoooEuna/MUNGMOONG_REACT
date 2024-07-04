@@ -107,7 +107,7 @@ const InfoUpdate = ({ trainer, careerList, newCareerList, certificateList, addCa
             </tbody>
           </table>
           <div className="bottom-btn text-end">
-            <button type="submit" className="btn btn-lg btn-custom2">
+            <button type="button" className="btn btn-lg btn-custom2" onClick={onSubmit}>
               저장
             </button>
             <a href="/trainer/info">
