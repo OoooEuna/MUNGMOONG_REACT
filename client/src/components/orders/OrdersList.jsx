@@ -3,8 +3,13 @@ import { Link } from 'react-router-dom';
 import formatDate from '../../apis/format'
 
 
-const ProductsList = ({ productList, isLoading }) => {
-  console.log(productList);
+const OrdersList = ({ ordersList, isLoading }) => {
+  console.log(ordersList);
+  console.log("read 주문번호 뜨니");
+  console.log(no);
+  console.log("no");
+  console.log(orders);
+  console.log("orders");
   const templateStyle = {
     backgroundColor : "#fff",
     padding: "7%",
@@ -14,7 +19,7 @@ const ProductsList = ({ productList, isLoading }) => {
   return (
     <div className='container px-5 mb-5'>
         <div className="text-center mb-5" style={{ paddingTop: "5%"}}>
-                <h1 className="display-5 fw-bolder mb-0"><span className="text-gradient d-inline">훈련사</span></h1>
+                <h1 className="display-5 fw-bolder mb-0"><span className="text-gradient d-inline">예약/결제정보</span></h1>
             </div>
        {
         isLoading &&
@@ -23,24 +28,19 @@ const ProductsList = ({ productList, isLoading }) => {
         </div>
       }
     {
-        !isLoading && productList && (
+        !isLoading && ordersList && (
              <div className="row gx-5 justify-content-center">
                   <div className="col-lg-11 col-xl-9 col-xxl-8">
                       <div>
                           <div className="card-body p-0">
                               <div className="row align-items-start">
-                              {productList.map((product) => (
-                                  <div className='d-flex' key={product.id} style={templateStyle}>                                 
-                                        <img src={'/img/trainer01.png'} className="col-4 img-thumbnail img-fluid" alt="훈련사"/>
+                              {ordersList.map((orders) => (
+                                  <div className='d-flex' key={orders.id} style={templateStyle}>                                 
                                           <div className="col-8">
                                               <h2 className="fw-bolder" style={{padding:'3% 10%',fontSize : "1.01rem"}}>
-                                              <Link className="btn btn-warning" style={{marginBottom: "13%"}} to={`/api/products/${product.id}`}>
-                                                더보기
-                                              </Link>
-                                                <p className="card-title fs-5">{product.description}</p>
-                                                <p className="card-text">{product.price}</p>
-                                                <p className="card-text">{product.content}</p>
-                                                <p className="card-text">{product.trainerNo}</p>
+                                                <p className="card-title fs-5">{orders.productId}</p>
+                                                <p className="card-text">{orders.price}</p>
+                                                <p className="card-text">{orders.title}</p>
                                               </h2>
                                         </div>
                                  </div>
@@ -58,4 +58,4 @@ const ProductsList = ({ productList, isLoading }) => {
         )
       }
 
-export default ProductsList
+export default OrdersList

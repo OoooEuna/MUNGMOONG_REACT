@@ -6,6 +6,10 @@ const ProductsRead = ({ id, products }) => {
   console.log(id);
 
   return (
+    <form action="/orders" method="get" id="checkForm">
+      <input type="hidden" name="trainerNo" id="trainerNo" value={products.trainerNo} />
+    <br />
+    <button type="submit">Submit</button>
     <div className="album bg-body-tertiary">
         <div className="container">
             <div className='main-title'>
@@ -16,7 +20,7 @@ const ProductsRead = ({ id, products }) => {
                       <div className='col-12 col-md-6'>
                             <div className='card shadow-sm' style={{height:'100%'}}>
                                   &nbsp;
-                                      <a href='/api/product/id={id}'>{products.id}
+                                      <a href='/api/product/id={id}'>
                                           <div className='card-box'>
                                             <img src={'/img/trainer01.png'} className="col-4 img-thumbnail img-fluid" style={{width:'100%'}} alt="훈련사"/>
                                           </div>
@@ -108,12 +112,14 @@ const ProductsRead = ({ id, products }) => {
                 <Link to="/api/products" className='btn'>목록</Link>
               </div>
           </div>
-              )
-              }
-              </div>
-              </div>
+      )
+    }
+    </div>
+    </div>
+    </form>
   )
 }
+
 
   
 

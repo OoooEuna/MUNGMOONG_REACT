@@ -1,30 +1,30 @@
 import React, { useEffect, useState } from 'react'
-import ProductsUpdateForm from '../components/products/ProductsUpdateForm'
-import * as products from '../apis/products'
+import OrdersUpdate from '../components/orders/OrdersUpdate'
+import * as orders from '../apis/orders'
 import * as files from '../apis/files'
 import { useNavigate } from 'react-router-dom'
 
  
-const ProductsUpdateContainer = ({ no }) => {
+const OrdersUpdateContainer = ({ no }) => {
   // 🧊 state
-  const [products, setproducts] = useState({})
+  const [orders, setorders] = useState({})
   const [fileList, setFileList] = useState([])
   const [isLoading, setLoading] = useState(false)
 
   // 🌞 함수
   const navigate = useNavigate()
 
-  const getproducts = async () => {
+  const getorders = async () => {
     // ⌚ 로딩 시작
     setLoading(true)
-    const response = await products.select(no)
-    const data = await response.data        // ⭐ 🎫products + 📄filelist
+    const response = await orders.select(no)
+    const data = await response.data        // ⭐ orders + 📄filelist
     console.log(data)
     
-    const products = data.products
+    const orders = data.orders
     const fileList = data.fileList
 
-    setproducts(products)
+    setorders(orders)
     setFileList(fileList)
 
     setLoading(false)
@@ -51,13 +51,13 @@ const ProductsUpdateContainer = ({ no }) => {
   
   const onUpdate = async (no, title, writer, content) => {
     try {
-      const response = await products.update(no, title, writer, content)
+      const response = await orders.update(no, title, writer, content)
       const status = await response.status
       console.log(`게시글 수정 요청 결과 : ${status}`);
       alert("게시글 수정 완료!")
 
       // ➡ 게시글 목록으로 이동
-      navigate("/products")
+      navigate("/orders")
 
     } catch (error) {
       console.log(error);
@@ -65,13 +65,13 @@ const ProductsUpdateContainer = ({ no }) => {
   }
 
   const onDelete = async (no) => {
-    const response = await products.remove(no)
+    const response = await orders.remove(no)
     const status = await response.status
     console.log(`게시글 삭제 요청 결과 : ${status}`);
     alert("삭제 완료!")
 
     // ➡ 게시글 목록으로 이동
-    navigate("/products")
+    navigate("/orders")
   }
 
   const onDeleteFile = async (fileNo) => {
@@ -81,8 +81,8 @@ const ProductsUpdateContainer = ({ no }) => {
       console.log(fileResponse.data);
 
       // 파일 목록 갱신
-      const productsResponse = await products.select(no)
-      const data = productsResponse.data
+      const ordersResponse = await orders.select(no)
+      const data = ordersResponse.data
       const fileList = data.fileList
       setFileList(fileList)
 
@@ -101,8 +101,8 @@ const ProductsUpdateContainer = ({ no }) => {
       console.log(response.status);
 
        // 파일 목록 갱신
-       const productsResponse = await products.select(no)
-       const data = productsResponse.data
+       const ordersResponse = await orders.select(no)
+       const data = ordersResponse.data
        const fileList = data.fileList
        setFileList(fileList)
     } catch (error) {
@@ -112,13 +112,13 @@ const ProductsUpdateContainer = ({ no }) => {
 
   // ❓ hook
   useEffect( () => {
-    getproducts()
+    getorders()
   },[])
 
   return (
     <>
       <UpdateForm no={no} 
-                  products={products} 
+                  orders={orders} 
                   fileList={fileList}
                   onUpdate={onUpdate}
                   onDelete={onDelete}
@@ -130,4 +130,4 @@ const ProductsUpdateContainer = ({ no }) => {
   )
 }
 
-export default ProductsUpdateContainer
+export default OrdersUpdateContainer

@@ -30,6 +30,7 @@ import UpdatePage from './pages/users/UpdatePage';
 import AdminProductsList from './pages/admin/AdminProductsList';
 import OrdersList from './pages/trainer/OrdersList';
 import OrdersDetails from './pages/trainer/OrdersDetails';
+import OrdersRead from './pages/orders/OrdersRead';
 
 import ProductsList from './pages/products/ProductsList';
 import ProductsRead from './pages/products/ProductsRead';
@@ -53,6 +54,7 @@ function App() {
             {/* 상품 결재 영역 */}
             <Route path="/api/products" element={<ProductsList />} />
             <Route path="/api/products/:id" element={<ProductsRead />} />
+            <Route path="/api/orders/:no" element={<OrdersRead />} />
 
             {/* 로그인 영역 */}
             <Route path="/api/login" element={<LoginPage />} />
