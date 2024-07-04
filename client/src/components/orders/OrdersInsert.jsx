@@ -5,7 +5,12 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import * as filesApi from '../../apis/files'
 
-const OrdersInsertForm = ({ onInsert }) => {
+const OrdersInsert = ({ onInsert }) => {
+  console.log("read 주문번호 뜨니");
+  console.log(onInsert);
+  console.log("no");
+  console.log(orders);
+  console.log("orders");
 
   // 🧊 state
   const [id, setId] = useState('')
@@ -185,11 +190,11 @@ const OrdersInsertForm = ({ onInsert }) => {
       </table>
       
       <div className="btn-box">
-        <Link to="/products" className='btn'>목록</Link>
+        <Link to="/orders" className='btn'>목록</Link>
         <button className='btn' onClick={ onSubmit }>등록</button>
       </div>
     </div>
   )
 }
 
-export default OrdersInsertForm
+export default OrdersInsert

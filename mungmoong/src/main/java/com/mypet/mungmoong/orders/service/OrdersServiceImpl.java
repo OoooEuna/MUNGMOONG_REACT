@@ -39,6 +39,7 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public int insert(Orders orders) throws Exception {
         int result = ordersMapper.insert(orders);
+        log.info("서비스에서 가져와라 : " + orders);
         return result;
     }
 
