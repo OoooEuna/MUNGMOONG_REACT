@@ -27,6 +27,20 @@ CREATE TABLE `users` (
   UNIQUE KEY `user_id_UNIQUE` (`user_id`)
 ) COMMENT='회원';
 
+CREATE TABLE Pet (
+    petNo INT AUTO_INCREMENT PRIMARY KEY,  -- 기본키이며 자동 증가하는 정수형 필드
+    petname VARCHAR(255) NOT NULL,         -- 애완동물의 이름
+    type VARCHAR(50) NOT NULL,             -- 애완동물의 종류
+    age INT NOT NULL,                      -- 애완동물의 나이
+    petgender CHAR(1) NOT NULL,            -- 애완동물의 성별 (단일 문자 'M' 또는 'F')
+    petcharacter TEXT,                    -- 애완동물의 성격
+    reg_date DATETIME DEFAULT CURRENT_TIMESTAMP, -- 등록 날짜를 저장하는 날짜 및 시간 필드, 기본값은 현재 시간
+    upd_date DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- 수정 날짜
+    user_id VARCHAR(255) NOT NULL,          -- 사용자 ID를 저장하는 문자열 필드
+    specialNotes TEXT                     -- 추가적인 메모를 저장하는 텍스트 필드
+);
+
+
 -- user_auth : 사용자 권한 테이블
 CREATE TABLE `user_auth` (
   `user_id` varchar(100) NOT NULL,
@@ -56,15 +70,3 @@ VALUES ('user', 'ROLE_USER');
 INSERT INTO user_auth (user_id, auth)
 VALUES ('admin', 'ROLE_ADMIN');
 
-CREATE TABLE Pet (
-    petNo INT AUTO_INCREMENT PRIMARY KEY,  -- 기본키이며 자동 증가하는 정수형 필드
-    petname VARCHAR(255) NOT NULL,         -- 애완동물의 이름
-    type VARCHAR(50) NOT NULL,             -- 애완동물의 종류
-    age INT NOT NULL,                      -- 애완동물의 나이
-    petgender CHAR(1) NOT NULL,            -- 애완동물의 성별 (단일 문자 'M' 또는 'F')
-    petcharacter TEXT,                    -- 애완동물의 성격
-    reg_date DATETIME DEFAULT CURRENT_TIMESTAMP, -- 등록 날짜를 저장하는 날짜 및 시간 필드, 기본값은 현재 시간
-    upd_date DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- 수정 날짜
-    user_id VARCHAR(255) NOT NULL,          -- 사용자 ID를 저장하는 문자열 필드
-    specialNotes TEXT                     -- 추가적인 메모를 저장하는 텍스트 필드
-);

@@ -37,7 +37,7 @@ import AdminBoardRead from './pages/admin/AdminBoardRead';
 import AdminBoardUpdate from './pages/admin/AdminBoardUpdate';
 
 /* 훈련코스 관리 */
-import AdminProductsList from './pages/admin/AdminProductsList';
+// import AdminProductsList from './pages/admin/AdminProductsList';
 import AdminProductsRead from './pages/admin/AdminProductsRead';
 
 // 관리자 영역------------------------------------------------------
@@ -46,11 +46,11 @@ import UserIndex from './pages/users/Index';
 import UpdatePage from './pages/users/UpdatePage';
 
 
-
-import AdminProductsList from './pages/admin/AdminProductsList';
+// 
+// import AdminProductsList from './pages/admin/AdminProductsList';
 
 // trainer
-import OrdersList from './pages/trainer/OrdersList';
+
 import OrdersDetails from './pages/trainer/OrdersDetails';
 import Deposit from './pages/trainer/Deposit';
 import Schedule from './components/trainer/Schedule';
@@ -58,8 +58,9 @@ import Info from './pages/trainer/Info';
 import InfoUpdate from './pages/trainer/InfoUpdate';
 import Join from './pages/trainer/Join';
 
-import ProductsList from './pages/products/ProductsList';
+
 import ProductsRead from './pages/products/ProductsRead';
+import OrdersList from './components/trainer/OrdersList';
 
 
 function App() {
@@ -102,13 +103,13 @@ function App() {
             <Route path="/api/admin/admin_board_read/:no" element={<AdminBoardRead />} />
             <Route path="/api/admin/admin_board_update/:no" element={<AdminBoardUpdate />} />
 
-            <Route path="/api/admin/admin_product" element={<AdminProductsList />} />
+            {/* <Route path="/api/admin/admin_product" element={<AdminProductsList />} /> */}
             <Route path="/api/admin/admin_product_read/:id" element={<AdminProductsRead />} />
 
             {/* ----- 관리자 영역 ----- */}
 
             {/* 상품 결재 영역 */}
-            <Route path="/api/products" element={<ProductsList />} />
+            {/* <Route path="/api/products" element={<ProductsList />} /> */}
             <Route path="/api/products/:id" element={<ProductsRead />} />
 
             {/* 로그인 영역 */}

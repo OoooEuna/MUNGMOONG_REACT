@@ -24,11 +24,11 @@ const OrderDetails = ({ pet, orders }) => {
                 </li>
                 <li>
                   <label className="dog_label" htmlFor="petgender">성별</label>
-                  <input type="text" name="petgender" id="petgender" value={pet.petgender === 0 ? '♂' : (pet.petgender === 1 ? '♀' : '')} readOnly />
+                  <input type="text" name="petgender" id="petgender" value={pet.petgender === 'M' ? '♂' : (pet.petgender === 'F' ? '♀' : '')} readOnly />
                 </li>
                 <li>
                   <label className="dog_label" htmlFor="character">성격</label>
-                  <input type="text" name="character" id="character" value={pet.character} readOnly />
+                  <input type="text" name="petcharacter" id="petcharacter" value={pet.petcharacter} readOnly />
                 </li>
                 <li>
                   <label className="dog_label" htmlFor="type">견종</label>
