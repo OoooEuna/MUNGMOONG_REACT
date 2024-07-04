@@ -272,13 +272,17 @@ public class AdminApiController {
 
     @PostMapping("/admin_product_insert")
     public ResponseEntity<?> insertProduct(@RequestBody Products products) {
+        log.info("여기 넘오옴?" + products);
         try {
             int result = productsService.adminInsert(products);
+            log.info("result : " + result);
+            
             if (result > 0) {
                 return new ResponseEntity<>("Insert Success", HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
+            log.info("예외로 넘어옴");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
