@@ -57,7 +57,7 @@ public class TrainerApiController {
 
     // @GetMapping("/{page}")
     // public String test(@PathVariable("page") String page) {
-    //     return "/trainer/" + page;
+    // return "/trainer/" + page;
     // }
 
     // ⭐ 데이터 요청과 화면 출력
@@ -99,36 +99,34 @@ public class TrainerApiController {
         return ResponseEntity.ok(trainer);
     }
 
-
     // orders 목록
     @GetMapping("/orders")
     public ResponseEntity<?> ordersList(@RequestParam("trainerNo") Integer trainerNo) throws Exception {
         log.info("[GET] - /api/orders");
         if (trainerNo == null) {
-            log.error("트레이너 번호를 찾을 수 없습니다.");
+            log.error("트레이너 번호를 찾을 수 없습니다. :(");
             // 트레이너 번호가 없을 경우 에러 처리
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                                 .body("트레이너 번호를 찾을 수 없습니다.");
+                    .body("트레이너 번호를 찾을 수 없습니다. :(");
         }
-    
+
         // 데이터 요청
         log.info("trainerNo : " + trainerNo);
         List<Orders> ordersList = ordersService.listByTrainer(trainerNo);
-    
+
         // 데이터와 함께 상태 코드 반환
         return ResponseEntity.ok(ordersList);
     }
 
-    
     // 입금 내역 목록
     @GetMapping("/deposit")
-    public ResponseEntity<?> deposit(HttpSession session) throws Exception {
+    public ResponseEntity<?> deposit(@RequestParam("trainerNo") Integer trainerNo) throws Exception {
         log.info("[GET] - /api/deposit");
-        Integer trainerNo = (Integer) session.getAttribute("trainerNo");
         if (trainerNo == null) {
-            log.error("트레이너 번호를 세션에서 찾을 수 없습니다.");
+            log.error("트레이너 번호를 찾을 수 없습니다 :(");
+            // 트레이너 번호가 없을 경우 에러 처리
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                                 .body("트레이너 번호를 세션에서 찾을 수 없습니다.");
+                    .body("트레이너 번호를 찾을 수 없습니다. :( ");
         }
 
         // 데이터 요청
@@ -149,14 +147,13 @@ public class TrainerApiController {
         Map<String, Object> response = new HashMap<>();
         response.put("ordersList", ordersList);
         response.put("totalAmount", totalAmount);
-        response.put("approvedOrdersList", approvedOrdersList);
+        // response.put("approvedOrdersList", approvedOrdersList);
         response.put("totalApprovedAmount", totalApprovedAmount);
 
         // JSON 형식으로 데이터 반환
         return ResponseEntity.ok(response);
     }
- 
-    
+
     // Meaning 수정 작업
     @PutMapping("/orders")
     public ResponseEntity<?> updateOrderMeaning(@RequestBody Map<String, Integer> request) throws Exception {
@@ -165,8 +162,6 @@ public class TrainerApiController {
         ordersService.updateMeaning(no, meaning);
         return ResponseEntity.ok("Order의 meaning이 성공적으로 수정되었습니다!! ヽ(✿ﾟ▽ﾟ)ノ");
     }
-    
-    
 
     // Orders 조회
     @GetMapping("/orders_details")
@@ -177,16 +172,15 @@ public class TrainerApiController {
         Pet pet = petService.findPetById(petNo);
         log.info(":::::  pet  ::::::" + pet.toString());
         log.info(":::: orders :::::" + orders.toString());
-    
+
         // 응답 데이터 생성
         Map<String, Object> response = new HashMap<>();
         response.put("orders", orders);
         response.put("pet", pet);
-    
+
         // JSON 형식으로 데이터 반환
         return ResponseEntity.ok(response);
     }
-    
 
     // 훈련사 정보 조회 (경력, 소개, 자격증)
     @GetMapping("/info")
@@ -194,21 +188,182 @@ public class TrainerApiController {
         Trainer trainer = trainerService.select(userId);
         List<Career> careerList = careerService.select(userId);
         List<Certificate> certificateList = certificateService.listByUserId(userId);
-    
+
         // 응답 데이터 생성
         Map<String, Object> response = new HashMap<>();
         response.put("trainer", trainer);
         response.put("careerList", careerList);
         response.put("certificateList", certificateList);
-    
+
         // JSON 형식으로 데이터 반환
         return ResponseEntity.ok(response);
     }
-    
+
+    // 훈련사 수정 화면
+    @GetMapping("/info_update")
+    public ResponseEntity<?> update(@RequestParam("userId") String userId) throws Exception {
+        Trainer trainer = trainerService.select(userId);
+        int trainerNo = trainer.getNo();
+        List<Career> careerList = careerService.select(userId); // select -> listByUserId
+        List<Certificate> certificateList = certificateService.listByUserId(userId);
+        Files file = new Files(); // assuming a default constructor or appropriate method to get Files object
+        List<Files> fileList = fileService.listByParent(file);
+
+        log.info("--------------------------------------------------------------");
+        log.info(careerList.toString());
+
+        file.setParentTable("trainer");
+        file.setParentTable("certificate");
+
+        // 응답 데이터 생성
+        Map<String, Object> response = new HashMap<>();
+        response.put("trainer", trainer);
+        response.put("trainerNo", trainerNo);
+        response.put("careerList", careerList);
+        response.put("certificateList", certificateList);
+        response.put("fileList", fileList);
+
+        // JSON 형식으로 데이터 반환
+        return ResponseEntity.ok(response);
+    }
+
+    // 훈련사 수정 처리
+    // [PUT] /api/trainer
+    // : 훈련사 정보만 수정
+    @PutMapping("/info_update")
+    public ResponseEntity<?> updatePro(@RequestBody Trainer trainer) throws Exception {
+
+        log.info(":::::::::::::::::: 훈련사 정보 수정 :::::::::::::::::::");
+        log.info("trainer : " + trainer.toString());
+
+        int trainerNo = trainer.getNo();
+        log.info("트레이너 번호 : " + trainerNo);
+
+        List<Career> careerList = trainer.getCareerList();
+        for (Career career : careerList) {
+            career.setTrainerNo(trainerNo);
+            int result = careerService.update(career);
+            log.info(result > 0 ? "성공!" : "실패..");
+        }
+
+
+        int result = trainerService.update(trainer);
+        log.debug("Trainer data : {}", trainer);
+
+        if (result > 0) {
+            return ResponseEntity.ok("Trainer information updated successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to update trainer information.");
+        }
+    }
+
+    // 훈련사 - 경력 추가
+    @PostMapping("/career")
+    public ResponseEntity<?> addCareer(@RequestBody Trainer trainer) throws Exception {
+
+        log.info(":::::::::::::::::: 훈련사 경력 추가 :::::::::::::::::::");
+        log.info("trainer : " + trainer.toString());
+
+        int trainerNo = trainer.getNo();
+        String userId = trainer.getUserId();
+        log.info("트레이너 번호 : " + trainerNo);
+
+        List<Career> careerList = trainer.getCareerList();
+        int result = 0;
+        for (Career career : careerList) {
+            career.setTrainerNo(trainerNo);
+            career.setUserId(userId);
+            result += careerService.insert(career);
+            log.info(result > 0 ? "성공!" : "실패..");
+        }
+
+        if (result > 0) {
+            return ResponseEntity.ok("Trainer 경력 추가 성공.");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Trainer 경력 수정 실패.");
+        }
+    }
+
+    // 경력 삭제
+    @DeleteMapping("/career/{no}")
+    public ResponseEntity<?> deleteCareer(@PathVariable("no") int no) {
+        try {
+            int result = careerService.delete(no);
+            if(result > 0) 
+                return new ResponseEntity<>("Deletre Result", HttpStatus.OK);
+            else
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // 훈련사 수정 처리
+    // @PutMapping("/info_update")
+    // public ResponseEntity<?> updatePro(@RequestBody Trainer trainer, @RequestParam("files") List<MultipartFile> files) throws Exception {
+    //     log.info(":::::::::::::::::: 훈련사 정보 수정 :::::::::::::::::::");
+    //     log.info("trainer : " + trainer.toString());
+
+    //     int trainerNo = trainer.getNo();
+    //     log.info("트레이너 번호 : " + trainerNo);
+
+    //     List<Career> careerList = trainer.toCareerList();
+    //     for (Career career : careerList) {
+    //         career.setTrainerNo(trainerNo);
+    //         int result = (career.getNo() > 0) ? careerService.update(career) : careerService.insert(career);
+    //         log.info(result > 0 ? "성공!" : "실패..");
+    //     }
+
+    //     List<Certificate> certificateList = trainer.toCertificateList();
+    //     log.info("certificateList : " + certificateList);
+    //     log.info("업로드 파일 목록 - files : " + files);
+
+    //     for (int i = 0; i < certificateList.size(); i++) {
+    //         Certificate certificate = certificateList.get(i);
+    //         certificate.setTrainerNo(trainerNo);
+
+    //         int result = (certificate.getNo() > 0) ? certificateService.update(certificate)
+    //                 : certificateService.insert(certificate);
+    //         if (result > 0) {
+    //             log.info("자격증 성공");
+    //         } else {
+    //             log.info("자격증 실패");
+    //         }
+
+    //         if (i < files.size()) {
+    //             MultipartFile file = files.get(i);
+    //             if (!file.isEmpty()) {
+    //                 Files fileEntity = new Files();
+    //                 fileEntity.setFile(file);
+    //                 fileEntity.setParentTable("certificate");
+    //                 fileEntity.setParentNo(certificate.getNo()); // 이 시점에서 certificate.getNo()는 올바른 값이어야 함
+    //                 fileService.upload(fileEntity);
+    //                 certificate.setImgFile(fileEntity); // Files 객체를 자격증 객체에 설정
+    //                 certificate.insertImg();
+    //             }
+    //         }
+    //     }
+
+    //     int result = trainerService.update(trainer);
+    //     log.debug("Trainer data : {}", trainer);
+
+    //     if (result > 0) {
+    //         return ResponseEntity.ok("Trainer information updated successfully.");
+    //     } else {
+    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    //                 .body("Failed to update trainer information.");
+    //     }
+    // }
 
     // 훈련사 정보 등록
     @PostMapping("/join_data")
     public ResponseEntity<?> insertPro(@RequestBody Trainer trainer, HttpSession session) {
+
+        log.info("::::::::::: 훈련사 정보 등록 ::::::::::::");
+        log.info(trainer.toString());
+
         try {
             Users user = (Users) session.getAttribute("user");
 
@@ -233,106 +388,10 @@ public class TrainerApiController {
             }
         } catch (Exception e) {
             log.error("Error occurred while processing trainer data", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while processing trainer data: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error occurred while processing trainer data: " + e.getMessage());
         }
     }
-
-
-    
-    // 훈련사 수정 화면
-    @GetMapping("/info_update")
-    public ResponseEntity<?> update(@RequestParam("userId") String userId, HttpSession session) throws Exception {
-        Trainer trainer = trainerService.select(userId);
-        List<Career> careerList = careerService.select(userId); // select -> listByUserId
-        List<Certificate> certificateList = certificateService.listByUserId(userId);
-        Files file = new Files(); // assuming a default constructor or appropriate method to get Files object
-        List<Files> fileList = fileService.listByParent(file);
-        Integer trainerNo = (Integer) session.getAttribute("trainerNo");
-
-        if (trainerNo == null) {
-            log.error("트레이너 번호를 세션에서 찾을 수 없습니다.");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("트레이너 번호를 세션에서 찾을 수 없습니다.");
-        }
-
-        log.info("--------------------------------------------------------------");
-        log.info(careerList.toString());
-
-        file.setParentTable("trainer");
-        file.setParentTable("certificate");
-
-        // 응답 데이터 생성
-        Map<String, Object> response = new HashMap<>();
-        response.put("trainer", trainer);
-        response.put("trainerNo", trainerNo);
-        response.put("careerList", careerList);
-        response.put("certificateList", certificateList);
-        response.put("fileList", fileList);
-
-        // JSON 형식으로 데이터 반환
-        return ResponseEntity.ok(response);
-    }
-
-
-    // 훈련사 수정 처리
-    @PutMapping("/info_update")
-    public ResponseEntity<?> updatePro(@RequestBody Trainer trainer, @RequestParam("files") List<MultipartFile> files, HttpSession session) throws Exception {
-        log.info(":::::::::::::::::: 훈련사 정보 수정 :::::::::::::::::::");
-        log.info("trainer : " + trainer.toString());
-
-        Integer trainerNo = (Integer) session.getAttribute("trainerNo");
-        if (trainerNo == null) {
-            log.error("트레이너 번호를 세션에서 찾을 수 없습니다.");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("트레이너 번호를 세션에서 찾을 수 없습니다.");
-        }
-        log.info("세션에서 가져온 트레이너 번호 : " + trainerNo);
-
-        List<Career> careerList = trainer.toCareerList();
-        for (Career career : careerList) {
-            career.setTrainerNo(trainerNo);
-            int result = (career.getNo() > 0) ? careerService.update(career) : careerService.insert(career);
-            log.info(result > 0 ? "성공!" : "실패..");
-        }
-
-        List<Certificate> certificateList = trainer.toCertificateList();
-        log.info("certificateList : " + certificateList);
-        log.info("업로드 파일 목록 - files : " + files);
-
-        for (int i = 0; i < certificateList.size(); i++) {
-            Certificate certificate = certificateList.get(i);
-            certificate.setTrainerNo(trainerNo);
-
-            int result = (certificate.getNo() > 0) ? certificateService.update(certificate) : certificateService.insert(certificate);
-            if (result > 0) {
-                log.info("자격증 성공");
-            } else {
-                log.info("자격증 실패");
-            }
-
-            if (i < files.size()) {
-                MultipartFile file = files.get(i);
-                if (!file.isEmpty()) {
-                    Files fileEntity = new Files();
-                    fileEntity.setFile(file);
-                    fileEntity.setParentTable("certificate");
-                    fileEntity.setParentNo(certificate.getNo());  // 이 시점에서 certificate.getNo()는 올바른 값이어야 함
-                    fileService.upload(fileEntity);
-                    certificate.setImgFile(fileEntity); // Files 객체를 자격증 객체에 설정
-                    certificate.insertImg();
-                }
-            }
-        }
-
-        int result = trainerService.update(trainer);
-        log.debug("Trainer data : {}", trainer);
-
-        if (result > 0) {
-            return ResponseEntity.ok("Trainer information updated successfully.");
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update trainer information.");
-        }
-    }
-
-
 
     // 스케쥴 👩‍🏫(full calendar 샘플)
     @GetMapping("/schedule")
@@ -349,7 +408,6 @@ public class TrainerApiController {
         return ResponseEntity.ok(response);
     }
 
-
     // 스케쥴 등록
     @PostMapping("/schedule")
     public ResponseEntity<?> saveSchedule(@RequestBody Schedule schedule, HttpSession session) {
@@ -362,22 +420,22 @@ public class TrainerApiController {
             }
             String userId = loginUser.getUserId();
             log.info("저장된 아이디 : " + userId);
-    
+
             schedule.setTrainerNo(trainerNo);
             schedule.setUserId(userId);
             int result = scheduleService.insert(schedule);
-    
+
             if (result > 0) {
                 log.info("스케쥴 등록이 완료되었습니다╰(*°▽°*)╯");
                 return ResponseEntity.ok("Schedule saved successfully.");
             }
         } catch (Exception e) {
             log.error("Error occurred while processing trainer data", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while processing trainer data: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error occurred while processing trainer data: " + e.getMessage());
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save schedule.");
     }
-    
 
     /**
      * 캘린더 데이터
@@ -398,9 +456,7 @@ public class TrainerApiController {
         }
         return ResponseEntity.ok(eventList);
     }
-    
 
-    
     // 일정 삭제
     @DeleteMapping("/schedule/event/{no}")
     public ResponseEntity<?> deleteTrainerScheduleEvent(@PathVariable("no") int no) throws Exception {
@@ -412,6 +468,5 @@ public class TrainerApiController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("FAIL");
         }
     }
-    
 
 }

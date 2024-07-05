@@ -20,11 +20,16 @@ public interface CareerMapper {
 
     // 경력 등록
     public int insert(Career career) throws Exception;
+
     // 경력 수정
     public int update(Career career) throws Exception;
     
+    // 경력 삭제
+    public int delete(int no) throws Exception;
+
     // 경력 번호(기본키) 최댓값
     public int maxPk() throws Exception;
+
 
     // 경력 데이터 개수 조회
 

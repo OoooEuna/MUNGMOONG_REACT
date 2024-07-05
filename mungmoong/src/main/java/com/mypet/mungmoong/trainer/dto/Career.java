@@ -1,7 +1,6 @@
 package com.mypet.mungmoong.trainer.dto;
 
 import java.util.Date;
-import java.util.List;
 
 import lombok.Data;
 
@@ -14,5 +13,4 @@ public class Career {
     private Date updDate;          // 수정일
     private int trainerNo;         // Trainer 번호
 
-    private List<Files> files;     // 파일 리스트 (자격증 사진 등)
 } 
