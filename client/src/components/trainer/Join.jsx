@@ -1,12 +1,78 @@
-import React from 'react';
+import React, { useState } from 'react';
+import * as files from '../../apis/files';
 
-const Join = ({ userInfo, handleSubmit, careerList, addCareerInput, handleCareerChange, certificateList, addCertificateInput, handleCertificateChange, content, handleContentChange, handleThumbnailChange }) => {
+const Join = ({ userInfo, onInsert }) => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
+  };
+
+  const [careerList, setCareerList] = useState([]);
+  const [certificateList, setCertificateList] = useState([{ name: '', file: null }]);
+  const [content, setContent] = useState('');
+  const [thumbnail, setThumbnail] = useState(null);
+
+  const addCareerInput = () => setCareerList([...careerList, '']);
+  const handleCareerChange = (index, value) => {
+    const newCareerList = [...careerList];
+    newCareerList[index] = value;
+    setCareerList(newCareerList);
+  };
+
+  const addCertificateInput = () => setCertificateList([...certificateList, { name: '', file: null }]);
+  const handleCertificateChange = (index, field, value) => {
+
+    console.log(`value : ${value}`);
+    const newCertificateList = [...certificateList];
+    newCertificateList[index][field] = value;
+    setCertificateList(newCertificateList);
+  };
+
+  const handleContentChange = (event) => setContent(event.target.value);
+  const handleThumbnailChange = (event) => setThumbnail(event.target.files[0]);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+
+    const formData = new FormData();
+    formData.append('userId', userInfo.userId);
+    formData.append('name', userInfo.name);
+    formData.append('gender', userInfo.gender);
+    formData.append('birth', userInfo.birth);
+    formData.append('address', userInfo.address);
+    formData.append('phone', userInfo.phone);
+    formData.append('mail', userInfo.email);
+    formData.append('content', content);
+    formData.append('thumbnail', thumbnail);
+    formData.append('careerNames', careerList);
+
+    // 자격증 이름/파일 
+    // 이름과 파일 배열 초기화
+    const certificateNames = [];
+    const files = [];
+
+    // 객체 배열을 순회하며 이름과 파일을 각각의 배열로 분리
+    certificateList.forEach(item => {
+      certificateNames.push(item.name);
+      files.push(item.file);
+    });
+    console.log(`자격증 파일들 : `);
+    console.dir(files)
+
+    formData.append('certificateNames', certificateNames);
+
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        formData.append('files', file)
+      }
+    }
+
+    onInsert(userInfo.no, formData, { 'Content-Type': 'multipart/form-data' });
   };
 
   return (
@@ -112,6 +178,7 @@ const Join = ({ userInfo, handleSubmit, careerList, addCareerInput, handleCareer
                         <input
                           className="form-control"
                           type="file"
+                          name="files[]"
                           onChange={(e) => handleCertificateChange(index, 'file', e.target.files[0])}
                         />
                       </div>
