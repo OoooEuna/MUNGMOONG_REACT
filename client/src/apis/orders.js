@@ -1,18 +1,17 @@
-// 💻 npm install axios
-import axios from 'axios';
+import api from './api';
 
 // 목록
-export const list = () => axios.get("/api/orders")
+export const list = () => api.get("/api/orders")
 
 // 조회
-export const select = (no) => axios.get(`/api/orders/${no}`)
+export const select = (no) => api.get(`/api/orders/${no}`)
 
 // 등록
-export const insert = (orders) => axios.post("/api/orders", {orders})
+export const insert = (orders) => api.post("/api/orders", orders)
 
 // 수정
-export const update = (orders) => axios.put("/api/orders", {orders})
+export const update = (orders) => api.put("/api/orders", {orders})
 
 // 삭제
-export const remove = (no) => axios.delete(`/api/orders/${no}`)
+export const remove = (no) => api.delete(`/api/orders/${no}`)
 

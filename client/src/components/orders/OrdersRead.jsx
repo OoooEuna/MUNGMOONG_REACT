@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 
 const OrdersRead = ({ no, orders }) => {
-  console.log("read 주문번호 뜨니");
-  console.log(no);
-  console.log("no");
-  console.log(orders);
-  console.log("orders");
+
+  const requestPay = () =>{
+    console.log('결제한다요')
+  }
+
+  useEffect(() => {
+    console.log(`:::::::::::::::::::`);
+    console.log(`orders : ${orders}`);
+  }, []) 
 
   return (
     <form action="/orders" method="get" id="checkForm">
@@ -30,23 +34,23 @@ const OrdersRead = ({ no, orders }) => {
                       <tr>
                         <th className="table-secondary">이름</th>
                         <td>
-                          <p className="m-0" id="name">{orders.name}</p>
+                          <p className="m-0" id="name">{ orders?.user?.name }</p>
                         </td>
                       </tr>
                       <tr>
                         <th className="table-secondary">전화번호</th>
                         <td>
-                          <p className="m-0" id="tel">{orders.user.phone}</p>
+                          <p className="m-0" id="tel">{orders?.user?.phone}</p>
                         </td>
                       </tr>
                       <tr>
                         <th className="table-secondary">마이펫</th>
                         <td>
-                          {/* <select name="petNo" id="petNo" className="form-control">
-                            {petList.map(pet => (
+                          <select name="petNo" id="petNo" className="form-control">
+                            {orders.petList?.map(pet => (
                               <option key={pet.petNo} value={pet.petNo}>{pet.petname}</option>
                             ))}
-                          </select> */}
+                          </select>
                         </td>
                       </tr>
                     </tbody>
@@ -65,15 +69,15 @@ const OrdersRead = ({ no, orders }) => {
                     <tbody>
                       <tr>
                         <th className="table-secondary">이름</th>
-                        {/* <td>
-                          <p className="m-0" id="name">{trainers.name}</p>
-                        </td> */}
+                        <td>
+                          <p className="m-0" id="name">{orders.trainer?.name}</p>
+                        </td>
                       </tr>
                       <tr>
                         <th className="table-secondary">전화번호</th>
-                        {/* <td>
-                          <p className="m-0" id="tel">{trainers.phone}</p>
-                        </td> */}
+                        <td>
+                          <p className="m-0" id="tel">{orders.trainer?.phone}</p>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -94,7 +98,7 @@ const OrdersRead = ({ no, orders }) => {
                       <tr>
                         <th className="col-4 col-md-2 table-secondary">주문 정보</th>
                         <td className="col-8 col-md-10">
-                          <p className="m-0" id="orderTitle">{orders.title}</p>
+                          <p className="m-0" id="orderTitle">{orders?.order?.title}</p>
                         </td>
                       </tr>
                     </tbody>
@@ -103,7 +107,7 @@ const OrdersRead = ({ no, orders }) => {
                     <tbody>
                       <tr>
                         <th className="col-4 col-md-2 table-secondary">총 가격</th>
-                        <td className="col-8 col-md-10">&#8361; {orders.price.toLocaleString()} 원</td>
+                        <td className="col-8 col-md-10">&#8361; {orders.order?.price.toLocaleString()} 원</td>
                       </tr>
                     </tbody>
                   </table>
@@ -125,14 +129,14 @@ const OrdersRead = ({ no, orders }) => {
                         <tr>
                           <th className="col-4 col-md-2 table-secondary">총상품가격</th>
                           <td className="col-8 col-md-10">
-                            <p className="m-0">&#8361; {orders.price.toLocaleString()} 원</p>
+                            <p className="m-0">&#8361; {orders.order?.price.toLocaleString()} 원</p>
                           </td>
                         </tr>
                         <tr>
                           <th className="col-4 col-md-2 table-secondary">총결제금액</th>
                           <td className="col-8 col-md-10">
                             {/* TODO: 나중에 할인/쿠폰 고려 */}
-                            <p className="m-0">&#8361; {orders.price.toLocaleString()} 원</p>
+                            <p className="m-0">&#8361; {orders.order?.price.toLocaleString()} 원</p>
                           </td>
                         </tr>
                       </tbody>
@@ -141,8 +145,8 @@ const OrdersRead = ({ no, orders }) => {
                   <div className="d-grid gap-2 my-5">
                     {/* TODO: 배송지ID 가져오기 */}
                     <input type="hidden" name="addressId" id="addressId" value="" />
-                    <input type="hidden" name="price" id="price" value={orders.price} />
-                    {/* <button className="btn btn-primary" type="button" onClick={requestPay}>결제하기</button> */}
+                    <input type="hidden" name="price" id="price" value={orders?.order?.price} />
+                    <button className="btn btn-primary" type="button" onClick={requestPay}>결제하기</button>
                   </div>
                 </div>
               </div>

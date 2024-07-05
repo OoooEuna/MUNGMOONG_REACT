@@ -92,7 +92,7 @@
     </select>
 
       <!-- 사용자 ID로 조회 -->
-    <select id="selectByUserId" parameterType="string">
+    <select id="selectByUserId" parameterType="string" resultType="Users">
         SELECT * FROM users WHERE user_id = #{userId}
     </select>
 

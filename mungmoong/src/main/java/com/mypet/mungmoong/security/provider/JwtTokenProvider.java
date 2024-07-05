@@ -144,6 +144,7 @@ public class JwtTokenProvider {
                 if( userInfo != null ) {
                     user.setName(userInfo.getName());
                     user.setEmail(userInfo.getEmail());
+                    user.setAddress(userInfo.getAddress());
                 }
             } catch (Exception e) {
                 log.error(e.getMessage());
