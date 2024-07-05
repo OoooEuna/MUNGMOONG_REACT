@@ -20,6 +20,7 @@ public class Orders {
     private String address;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date resDate;
+    // private String date;
     private String memo;
     private String title;
     private int price;

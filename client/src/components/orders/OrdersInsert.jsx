@@ -5,21 +5,21 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import * as filesApi from '../../apis/files'
 
-const OrdersInsert = ({ onInsert }) => {
+const OrdersInsert = ({ no, orders, onInsert }) => {
   console.log("read 주문번호 뜨니");
   console.log(onInsert);
   console.log("no");
   console.log(orders);
   console.log("orders");
 
-  // 🧊 state
+  // 🧊 state 상태확인
   const [id, setId] = useState('')
   const [trainerNo, setTrainerNo] = useState('')
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')   
-  const [files, setFiles] = useState(null)      // ✅ files state 추가
+  //const [files, setFiles] = useState(null)      // ✅ files state 추가
 
-  // 🌞 함수
+  // 🌞 함수 이벤트 입력받는 값
   const handleChangeTitle = (e) => {
     setTitle(e.target.value)
   }
@@ -100,100 +100,136 @@ const OrdersInsert = ({ onInsert }) => {
   };
 
   return (
-    <div className='container'>
-      <h1 className='title'>게시글 등록</h1>
-      <table className={styles.table}>
-        <tbody>
-          <tr>
-            <td>제목</td>
-            <td>
-              {/* 
-                CSS moduel 의 클래스 선택자는 카멜케이스로 쓰는 것이 관례
-                - 카멜 케이스 : styles.formInput
-                - 케밥 케이스 : styles['form-input']
-              */}
-              <input type="text"
-                     className={styles['form-input']}
-                     value={title}
-                     onChange={handleChangeTitle} />
-            </td>
-          </tr>
-          <tr>
-            <td>작성자</td>
-            <td>
-              <input type="text"
-                     className={styles['form-input']}
-                     value={writer}
-                     onChange={handleChangeWriter} />
-            </td>
-          </tr>
-          <tr>
-            <td colSpan={2}>내용</td>
-          </tr>
-          <tr>
-            <td colSpan={2}>
-              <CKEditor
-                editor={ ClassicEditor }
-                config={{
-                    placeholder: "내용을 입력하세요.",
-                    toolbar: {
-                        items: [
-                            'undo', 'redo',
-                            '|', 'heading',
-                            '|', 'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor',
-                            '|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
-                            '|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent',
-                            '|', 'link', 'uploadImage', 'blockQuote', 'codeBlock',
-                            '|', 'mediaEmbed',
-                        ],
-                        shouldNotGroupWhenFull: false
-                    },
-                    editorConfig: {
-                        height: 500, // Set the desired height in pixels
-                    },
-                    alignment: {
-                        options: ['left', 'center', 'right', 'justify'],
-                    },
-                    
-                    extraPlugins: [uploadPlugin]            // 업로드 플러그인
-                }}
-                data=""         // ⭐ 기존 컨텐츠 내용 입력 (HTML)
-                onReady={ editor => {
-                    // You can store the "editor" and use when it is needed.
-                    console.log( 'Editor is ready to use!', editor );
-                } }
-                onChange={ ( event, editor ) => {
-                    const data = editor.getData();
-                    console.log( { event, editor, data } );
-                    setContent(data);
-                } }
-                onBlur={ ( event, editor ) => {
-                    console.log( 'Blur.', editor );
-                } }
-                onFocus={ ( event, editor ) => {
-                    console.log( 'Focus.', editor );
-                } }
-              />
-              {/* <textarea cols="40" rows="10"
-                        className={styles['form-input']}
-                        value={content}
-                        onChange={handleChangeContent}></textarea> */}
-            </td>
-          </tr>
-          <tr>
-            <td>파일</td>
-            <td>
-              <input type="file" onChange={handleChangeFile} multiple />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      
-      <div className="btn-box">
-        <Link to="/orders" className='btn'>목록</Link>
-        <button className='btn' onClick={ onSubmit }>등록</button>
-      </div>
-    </div>
+        <section>
+        <div className="album py-5 bg-body-tertiary">
+          <div className="container">
+            <div className="main-title py-5">
+              <h3 className="display-4 fw-bold text-body-emphasis text-center">주문/결제</h3>
+            </div>
+            <div className="row my-3 row-gap-3">
+              {/* 구매자 정보 */}
+              <div className="col-12 col-md-6">
+                <div className="card shadow-sm">
+                  <div className="card-body">
+                    <div className="card-title">
+                      <h3>구매자 정보</h3>
+                    </div>
+                    <table className="table">
+                      <tr>
+                        <th className="table-secondary">이름</th>
+                        <td>
+                          <p className="m-0" id="name">{order.user.name}</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th className="table-secondary">전화번호</th>
+                        <td>
+                          <p className="m-0" id="tel">{order.user.phone}</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th className="table-secondary">마이펫</th>
+                        <td>
+                          <select name="petNo" id="petNo" className="form-control">
+                            {petList.map(pet => (
+                              <option key={pet.petNo} value={pet.petNo}>{pet.petname}</option>
+                            ))}
+                          </select>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              {/* 훈련사 정보 */}
+              <div className="col-12 col-md-6">
+                <div className="card shadow-sm">
+                  <div className="card-body">
+                    <div className="card-title">
+                      <h3>훈련사 정보</h3>
+                    </div>
+                    <table className="table">
+                      <tr>
+                        <th className="table-secondary">이름</th>
+                        <td>
+                          <p className="m-0" id="name">{trainer.user.name}</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th className="table-secondary">전화번호</th>
+                        <td>
+                          <p className="m-0" id="tel">{trainer.user.phone}</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* 주문 정보 */}
+            <div className="row my-3">
+              <div className="col-12">
+                <div className="card shadow-sm">
+                  <div className="card-body">
+                    <div className="card-title">
+                      <h3>주문 정보</h3>
+                    </div>
+                    <table className="table my-0">
+                      <tr>
+                        <th className="col-4 col-md-2 table-secondary">주문 정보</th>
+                        <td className="col-8 col-md-10">
+                          <p className="m-0" id="orderTitle">{order.title}</p>
+                        </td>
+                      </tr>
+                    </table>
+                    <table className="table my-0">
+                      <tr>
+                        <th className="col-4 col-md-2 table-secondary">총 가격</th>
+                        <td className="col-8 col-md-10">
+                          &#8361; <span>{order.price.toLocaleString()}</span> 원
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* 결제 정보 */}
+            <div className="row my-3">
+              <div className="col-12">
+                <div className="card shadow-sm">
+                  <div className="card-body">
+                    <div className="card-title">
+                      <h3>결제 정보</h3>
+                    </div>
+                    <div className="card-text">
+                      <table className="table my-0">
+                        <tr>
+                          <th className="col-4 col-md-2 table-secondary">총상품가격</th>
+                          <td className="col-8 col-md-10">
+                            <p className="m-0">&#8361; {order.price.toLocaleString()} 원</p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th className="col-4 col-md-2 table-secondary">총결제금액</th>
+                          <td className="col-8 col-md-10">
+                            <p className="m-0">&#8361; {order.price.toLocaleString()} 원</p>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                    <div className="d-grid gap-2 my-5">
+                      <input type="hidden" name="addressId" id="addressId" value="" />
+                      <input type="hidden" name="price" id="price" value={order.price} />
+                      <button className="btn btn-primary" type="button" onClick={() => requestPay()}>결제하기</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
   )
 }
 
