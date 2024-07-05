@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +43,7 @@ import com.mypet.mungmoong.trainer.service.CertificateService;
 import com.mypet.mungmoong.trainer.service.FileService;
 import com.mypet.mungmoong.trainer.service.ScheduleService;
 import com.mypet.mungmoong.trainer.service.TrainerService;
+import com.mypet.mungmoong.users.dto.CustomUser;
 import com.mypet.mungmoong.users.dto.Users;
 import com.mypet.mungmoong.users.service.UsersService;
 
@@ -357,32 +359,51 @@ public class TrainerApiController {
     //     }
     // }
 
+    // 훈련사 정보 등록 (GET)
+    @GetMapping("/join_data")
+    public ResponseEntity<?> getTrainerInfo(@RequestParam("no") int no) {
+        log.info("Requested user no: " + no);
+        try {
+            Users user = userService.selectByNo(no);
+            if (user == null) {
+                log.info("User not found.");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not logged in.");
+            }
+            log.info("Found user: " + user);
+            return ResponseEntity.ok(user);
+        } catch (Exception e) {
+            log.error("Error occurred while retrieving user data", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error occurred while retrieving user data: " + e.getMessage());
+        }
+    }
+
     // 훈련사 정보 등록
     @PostMapping("/join_data")
-    public ResponseEntity<?> insertPro(@RequestBody Trainer trainer, HttpSession session) {
-
+    public ResponseEntity<?> insertPro(@RequestParam("no") int no, Trainer trainer) {
+    
         log.info("::::::::::: 훈련사 정보 등록 ::::::::::::");
         log.info(trainer.toString());
-
+    
         try {
-            Users user = (Users) session.getAttribute("user");
-
+            Users user = userService.selectByNo(no);
+    
             if (user == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not logged in.");
             }
-
+    
             trainer.setUserId(user.getUserId());
             trainer.setCareerList(trainer.toCareerList());
             trainer.setCertificateList(trainer.toCertificateList());
             log.info("trainer 로그조회 : " + trainer);
-
+    
             int result = trainerService.insert(trainer);
-
+    
             if (result > 0) {
-                String userId = (String) session.getAttribute("userId");
-                Users updatedUser = userService.select(userId);
-                session.setAttribute("user", updatedUser);
-                return ResponseEntity.ok("Trainer data inserted successfully.");
+                log.info("훈련사 등록 성공!!!");
+                Users updatedUser = userService.select(user.getUserId());
+                // 업데이트된 사용자 정보를 반환
+                return ResponseEntity.ok(updatedUser);
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to insert trainer data.");
             }
@@ -392,20 +413,36 @@ public class TrainerApiController {
                     .body("Error occurred while processing trainer data: " + e.getMessage());
         }
     }
+    
 
     // 스케쥴 👩‍🏫(full calendar 샘플)
     @GetMapping("/schedule")
-    public ResponseEntity<?> scheduleCalendar(HttpSession session) throws Exception {
-        Integer trainerNo = (Integer) session.getAttribute("trainerNo");
-        if (trainerNo == null) {
-            log.error("트레이너 번호를 세션에서 찾을 수 없습니다.");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("트레이너 번호를 세션에서 찾을 수 없습니다.");
-        }
+    public ResponseEntity<?> scheduleCalendar(@RequestParam("trainerNo") int trainerNo) throws Exception {
         List<Schedule> scheduleList = scheduleService.select(trainerNo);
         Map<String, Object> response = new HashMap<>();
         response.put("trainerNo", trainerNo);
         response.put("scheduleList", scheduleList);
         return ResponseEntity.ok(response);
+    }
+    
+    /**
+     * 캘린더 데이터
+     * - 훈련사 번호를 받아오면 해당 훈련사의 일정을
+     * JSON 데이터로 응답함
+     */
+    @ResponseBody
+    @GetMapping("/schedule/event")
+    public ResponseEntity<?> trainerScheduleEvent(@RequestParam("trainerNo") int trainerNo) throws Exception {
+        List<Schedule> scheduleList = scheduleService.select(trainerNo);
+        List<Event> eventList = new ArrayList<>();
+        for (Schedule schedule : scheduleList) {
+            int no = schedule.getNo();
+            String title = schedule.getTitle();
+            Date date = schedule.getScheduleDate();
+            String description = schedule.getContent();
+            eventList.add(new Event(no, title, description, date));
+        }
+        return ResponseEntity.ok(eventList);
     }
 
     // 스케쥴 등록
@@ -437,25 +474,6 @@ public class TrainerApiController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save schedule.");
     }
 
-    /**
-     * 캘린더 데이터
-     * - 훈련사 번호를 받아오면 해당 훈련사의 일정을
-     * JSON 데이터로 응답함
-     */
-    @ResponseBody
-    @GetMapping("/schedule/event")
-    public ResponseEntity<?> trainerScheduleEvent(@RequestParam("trainerNo") int trainerNo) throws Exception {
-        List<Schedule> scheduleList = scheduleService.select(trainerNo);
-        List<Event> eventList = new ArrayList<>();
-        for (Schedule schedule : scheduleList) {
-            int no = schedule.getNo();
-            String title = schedule.getTitle();
-            Date date = schedule.getScheduleDate();
-            String description = schedule.getContent();
-            eventList.add(new Event(no, title, description, date));
-        }
-        return ResponseEntity.ok(eventList);
-    }
 
     // 일정 삭제
     @DeleteMapping("/schedule/event/{no}")

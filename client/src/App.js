@@ -32,6 +32,7 @@ import AdminTrainerList from './pages/admin/AdminTrainerList';
 
 /* 예약정보 관리 */
 import ProductsRead from './pages/products/ProductsRead';
+import OrdersRead from './pages/orders/OrdersRead';
 
 /* 게시판 관리 */
 import AdminBoardList from './pages/admin/AdminBoardList';
@@ -48,8 +49,15 @@ import AdminTriainerRead from './pages/admin/AdminTriainerRead';
 // MyPage 경로 추가
 import UserIndex from './pages/users/Index'; 
 import UpdatePage from './pages/users/UpdatePage';
+
 import PetAddPage from './pages/pet/PetAddPage';
 import PetUsingPage from './pages/pet/PetUsingPage';
+
+
+
+
+
+
 
 // trainer
 import Deposit from './pages/trainer/Deposit';
@@ -86,7 +94,7 @@ function App() {
             <Route path="/schedule" element={<Schedule />} />
             <Route path="/info/:userId" element={<Info />} />
             <Route path="/info_update/:userId" element={<InfoUpdate />} />
-            <Route path="/info/:join_data" element={<Join />} />
+            <Route path="/join_data/:no" element={<Join />} />
 
             <Route path="/" element={<Home />}></Route>
 
