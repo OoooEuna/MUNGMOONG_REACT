@@ -286,30 +286,7 @@ public class UsersApiController {
         }
     }
 
-    @PostMapping("/myupdate")
-    public String myupdateUser(Users user, HttpSession session) {
-        String userId = (String) session.getAttribute("userId");
-        if (userId == null) {
-            return "redirect:/users/login";
-        }
     
-        user.setUserId(userId); // 세션의 userId를 설정
-    
-        try {
-            Users existingUser = userService.select(userId);
-            if (existingUser == null) {
-                return "redirect:/users/update?error=notfound";
-            }
-            user.setRole(existingUser.getRole());
-            userService.Myupdate(user);
-            Users updatedUser = userService.select(userId);
-            session.setAttribute("user", updatedUser);
-            return "redirect:/users/index";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "redirect:/users/update?error";
-        }
-    }
     
     @PostMapping("/api")
     public ResponseEntity<?> join(@RequestBody Users user) throws Exception {

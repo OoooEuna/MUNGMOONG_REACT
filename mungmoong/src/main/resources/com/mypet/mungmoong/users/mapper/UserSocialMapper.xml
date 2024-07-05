@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mypet.mungmoong.users.mapper.UserSocialMapper">
+
+    <!-- 사용자 소셜 ID로 UserSocial 조회 -->
+    <select id="findBySocialId" parameterType="String" resultType="com.mypet.mungmoong.users.dto.UserSocial">
+        SELECT *
+        FROM user_social
+        WHERE social_id = #{socialId}
+    </select>
+
+    <!-- UserSocial 삽입 -->
+    <insert id="insert" parameterType="com.mypet.mungmoong.users.dto.UserSocial">
+        INSERT INTO user_social (user_id, social_id, social_platform, name, mail, picture, linked_date, updated_date)
+        VALUES (#{userId}, #{socialId}, #{socialPlatform}, #{name}, #{mail}, #{picture}, #{linkedDate}, #{updatedDate})
+    </insert>
+
+    <!-- UserSocial 업데이트 -->
+    <update id="update" parameterType="com.mypet.mungmoong.users.dto.UserSocial">
+        UPDATE user_social
+        SET user_id = #{userId},
+            social_platform = #{socialPlatform},
+            name = #{name},
+            mail = #{mail},
+            picture = #{picture},
+            linked_date = #{linkedDate},
+            updated_date = #{updatedDate}
+        WHERE social_id = #{socialId}
+    </update>
+</mapper>

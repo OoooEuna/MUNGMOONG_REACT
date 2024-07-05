@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mypet.mungmoong.users.mapper.UserAuthMapper">
+
+    <!-- 사용자 권한 조회 -->
+    <select id="selectByUserId" parameterType="String" >
+        SELECT * FROM user_auth WHERE user_id = #{userId}
+    </select>
+
+    <!-- 사용자 권한 등록 -->
+    <insert id="insertAuth" >
+        INSERT INTO user_auth (user_id, auth) VALUES (#{userId}, #{auth})
+    </insert>
+
+    <!-- 사용자 권한 수정 -->
+    <update id="updateAuth">
+        UPDATE user_auth SET auth = #{auth} WHERE user_id = #{userId}
+    </update>
+
+    <!-- 사용자 권한 삭제 -->
+    <delete id="deleteAuth" parameterType="String">
+        DELETE FROM user_auth WHERE user_id = #{userId}
+    </delete>
+
+    <!-- 권한 확인 -->
+    <select id="hasPermission" parameterType="map" resultType="boolean">
+        SELECT COUNT(*) > 0 FROM user_auth WHERE user_id = #{userId} AND auth = #{requiredAuth}
+    </select>
+
+</mapper>

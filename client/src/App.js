@@ -58,9 +58,9 @@ import Info from './pages/trainer/Info';
 import InfoUpdate from './pages/trainer/InfoUpdate';
 import Join from './pages/trainer/Join';
 
-
 import ProductsRead from './pages/products/ProductsRead';
 import OrdersList from './components/trainer/OrdersList';
+import OAuth2CallbackPage from './apis/OAuth2Callback';
 
 
 function App() {
@@ -76,6 +76,7 @@ function App() {
             {/* 유저영역 */}
 
             {/* 보드영역 */}
+            
             <Route path="/api/trainer/orders" element={<OrdersListContainer />} />
             <Route path="/api/board" element={<List />} />
             <Route path="/api/board/:no" element={<Read />} />
@@ -126,6 +127,8 @@ function App() {
             <Route path='/api/users/index' element={<UserIndex />} />
             <Route path="/api/users/update" element={<UpdatePage />} />
         
+
+            <Route path="/login/oauth2/code/:platform" element={<OAuth2CallbackPage />} />
           </Routes>
           <Footer />
         </div>

@@ -1,46 +1,119 @@
-import React, { useContext, useState } from 'react';
-import { LoginContext } from '../../contexts/LoginContextProvider'; // 컨텍스트 경로 확인
+import React, { useContext, useState, useEffect } from 'react';
+import { LoginContext } from '../../contexts/LoginContextProvider';
 import './css/login.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const LoginPage = () => {
-  const { login, isLogin, logout } = useContext(LoginContext); // 컨텍스트에서 값 가져오기
+  const { login } = useContext(LoginContext);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [rememberId, setRememberId] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const code = queryParams.get('code');
+    const platform = queryParams.get('platform');
+
+    if (code && platform) {
+      console.log('OAuth2 Code:', code);
+      console.log('OAuth2 Platform:', platform);
+
+      axios.post('http://localhost:8080/api/oauth2/callback', { code, platform })
+        .then(response => {
+          console.log('OAuth2 Token Response:', response.data);
+          localStorage.setItem('accessToken', response.data.token);
+          Swal.fire({
+            title: '로그인 성공',
+            text: '메인 화면으로 이동합니다.',
+            icon: 'success',
+            confirmButtonText: '확인'
+          }).then(() => {
+            navigate('/home');
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching OAuth2 token:', error);
+          Swal.fire({
+            title: '로그인 실패',
+            text: 'OAuth2 인증에 실패했습니다.',
+            icon: 'error',
+            confirmButtonText: '확인'
+          });
+        });
+    }
+  }, [location, navigate]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    login(username, password);
+    try {
+      await login(username, password);
+      Swal.fire({
+        title: '로그인 성공! 🎉',
+        text: '메인 화면으로 이동합니다 (●\'◡\'●)',
+        icon: 'success',
+        confirmButtonText: '확인'
+      }).then(() => {
+        navigate('/');
+      });
+    } catch (e) {
+      setError('아이디 또는 비밀번호가 일치하지 않습니다.');
+      Swal.fire({
+        title: '로그인 실패',
+        text: '아이디 또는 비밀번호가 일치하지 않습니다.',
+        icon: 'error',
+        confirmButtonText: '확인'
+      });
+    }
   };
+
+  const handleNaverLogin = () => {
+    // OAuth2 인증이 완료된 후 리디렉션 될 URL
+    const redirectUri = encodeURIComponent('http://localhost:8080/api/oauth2/callback/naver');
+    const url = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=ZFvyeddsFEaFFM0qJIcA&redirect_uri=${redirectUri}`;
+    window.location.href = url;
+  };
+  
+
+  const handleKakaoLogin = () => {
+    // OAuth2 인증이 완료된 후 리디렉션 될 URL
+    const redirectUri = encodeURIComponent('http://localhost:8080/api/oauth2/callback/kakao');
+    const url = `https://kauth.kakao.com/oauth/authorize?client_id=6eab7537fc945cb54b219628a1e82f76&redirect_uri=${redirectUri}&response_type=code`;
+    window.location.href = url;
+  };
+  
 
   return (
     <div className="login-wrapper">
       <img src="/img/logo.png" alt="로고" style={{ width: '80%' }} />
       <form id="user" className="login-form" onSubmit={handleSubmit}>
-        <input type="hidden" name="_csrf" value="{CSRF_TOKEN}" /> {/* CSRF 토큰 처리 필요 */}
+        {/* CSRF 토큰을 서버에서 동적으로 가져와야 합니다 */}
+        <input type="hidden" name="_csrf" value="YOUR_CSRF_TOKEN" />
         <input
           type="text"
           placeholder="사용자 아이디"
           name="username"
           value={username}
           id="username"
-          onChange={(e) => setUsername(e.target.value)} // 상태 업데이트
+          onChange={(e) => setUsername(e.target.value)}
         />
         <input
           type="password"
           placeholder="비밀번호"
           name="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)} // 상태 업데이트
+          onChange={(e) => setPassword(e.target.value)}
         />
 
         {error && (
           <p className="text-center text-danger">
-            아이디 또는 비밀번호를 잘못 입력했습니다.
+            {error}
           </p>
         )}
         <div className="options">
@@ -50,7 +123,7 @@ const LoginPage = () => {
               id="remember-id"
               name="remember-id"
               checked={rememberId}
-              onChange={(e) => setRememberId(e.target.checked)} // 상태 업데이트
+              onChange={(e) => setRememberId(e.target.checked)}
             />
             아이디 저장
           </label>
@@ -61,7 +134,7 @@ const LoginPage = () => {
               id="remember-me"
               name="remember-me"
               checked={rememberMe}
-              onChange={(e) => setRememberMe(e.target.checked)} // 상태 업데이트
+              onChange={(e) => setRememberMe(e.target.checked)}
             />
             로그인 상태 유지
           </label>
@@ -74,15 +147,13 @@ const LoginPage = () => {
       </div>
       <div className="social-login">
         <h3>소셜로그인</h3>
-        <button className="naver">
-          <a href="/oauth2/authorization/naver" style={{ color: 'white', textDecoration: 'none' }}>
-            <img src="/img/naver.svg" style={{ width: '30px' }} /> 네이버로 로그인하기
-          </a>
+        <button className="naver" onClick={handleNaverLogin}>
+          <img src="/img/naver.svg" alt="Naver" style={{ width: '30px' }} />
+          네이버로 로그인하기
         </button>
-        <button className="kakao">
-          <a href="/oauth2/authorization/kakao" style={{ color: 'black', textDecoration: 'none' }}>
-            <img src="/img/kakao.png" style={{ width: '30px' }} /> 카카오로 로그인하기
-          </a>
+        <button className="kakao" onClick={handleKakaoLogin}>
+          <img src="/img/kakao.png" alt="Kakao" style={{ width: '30px' }} />
+          카카오로 로그인하기
         </button>
       </div>
     </div>

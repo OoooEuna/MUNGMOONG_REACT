@@ -24,6 +24,8 @@ public class Users {
     private int enabled;            // 휴면여부
     private int role;
     private String gender;
+    private String socialId;  // 소셜 ID 추가
+    private String socialPlatform;  // 소셜 플랫폼 추가
 
     // private Trainer trainer;
     private List<UserAuth> authList;

@@ -1,4 +1,4 @@
--- Active: 1713353106333@@127.0.0.1@3306@mypet
+-- Active: 1717721626738@@127.0.0.1@3306@mypet
 
 -- 👩‍💼 USERS  --
 
@@ -27,6 +27,19 @@ CREATE TABLE `users` (
   UNIQUE KEY `user_id_UNIQUE` (`user_id`)
 ) COMMENT='회원';
 
+CREATE TABLE `user_social` (
+  `user_id` VARCHAR(100) NOT NULL,
+  `social_id` VARCHAR(100) NOT NULL,
+  `social_platform` VARCHAR(50) NOT NULL,
+  `name` VARCHAR(100) NOT NULL,
+  `mail` VARCHAR(200) NOT NULL,
+  `picture` VARCHAR(255),
+  `linked_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`social_id`)
+);
+
+
 CREATE TABLE Pet (
     petNo INT AUTO_INCREMENT PRIMARY KEY,  -- 기본키이며 자동 증가하는 정수형 필드
     petname VARCHAR(255) NOT NULL,         -- 애완동물의 이름
@@ -45,8 +58,7 @@ CREATE TABLE Pet (
 CREATE TABLE `user_auth` (
   `user_id` varchar(100) NOT NULL,
   `auth` varchar(100) NOT NULL,
-  PRIMARY KEY (`user_id`, `auth`),
-  FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`) ON DELETE CASCADE
+  PRIMARY KEY (`user_id`, `auth`)
 ) COMMENT='사용자 권한';
 
 
