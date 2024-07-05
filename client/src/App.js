@@ -31,7 +31,6 @@ import AdminUserRead from './pages/admin/AdminUserRead';
 import AdminTrainerList from './pages/admin/AdminTrainerList';
 
 /* 예약정보 관리 */
-import ProductsList from './pages/products/ProductsList';
 import ProductsRead from './pages/products/ProductsRead';
 
 /* 게시판 관리 */
@@ -46,29 +45,21 @@ import AdminProductsUpdate from './pages/admin/AdminProductsUpdate';
 import AdminProductsInsert from './pages/admin/AdminProductsInsert';
 import AdminTriainerRead from './pages/admin/AdminTriainerRead';
 
-// 관리자 영역------------------------------------------------------
-
 // MyPage 경로 추가
 import UserIndex from './pages/users/Index'; 
 import UpdatePage from './pages/users/UpdatePage';
-
-
-
-import AdminProductsList from './pages/admin/AdminProductsList';
-import OrdersList from './pages/trainer/OrdersList';
-import OrdersDetails from './pages/trainer/OrdersDetails';
-import OrdersRead from './pages/orders/OrdersRead';
-
+import PetAddPage from './pages/pet/PetAddPage';
+import PetUsingPage from './pages/pet/PetUsingPage';
 
 // trainer
-import OrdersDetails from './pages/trainer/OrdersDetails';
 import Deposit from './pages/trainer/Deposit';
 import Schedule from './components/trainer/Schedule';
 import Info from './pages/trainer/Info';
 import InfoUpdate from './pages/trainer/InfoUpdate';
 import Join from './pages/trainer/Join';
 import OrdersList from './pages/trainer/OrdersList';
-
+import OrdersDetails from './pages/trainer/OrdersDetails';
+import OrdersRead from './pages/orders/OrdersRead';
 
 function App() {
   return (
@@ -97,7 +88,7 @@ function App() {
             <Route path="/info_update/:userId" element={<InfoUpdate />} />
             <Route path="/info/:join_data" element={<Join />} />
 
-          <Route path="/" element={<Home />}></Route>
+            <Route path="/" element={<Home />}></Route>
 
             {/* -----관리자영역----- */}
             
@@ -119,7 +110,6 @@ function App() {
             {/* ----- 관리자 영역 ----- */}
 
             {/* 상품 결재 영역 */}
-            {/* <Route path="/api/products" element={<ProductsList />} /> */}
             <Route path="/api/products/:id" element={<ProductsRead />} />
             <Route path="/api/orders/:no" element={<OrdersRead />} />
 
@@ -135,10 +125,10 @@ function App() {
             <Route path="/qna/delete/:no" element={<QnADelete />} />
                 
             {/* MyPage 관련 경로 추가 */}
-            <Route path='/api/users' element={<UserIndex />} />
-            <Route path='/api/users/index' element={<UserIndex />} />
+            <Route path="/api/users/index" element={<UserIndex />} />
             <Route path="/api/users/update" element={<UpdatePage />} />
-        
+            <Route path="/api/pet/petAdd" element={<PetAddPage />} />
+            <Route path="/api/pet/petUsing" element={<PetUsingPage />} />
           </Routes>
           <Footer />
         </div>
