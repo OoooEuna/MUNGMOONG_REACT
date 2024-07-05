@@ -400,6 +400,7 @@ public class TrainerApiController {
             int result = trainerService.insert(trainer);
     
             if (result > 0) {
+                log.info("훈련사 등록 성공!!!");
                 Users updatedUser = userService.select(user.getUserId());
                 // 업데이트된 사용자 정보를 반환
                 return ResponseEntity.ok(updatedUser);
@@ -416,17 +417,32 @@ public class TrainerApiController {
 
     // 스케쥴 👩‍🏫(full calendar 샘플)
     @GetMapping("/schedule")
-    public ResponseEntity<?> scheduleCalendar(HttpSession session) throws Exception {
-        Integer trainerNo = (Integer) session.getAttribute("trainerNo");
-        if (trainerNo == null) {
-            log.error("트레이너 번호를 세션에서 찾을 수 없습니다.");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("트레이너 번호를 세션에서 찾을 수 없습니다.");
-        }
+    public ResponseEntity<?> scheduleCalendar(@RequestParam("trainerNo") int trainerNo) throws Exception {
         List<Schedule> scheduleList = scheduleService.select(trainerNo);
         Map<String, Object> response = new HashMap<>();
         response.put("trainerNo", trainerNo);
         response.put("scheduleList", scheduleList);
         return ResponseEntity.ok(response);
+    }
+    
+    /**
+     * 캘린더 데이터
+     * - 훈련사 번호를 받아오면 해당 훈련사의 일정을
+     * JSON 데이터로 응답함
+     */
+    @ResponseBody
+    @GetMapping("/schedule/event")
+    public ResponseEntity<?> trainerScheduleEvent(@RequestParam("trainerNo") int trainerNo) throws Exception {
+        List<Schedule> scheduleList = scheduleService.select(trainerNo);
+        List<Event> eventList = new ArrayList<>();
+        for (Schedule schedule : scheduleList) {
+            int no = schedule.getNo();
+            String title = schedule.getTitle();
+            Date date = schedule.getScheduleDate();
+            String description = schedule.getContent();
+            eventList.add(new Event(no, title, description, date));
+        }
+        return ResponseEntity.ok(eventList);
     }
 
     // 스케쥴 등록
@@ -458,25 +474,6 @@ public class TrainerApiController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save schedule.");
     }
 
-    /**
-     * 캘린더 데이터
-     * - 훈련사 번호를 받아오면 해당 훈련사의 일정을
-     * JSON 데이터로 응답함
-     */
-    @ResponseBody
-    @GetMapping("/schedule/event")
-    public ResponseEntity<?> trainerScheduleEvent(@RequestParam("trainerNo") int trainerNo) throws Exception {
-        List<Schedule> scheduleList = scheduleService.select(trainerNo);
-        List<Event> eventList = new ArrayList<>();
-        for (Schedule schedule : scheduleList) {
-            int no = schedule.getNo();
-            String title = schedule.getTitle();
-            Date date = schedule.getScheduleDate();
-            String description = schedule.getContent();
-            eventList.add(new Event(no, title, description, date));
-        }
-        return ResponseEntity.ok(eventList);
-    }
 
     // 일정 삭제
     @DeleteMapping("/schedule/event/{no}")
