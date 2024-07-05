@@ -1,8 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../../pages/users/css/Mypage.css'; // 정확한 경로로 CSS 파일 임포트
+import '../../pages/pet/css/PetUsing.css'; // 정확한 경로로 CSS 파일 임포트
+
 
 const UserInfoComponent = ({ user, pets, onDeletePet }) => {
+  console.log('User:', user);
+  console.log('Pets:', pets);
+
   if (!user) return <div>Loading...</div>;
 
   return (
@@ -18,10 +22,10 @@ const UserInfoComponent = ({ user, pets, onDeletePet }) => {
                     <Link className="tab-button active" style={{ width: '130px' }} to="#">나의 정보</Link>
                   </li>
                   <li className="nav-item" id="petSitterUsage">
-                    <Link className="tab-button" to="/api/users/using" style={{ width: '130px' }}>이용중인 펫시터</Link>
+                    <Link className="tab-button" to="/api/pet/PetUsing" style={{ width: '130px' }}>이용중인 펫시터</Link>
                   </li>
                   <li className="nav-item" id="petSitterDetails">
-                    <Link className="tab-button" to="/api/users/details" style={{ width: '130px' }}>펫시터 이용내역</Link>
+                    <Link className="tab-button" to="/api/pet/PetDetail" style={{ width: '130px' }}>펫시터 이용내역</Link>
                   </li>
                 </>
               )}
@@ -32,10 +36,10 @@ const UserInfoComponent = ({ user, pets, onDeletePet }) => {
           <div className="my-info mb-5">
             <h2>내 정보</h2>
             <div className="col d-flex p-3" style={{ justifyContent: 'space-between' }}>
-              <img src="/img/users/trn1.png" alt="프로필 사진" className="mr-3" style={{ display: 'block', width: '250px' }} />
+              <img src="/img/users/user1.png" alt="프로필 사진" className="mr-3" style={{ display: 'block', width: '250px' }} />
               <div className="info col-6">
                 <p>{user.name} ({user.gender === 0 ? '♂' : '♀'})</p>
-                <p>{user.mail}</p>
+                <p>{user.email}</p>
                 <p>{user.phone}</p>
                 <p>생일: {new Date(user.birth).toLocaleDateString('ko-KR', { month: 'long', day: 'numeric' })}</p>
                 <p>{user.address}</p>
@@ -51,13 +55,13 @@ const UserInfoComponent = ({ user, pets, onDeletePet }) => {
                   <div className="pet-card d-flex" style={{ padding: '3% 0' }}>
                     <img src="/img/users/pet1.png" alt={pet.petname} className="mr-3" style={{ display: 'block', width: '150px', height: '170px' }} />
                     <div className="pet-info" style={{ width: '48%' }}>
-                      <p>{pet.petname} ({pet.petgender === 0 ? '♂' : '♀'})</p>
+                      <p>{pet.petname} ({pet.petgender === 'M' ? '♂' : '♀'})</p>
                       <p>나이: {pet.age} 살</p>
-                      <p>성격: {pet.character}</p>
+                      <p>성격: {pet.petcharacter}</p>
                       <p>특이 사항: {pet.specialNotes}</p>
                     </div>
                     <div className="button-container">
-                      <form action="/api/users/petUpdate" method="get" style={{ display: 'inline' }}>
+                      <form action="/api/pet/petUpdate" method="get" style={{ display: 'inline' }}>
                         <input type="hidden" name="petNo" value={pet.petNo} />
                         <button type="submit" className="tab-buttonn" style={{ margin: '5% 0', background: '#B9D6DC', color: '#fff', borderRadius: '30px' }}>마이펫 수정</button>
                       </form>
@@ -68,7 +72,7 @@ const UserInfoComponent = ({ user, pets, onDeletePet }) => {
               ))}
             </div>
             <div className="bottom-btn" style={{ textAlign: 'center' }}>
-              <button type="button" className="custom-buttonn" style={{ textAlign: 'center', background: '#B9D6DC', color: '#fff', borderRadius: '30px' }} onClick={() => window.location.href = '/api/users/petAdd'}>펫 추가</button>
+              <button type="button" className="custom-buttonn" style={{ textAlign: 'center', background: '#B9D6DC', color: '#fff', borderRadius: '30px' }} onClick={() => window.location.href = '/api/pet/petAdd'}>펫 추가</button>
             </div>
           </div>
         </div>

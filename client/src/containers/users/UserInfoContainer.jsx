@@ -1,41 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import UserInfoComponent from '../../components/users/UserInfoComponent';
 import '../../css/font.css'; // 폰트 CSS 파일 import
 
 const UserInfoContainer = () => {
-    const user = {
-        name: "김철수",
-        gender: 0, // 0: 남성, 1: 여성
-        mail: "kim@example.com",
-        phone: "010-1234-5678",
-        birth: "1990-01-01",
-        address: "서울시 강남구",
-        role: 1 // 예시로 사용
-    };
+    const [user, setUser] = useState(null);
+    const [pets, setPets] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const pets = [
-        {
-            petNo: 1,
-            petname: "댕댕이",
-            petgender: 0,
-            age: 3,
-            character: "활발함",
-            specialNotes: "없음"
-        },
-        {
-            petNo: 2,
-            petname: "멍멍이",
-            petgender: 1,
-            age: 2,
-            character: "온순함",
-            specialNotes: "알러지 있음"
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const userResponse = await axios.get('/api/users/info'); // 사용자 정보를 가져오는 API 엔드포인트
+                const petsResponse = await axios.get('/api/pets'); // 펫 정보를 가져오는 API 엔드포인트
+
+                setUser(userResponse.data);
+                setPets(petsResponse.data);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    const onDeletePet = async (petNo) => {
+        try {
+            await axios.delete(`/api/pets/${petNo}`); // 펫 삭제 API 엔드포인트
+            setPets(pets.filter(pet => pet.petNo !== petNo));
+        } catch (error) {
+            console.error('Error deleting pet:', error);
         }
-    ];
-
-    const onDeletePet = (petNo) => {
-        console.log(`Delete pet with id: ${petNo}`);
-        // 여기서 실제 삭제 로직을 구현하세요
     };
+
+    if (loading) return <div>Loading...</div>;
 
     return <UserInfoComponent user={user} pets={pets} onDeletePet={onDeletePet} />;
 };

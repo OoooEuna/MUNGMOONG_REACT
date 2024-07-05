@@ -1,21 +1,32 @@
 package com.mypet.mungmoong.pet.api;
 
-import com.mypet.mungmoong.pet.dto.Pet;
-import com.mypet.mungmoong.pet.service.PetService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.mypet.mungmoong.pet.dto.Pet;
+import com.mypet.mungmoong.pet.service.PetService;
+import com.mypet.mungmoong.users.dto.CustomUser;
+import com.mypet.mungmoong.users.dto.Users;
+import com.mypet.mungmoong.users.service.UsersService;
 
 @RestController
 @RequestMapping("/api/pets")
@@ -25,6 +36,29 @@ public class PetApiController {
 
     @Autowired
     private PetService petService;
+
+    @Autowired
+    private UsersService userService;
+
+    // ############################################### REACT ###############################################
+    
+    @GetMapping
+    public ResponseEntity<List<Pet>> getPets(@AuthenticationPrincipal CustomUser customUser) {
+        logger.info("Received request for getPets");
+
+        if (customUser == null) {
+            logger.error("CustomUser is null");
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        Users user = customUser.getUser();
+        logger.info("User ID: {}", user.getUserId());
+
+        List<Pet> pets = petService.findPetByUserId(user.getUserId());
+        logger.info("Pets: {}", pets);
+
+        return new ResponseEntity<>(pets, HttpStatus.OK);
+    }
 
     // ################################################################ 펫 수정 ################################################################
 
