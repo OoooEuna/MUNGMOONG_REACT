@@ -1,7 +1,11 @@
 import axios from 'axios';
 
+// 훈련사 등록 시 정보 조회 -  [GET]   
+export const getUserInfo = (no) => axios.get(`/api/trainer/join_data?no=${no}`);
+
 // 훈련사 정보 등록         -  [POST]  
-export const join = (trainerData) => axios.post("/api/trainer/join_data", trainerData)
+export const join = (no, formData, headers) => axios.post(`/api/trainer/join_data?no=${no}`, formData, { headers });
+
 
 // 훈련사 정보 조회         -  [GET]   
 export const info = (userId) => axios.get(`/api/trainer/info?userId=${userId}`)
@@ -10,19 +14,22 @@ export const info = (userId) => axios.get(`/api/trainer/info?userId=${userId}`)
 export const getUpdate = (userId) => axios.get(`/api/trainer/info_update?userId=${userId}`)
 
 // 훈련사 수정              -  [PUT]   
-export const update = (trainerData) => axios.put("/api/trainer/info_update", trainerData)
+export const update = (trainer) => axios.put("/api/trainer/info_update", trainer)
+
+// 훈련사 경력 추가         -  [POST]   
+export const addCareer = (trainer) => axios.post("/api/trainer/career", trainer)
+
+// 훈련사 경력 삭제         -  [DELETE]
+export const deleteCareer = (no) => axios.delete(`/api/trainer/career/${no}`)
 
 // 훈련사 휴무일            -  [GET]  
-export const schedule = () => axios.get("/api/trainer/schedule")
-
-// 훈련사 휴무일 data       -  [GET] 
-export const schedule_data = (trainerNo) => axios.get(`/api/trainer/schedule/event?trainerNo=${trainerNo}`)
+export const schedule = () => axios.get("/api/trainer/schedule/event")
 
 // 훈련사 휴무일 등록       -  [POST]   
 export const insert_schedule = (scheduleData) => axios.post("/api/trainer/schedule", scheduleData)
 
 // 훈련사 휴무일 삭제       -  [DELETE]
-export const delete_schedule = (no) => axios.delete(`/api/trainer/schedule/event/${no}`)
+export const delete_schedule = (no) => axios.delete(`/api/trainer/schedule/${no}`)
 
 // 훈련사 입금 내역 목록    -  [GET]    
 export const deposit = (trainerNo) => axios.get(`/api/trainer/deposit?trainerNo=${trainerNo}`)

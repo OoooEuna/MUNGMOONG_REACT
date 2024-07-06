@@ -123,7 +123,6 @@ public class OrdersController {
         List<Pet> petList = petService.findPetByUserId(user.getUserId());
         log.info("petList : " + petList);
         model.addAttribute("petList", petList);
-
         model.addAttribute("user", user);
         model.addAttribute("trainer", trainer);
         model.addAttribute("order", order);

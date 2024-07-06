@@ -58,37 +58,43 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     public int insert(Trainer trainer) throws Exception {
+
+        
         try {
             // 사용자 ID 가져옴
             String userId = trainer.getUserId();
             log.debug("Inserting trainer with userId: {}", userId);
     
-            // 사용자 정보 조회
+            // // 사용자 정보 조회
             Users user = usersService.select(userId);
             if (user == null) {
                 throw new Exception("User not found"); 
             }
     
             // 기존 훈련사 정보를 조회하여 이미 존재하는 경우 stop
+            log.info("기존 훈련사 정보를 조회하여 이미 존재하는 경우 stop");
+            log.info("userId : " + userId);
             Trainer oldTrainer = trainerMapper.select(userId);
             if (oldTrainer != null) return 0;
-    
+            
+            log.info(" 새로운 훈련사 정보를 삽입하고 결과 반환");
+            log.info("trainer : " + trainer);
             // 새로운 훈련사 정보를 삽입하고 결과 반환
             int result = trainerMapper.insert(trainer);
             if (result == 0) {
                 return 0; 
             }
     
-            // 삽입된 훈련사의 번호를 가져와 설정
+            // // 삽입된 훈련사의 번호를 가져와 설정
             int trainerNo = trainer.getNo();
             log.debug("Inserted trainer with trainerNo: {}", trainerNo);
             trainer.setNo(trainerNo);
     
-            // 사용자의 역할을 훈련 승인중으로 변경하고 업데이트
+            // // 사용자의 역할을 훈련 승인중으로 변경하고 업데이트
             user.setRole(1);
-            usersService.update(user);
+            usersService.update(user);      // 여기 누가 mapper.xml 에 카멜케이스로 써야되는거 스네이크 케이스로 써서 1시간 날림
     
-            // 훈련사의 경력 목록을 가져와 각각의 경력을 삽입
+            // // 훈련사의 경력 목록을 가져와 각각의 경력을 삽입
             List<Career> careers = trainer.getCareerList();
             if (careers != null) {
                 for (Career career : careers) {
@@ -99,14 +105,15 @@ public class TrainerServiceImpl implements TrainerService {
                 }
             }
     
-            // 훈련사의 자격증 목록을 가져와 각각의 자격증 삽입
+            // // 훈련사의 자격증 목록을 가져와 각각의 자격증 삽입
             List<Certificate> certificates = trainer.getCertificateList();
+            log.info(certificates.size() + "개의 자격증 업로드...");
             if (certificates != null) {
                 for (Certificate certificate : certificates) {
                     certificate.setTrainerNo(trainerNo);
                     log.debug("Inserting certificate: {}", certificate);
                     certificateService.insert(certificate); // 자격증 정보를 삽입
-    
+                    
                     // 자격증과 연결된 파일 업로드
                     MultipartFile file = trainer.getFiles().get(certificates.indexOf(certificate));
                     if (file != null && !file.isEmpty()) {
@@ -122,7 +129,7 @@ public class TrainerServiceImpl implements TrainerService {
                 }
             }
     
-            // 썸네일 파일이 있는 경우 업로드
+            // // 썸네일 파일이 있는 경우 업로드
             MultipartFile thumbnailFile = trainer.getThumbnail();
             if (thumbnailFile != null && !thumbnailFile.isEmpty()) {
                 Files thumbnail = new Files();
@@ -148,7 +155,6 @@ public class TrainerServiceImpl implements TrainerService {
     public int update(Trainer trainer) throws Exception {
         try {
             String userId = trainer.getUserId();
-
 
     
             Trainer existingTrainer = trainerMapper.select(userId);

@@ -40,6 +40,7 @@ const ProductsList = ({ productList, isLoading }) => {
                                                 <p className="card-title fs-5">{product.description}</p>
                                                 <p className="card-text">{product.price}</p>
                                                 <p className="card-text">{product.content}</p>
+                                                <p className="card-text">{product.trainerNo}</p>
                                               </h2>
                                         </div>
                                  </div>

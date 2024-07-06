@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import styles from '../products/css/ProductsRead.module.css'
 // ckeditor5
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import * as filesApi from '../../apis/files'
 
-const ProductsInsertForm = ({ onInsert }) => {
+const OrdersInsertForm = ({ onInsert }) => {
 
   // 🧊 state
   const [id, setId] = useState('')
@@ -193,4 +192,4 @@ const ProductsInsertForm = ({ onInsert }) => {
   )
 }
 
-export default ProductsInsertForm
+export default OrdersInsertForm

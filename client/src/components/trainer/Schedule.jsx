@@ -2,50 +2,52 @@
 // import FullCalendar from '@fullcalendar/react';
 // import dayGridPlugin from '@fullcalendar/daygrid';
 // import interactionPlugin from '@fullcalendar/interaction';
-// import '@fullcalendar/common/main.css';
-// import '@fullcalendar/daygrid/main.css';
-// import * as Swal from '../apis/alert';
+// // import '@fullcalendar/core/main.css';
+// // import '@fullcalendar/daygrid/main.css';
+// import * as Swal from '../../apis/alert';
+// import withReactContent from 'sweetalert2-react-content';
 
-// const Schedule = () => {
+
+// const MySwal = withReactContent(Swal);
+
+// const Schedule = ({ trainerNo }) => {
 //   const [events, setEvents] = useState([]);
 
 //   useEffect(() => {
 //     const fetchEvents = async () => {
-//       const response = await fetch(`/trainer/schedule/event?trainerNo=1`); // trainerNo 임시 값 사용
+//       const response = await fetch(`/trainer/schedule/event?trainerNo=${trainerNo}`);
 //       const eventList = await response.json();
 //       setEvents(eventList);
 //     };
 
 //     fetchEvents();
-//   }, []);
+//   }, [trainerNo]);
 
 //   const handleAddSchedule = () => {
-//     Swal.MySwal.fire({
+//     MySwal.fire({
 //       title: '일정 추가',
 //       icon: 'info',
 //       html: `
-//         <form id="scheduleForm">
-//           <div>
-//             <label for="title">사유 :</label>
-//             <input type="text" id="title" name="title" required />
-//           </div>
-//           <div>
-//             <label for="scheduleDate">휴무일 :</label>
-//             <input type="datetime-local" id="scheduleDate" name="scheduleDate" required />
-//           </div>
-//         </form>
+//         <div>
+//           <label for="title">사유 :</label>
+//           <input type="text" id="title" name="title" required />
+//         </div>
+//         <div>
+//           <label for="scheduleDate">휴무일 :</label>
+//           <input type="datetime-local" id="scheduleDate" name="scheduleDate" required />
+//         </div>
 //       `,
 //       showCancelButton: true,
 //       confirmButtonText: '추가',
 //       cancelButtonText: '취소',
 //       preConfirm: () => {
-//         const title = Swal.MySwal.getPopup().querySelector('#title').value;
-//         const scheduleDate = Swal.MySwal.getPopup().querySelector('#scheduleDate').value;
+//         const title = MySwal.getPopup().querySelector('#title').value;
+//         const scheduleDate = MySwal.getPopup().querySelector('#scheduleDate').value;
 //         if (!title || !scheduleDate) {
-//           Swal.MySwal.showValidationMessage('Please enter title and schedule date');
+//           MySwal.showValidationMessage('Please enter title and schedule date');
 //         }
 //         return { title, scheduleDate };
-//       },
+//       }
 //     }).then((result) => {
 //       if (result.isConfirmed) {
 //         const newEvent = {
@@ -54,24 +56,73 @@
 //         };
 //         setEvents([...events, newEvent]);
 
-//         // 여기에 서버로 POST 요청을 보내는 코드 추가 가능
+//         // 서버로 POST 요청을 보내는 코드 추가 가능
+//         fetch('/trainer/schedule', {
+//           method: 'POST',
+//           headers: {
+//             'Content-Type': 'application/json'
+//           },
+//           body: JSON.stringify({
+//             title: newEvent.title,
+//             scheduleDate: newEvent.start,
+//             trainerNo: trainerNo
+//           })
+//         }).then(response => {
+//           if (!response.ok) {
+//             throw new Error('Network response was not ok');
+//           }
+//           return response.json();
+//         }).then(data => {
+//           // 성공적으로 처리된 경우 필요한 작업 수행
+//         }).catch(error => {
+//           console.error('Error:', error);
+//         });
 //       }
 //     });
 //   };
 
 //   const handleEventClick = (info) => {
-//     Swal.confirm(
-//       '일정을 삭제하시겠습니까?',
-//       '삭제된 일정은 되돌릴 수 없습니다.',
-//       'warning',
-//       (result) => {
-//         if (result.isConfirmed) {
-//           setEvents(events.filter((event) => event.id !== info.event.id));
-
-//           // 여기에 서버로 DELETE 요청을 보내는 코드 추가 가능
-//         }
+//     MySwal.fire({
+//       title: '일정을 삭제하시겠습니까?',
+//       text: '삭제된 일정은 되돌릴 수 없습니다.',
+//       icon: 'warning',
+//       showCancelButton: true,
+//       confirmButtonColor: '#3085d6',
+//       cancelButtonColor: '#d33',
+//       confirmButtonText: '삭제',
+//       cancelButtonText: '취소'
+//     }).then((result) => {
+//       if (result.isConfirmed) {
+//         fetch(`/trainer/schedule/event/${info.event.id}`, {
+//           method: 'DELETE',
+//           headers: {
+//             'Content-Type': 'application/json'
+//           }
+//         }).then(response => {
+//           if (response.ok) {
+//             info.event.remove();
+//             MySwal.fire({
+//               title: '일정 삭제',
+//               text: '일정이 삭제되었습니다.',
+//               icon: 'success'
+//             });
+//           } else {
+//             MySwal.fire({
+//               title: '일정 삭제 실패',
+//               text: '일정 삭제가 실패되었습니다.',
+//               icon: 'error'
+//             });
+//           }
+//         }).catch(error => {
+//           console.error('Error:', error);
+//           MySwal.fire({
+//             title: '일정 삭제 중 에러',
+//             text: '일정 삭제 중 오류가 발생했습니다.',
+//             icon: 'error'
+//           });
+//         });
 //       }
-//     );
+//     });
 //   };
 
 //   return (

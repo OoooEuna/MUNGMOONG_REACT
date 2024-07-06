@@ -1,11 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const ProductsRead = ({ id, products }) => {
+
+const ProductsRead = ({ id, products, user, onSubmit}) => {
   console.log("read 아이디 뜨니");
   console.log(id);
+  console.log(products);
+
+  const [date, setDate] = useState('')
+  const [memo, setMemo] = useState('')
+  const [address, setAddress] = useState(user.address)
+
+  const handleReserveDate = (date) => {
+    console.log(`date : ${date}`);
+    setDate(date)
+  }
+
+  const handleMemo = (memo) => {
+    console.log(`memo : ${memo}`);
+    setMemo(memo)
+  }
+
+  const handleAddress = (address) => {
+    console.log(`address : ${address}`);
+    setAddress(address)
+  }
+
+  useEffect(() => {
+    setAddress(user.address)
+  }, [])
 
   return (
+    <form id="checkForm" >
+      <input type="hidden" name="trainerNo" id="trainerNo" value={products.trainerNo} />
+    <br />
     <div className="album bg-body-tertiary">
         <div className="container">
             <div className='main-title'>
@@ -16,7 +44,7 @@ const ProductsRead = ({ id, products }) => {
                       <div className='col-12 col-md-6'>
                             <div className='card shadow-sm' style={{height:'100%'}}>
                                   &nbsp;
-                                      <a href='/api/product/id={id}'>{products.id}
+                                      <a href='/api/product/id={id}'>
                                           <div className='card-box'>
                                             <img src={'/img/trainer01.png'} className="col-4 img-thumbnail img-fluid" style={{width:'100%'}} alt="훈련사"/>
                                           </div>
@@ -39,27 +67,31 @@ const ProductsRead = ({ id, products }) => {
                                     예약날짜를 선택해주세요
                                     <label htmlFor="resDate">예약날짜</label>
                                         <div id="calendar" className="input-group">
-                                          <input type="date" className="form-control" name="resDate" id="resDate" defaultValue="" />
+                                          <input type="date" className="form-control" name="resDate" id="resDate" defaultValue="" 
+                                                 onChange={(e) => handleReserveDate(e.target.value)}/>
                                           <input className="message" type="hidden" id="message" />
                                         </div>
                                   </div>
                                   <div className="row">
                                     <div className="col-md-12 mb-3">
                                       <label htmlFor="address">방문주소</label>
-                                      {/* <input type="text" className="form-control" id="address" name="address" value={user.address} /> */}
+                                      <input type="text" className="form-control" id="address" name="address" 
+                                            value={address} onChange={(e) => handleAddress(e.target.value)} />
                                       <div className="invalid-feedback">주소을 입력해주세요.</div>
                                     </div>
                               </div>
                               <div className="row">
                                 <div className="col-md-12 mb-3">
                                   <label htmlFor="memo">요청사항</label>
-                                  <input type="text" className="form-control" id="memo" name="memo" placeholder="" />
+                                  <input type="text" className="form-control" id="memo" name="memo" placeholder=""
+                                         onChange={(e) => handleMemo(e.target.value)} />
                                   <div className="invalid-feedback">요청사항을 입력해주세요.</div>
                                 </div>
                               </div>
                               <input type="hidden" id="productId" name="productId" value={products.id} />
-                              <button type="submit" className="btn btn-success w-100" data="trainer123">
-                                예약하기
+                              <button type="button" className="btn btn-success w-100" data="trainer123"
+                                  onClick={() => onSubmit(date, memo, address)}>
+                                  예약하기
                               </button>
                         </div>
                     </div>
@@ -108,14 +140,12 @@ const ProductsRead = ({ id, products }) => {
                 <Link to="/api/products" className='btn'>목록</Link>
               </div>
           </div>
-              )
-              }
-              </div>
-              </div>
+      )
+    }
+    </div>
+    </div>
+    </form>
   )
 }
-
-  
-
 
 export default ProductsRead;

@@ -355,4 +355,5 @@ public class UsersApiController {
             return new ResponseEntity<>("FAIL", HttpStatus.BAD_REQUEST);
         }
     }
+
 }

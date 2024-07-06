@@ -8,7 +8,7 @@ const Info = ({ userId, careerList, trainer, certificateList }) => {
       <div className="inner">
         <h1 className="title">훈련사 정보</h1>
         <NavBarContainer />
-        <form action={`/trainer/info?userId=${userId}`} method="get">
+        <form>
           <div className="info">
             <table className="table table-bordered">
               <thead className="thead-light">
@@ -55,7 +55,7 @@ const Info = ({ userId, careerList, trainer, certificateList }) => {
               </tbody>
             </table>
             <div className="text-end">
-              <Link to={`/trainer/info_update?userId=${userId}`}>
+              <Link to={`/info_update/${userId}`}>
                 <button type="button" className="btn-custom2">수정</button>
               </Link>
             </div>

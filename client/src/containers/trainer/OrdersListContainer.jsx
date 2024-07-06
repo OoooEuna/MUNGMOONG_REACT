@@ -19,7 +19,7 @@ const OrdersListContainer = () => {
       const response = await trainer.getTrainerInfo(userId);
       return response.data.no; // trainerNo 반환
     } catch (error) {
-      console.error('트레이너 정보 조회 실패:', error);
+      console.error('트레이너 정보 조회 실패 >:(', error);
       return null;
     }
   }

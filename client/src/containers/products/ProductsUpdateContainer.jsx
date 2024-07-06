@@ -17,7 +17,7 @@ const ProductsUpdateContainer = ({ no }) => {
   const getproducts = async () => {
     // ⌚ 로딩 시작
     setLoading(true)
-    const response = await productss.select(no)
+    const response = await products.select(no)
     const data = await response.data        // ⭐ 🎫products + 📄filelist
     console.log(data)
     
@@ -51,13 +51,13 @@ const ProductsUpdateContainer = ({ no }) => {
   
   const onUpdate = async (no, title, writer, content) => {
     try {
-      const response = await productss.update(no, title, writer, content)
+      const response = await products.update(no, title, writer, content)
       const status = await response.status
       console.log(`게시글 수정 요청 결과 : ${status}`);
       alert("게시글 수정 완료!")
 
       // ➡ 게시글 목록으로 이동
-      navigate("/productss")
+      navigate("/products")
 
     } catch (error) {
       console.log(error);
@@ -65,13 +65,13 @@ const ProductsUpdateContainer = ({ no }) => {
   }
 
   const onDelete = async (no) => {
-    const response = await productss.remove(no)
+    const response = await products.remove(no)
     const status = await response.status
     console.log(`게시글 삭제 요청 결과 : ${status}`);
     alert("삭제 완료!")
 
     // ➡ 게시글 목록으로 이동
-    navigate("/productss")
+    navigate("/products")
   }
 
   const onDeleteFile = async (fileNo) => {
@@ -81,7 +81,7 @@ const ProductsUpdateContainer = ({ no }) => {
       console.log(fileResponse.data);
 
       // 파일 목록 갱신
-      const productsResponse = await productss.select(no)
+      const productsResponse = await products.select(no)
       const data = productsResponse.data
       const fileList = data.fileList
       setFileList(fileList)
@@ -101,7 +101,7 @@ const ProductsUpdateContainer = ({ no }) => {
       console.log(response.status);
 
        // 파일 목록 갱신
-       const productsResponse = await productss.select(no)
+       const productsResponse = await products.select(no)
        const data = productsResponse.data
        const fileList = data.fileList
        setFileList(fileList)
