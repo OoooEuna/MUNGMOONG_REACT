@@ -3,9 +3,9 @@ import AdminTrainerReadContainer from '../../containers/admin/AdminTrainerReadCo
 import { useParams } from 'react-router-dom'
 
 const AdminTriainerRead = () => {
-  const { id } = useParams()
+  const { no } = useParams()
   return (
-    <AdminTrainerReadContainer id={id} />
+    <AdminTrainerReadContainer no={no} />
   )
 }
 

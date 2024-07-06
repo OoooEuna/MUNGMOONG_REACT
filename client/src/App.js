@@ -29,9 +29,10 @@ import AdminUserRead from './pages/admin/AdminUserRead';
 
 /* 훈련사 관리 */
 import AdminTrainerList from './pages/admin/AdminTrainerList';
+import AdminTriainerRead from './pages/admin/AdminTriainerRead';
 
 /* 예약정보 관리 */
-import ProductsList from './pages/products/ProductsList';
+// import ProductsList from './pages/products/ProductsList';
 import ProductsRead from './pages/products/ProductsRead';
 
 /* 게시판 관리 */
@@ -44,7 +45,6 @@ import AdminProductsList from './pages/admin/AdminProductsList';
 import AdminProductsRead from './pages/admin/AdminProductsRead';
 import AdminProductsUpdate from './pages/admin/AdminProductsUpdate';
 import AdminProductsInsert from './pages/admin/AdminProductsInsert';
-import AdminTriainerRead from './pages/admin/AdminTriainerRead';
 
 // 관리자 영역------------------------------------------------------
 
@@ -54,20 +54,19 @@ import UpdatePage from './pages/users/UpdatePage';
 
 
 
-import AdminProductsList from './pages/admin/AdminProductsList';
 import OrdersList from './pages/trainer/OrdersList';
-import OrdersDetails from './pages/trainer/OrdersDetails';
+// import OrdersDetails from './pages/trainer/OrdersDetails';
 import OrdersRead from './pages/orders/OrdersRead';
 
 
 // trainer
-import OrdersDetails from './pages/trainer/OrdersDetails';
+// import OrdersDetails from './pages/trainer/OrdersDetails';
 import Deposit from './pages/trainer/Deposit';
 import Schedule from './components/trainer/Schedule';
 import Info from './pages/trainer/Info';
-import InfoUpdate from './pages/trainer/InfoUpdate';
-import Join from './pages/trainer/Join';
-import OrdersList from './pages/trainer/OrdersList';
+// import InfoUpdate from './pages/trainer/InfoUpdate';
+// import Join from './pages/trainer/Join';
+// import OrdersList from './pages/trainer/OrdersList';
 
 
 function App() {
@@ -90,12 +89,12 @@ function App() {
 
             {/* 훈련사영역 */}
             <Route path="/orders/:trainerNo" element={<OrdersList />} />
-            <Route path="/orders_details/:no" element={<OrdersDetails />} />
+            {/* <Route path="/orders_details/:no" element={<OrdersDetails />} /> */}
             <Route path="/deposit" element={<Deposit />} />
             <Route path="/schedule" element={<Schedule />} />
             <Route path="/info/:userId" element={<Info />} />
-            <Route path="/info_update/:userId" element={<InfoUpdate />} />
-            <Route path="/info/:join_data" element={<Join />} />
+            {/* <Route path="/info_update/:userId" element={<InfoUpdate />} /> */}
+            {/* <Route path="/info/:join_data" element={<Join />} /> */}
 
           <Route path="/" element={<Home />}></Route>
 
@@ -105,7 +104,7 @@ function App() {
             <Route path="/api/admin/admin_info_read/:id" element={<AdminUserRead />} />
 
             <Route path="/api/admin/admin_trainer" element={<AdminTrainerList />} />
-            <Route path="/api/admin/admin_trainer_read/:id" element={<AdminTriainerRead />} />
+            <Route path="/api/admin/admin_trainer_read/:no" element={<AdminTriainerRead />} />
 
             <Route path="/api/admin/admin_board" element={<AdminBoardList />} />
             <Route path="/api/admin/admin_board_read/:no" element={<AdminBoardRead />} />
