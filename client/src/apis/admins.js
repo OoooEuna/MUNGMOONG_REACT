@@ -17,7 +17,7 @@ export const AdminUpdate = (no, title, writer, content) => axios.put("/boards", 
 // ------------------------- 트레이너 정보 -------------------------
 // 훈련사 목록
 export const AdminTrainerList = () => axios.get("/api/admin/admin_trainer")
-export const AdminTrainerRead = () => axios.get("/api/admin/admin_trainer_read/:id")
+export const AdminTrainerRead = (no) => axios.get(`/api/admin/admin_trainer_read/${no}`)
 
 
 // ------------------------- 예약정보 -------------------------

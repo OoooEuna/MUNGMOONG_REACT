@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import AdminTrainerRead from '../../components/admin/AdminTrainerRead'
 import * as admins from '../../apis/admins'
 
-const AdminTrainerReadContainer = ({id}) => {
+const AdminTrainerReadContainer = ({no}) => {
   // 🧊 state
   const [trainer, setTrainer] = useState({})
   const [isLoading, setLoading] = useState(false)
@@ -11,7 +11,7 @@ const AdminTrainerReadContainer = ({id}) => {
   const getTrainer = async () => {
     // ⌚ 로딩 시작
     setLoading(true)
-    const response = await admins.AdminTrainerRead(id)
+    const response = await admins.AdminTrainerRead(no)
     const data = await response.data        // ⭐ board
     console.log(data);
     setTrainer(data)
@@ -26,7 +26,7 @@ const AdminTrainerReadContainer = ({id}) => {
 
   return (
     <>
-      <AdminTrainerRead id={id} trainer={trainer} isLoading={isLoading} />
+      <AdminTrainerRead no={no} trainer={trainer} isLoading={isLoading} />
     </>
   )
 }
