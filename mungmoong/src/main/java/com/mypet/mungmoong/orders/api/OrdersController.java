@@ -1,6 +1,9 @@
 package com.mypet.mungmoong.orders.api;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mypet.mungmoong.orders.dto.Orders;
-import com.mypet.mungmoong.orders.dto.Products;
 import com.mypet.mungmoong.orders.service.OrdersService;
 import com.mypet.mungmoong.pet.dto.Pet;
 import com.mypet.mungmoong.pet.service.PetService;
@@ -60,30 +62,36 @@ public class OrdersController {
  * 결제준비
  */
 
-@GetMapping("")
-public ResponseEntity<?> orders(Orders order
-                               ,@AuthenticationPrincipal CustomUser customUser) {
+@PostMapping("")
+public ResponseEntity<?> orders(@RequestBody Orders order
+                               ,@AuthenticationPrincipal CustomUser customUser) throws ParseException {
 
-    log.info("::::: customUser :::::");
+    log.info("::::: customUser1212:::::");
     log.info("customUser : "+ customUser);
-    log.info("resDate - 예약일자 : " + order.getRegDate());
+    // log.info("date - 예약일자 (문자열) : " + order.getDate());
+    // SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    // order.setResDate( formatter.parse( order.getDate() ) );
+
+    log.info("resDate - 예약일자 : " + order.getResDate());
     log.info("address - 주소 : " + order.getAddress());
-    log.info("memo - 요청사항 : " + order.getAddress());
+    log.info("memo - 요청사항 : " + order.getMemo());
     log.info("productId - 상품ID : " + order.getProductId());
     try {
-        Users user = (Users) customUser.getAuthorities();
+        Users user = (Users) customUser.getUser();
         order.setUserId(user.getUserId());
         int result = ordersService.insert(order);
         //List<Orders> orderList = ordersService.list();
         if( result > 0 )
             log.info("등록된 orderNo : " + order.getNo());
-         return new ResponseEntity<>("result", HttpStatus.OK);
+        return new ResponseEntity<>(order, HttpStatus.OK);
         
     } catch (Exception e) {
+        log.info(e.toString());
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
 /**
+ * 
  * 
  * 결제화면
  * @param no
@@ -92,7 +100,9 @@ public ResponseEntity<?> orders(Orders order
 @GetMapping("/{orderNo}")
 public ResponseEntity<?> orderPay(@PathVariable("orderNo") int orderNo) {
     try {
+        log.info("orderNo : " + orderNo);
         Orders order = ordersService.select(orderNo);
+        log.info("order : " + order);
 
         log.info("::::::::::::::: 주문자 정보 (users) ::::::::::::");
         String userId = order.getUserId();
@@ -100,9 +110,10 @@ public ResponseEntity<?> orderPay(@PathVariable("orderNo") int orderNo) {
         order.setUser(user);
         log.info(user.toString());
 
-         log.info("::::::::::::::: 훈련사 정보 (trainer) ::::::::::::");
+        log.info("::::::::::::::: 훈련사 정보 (trainer) ::::::::::::");
         int trainerNo = order.getTrainerNo();
         Trainer trainer = trainerService.selectByNo(trainerNo);
+
         String trainerUserId = trainer.getUserId();
         Users trainerUser = usersService.select(trainerUserId);
         trainer.setUser(trainerUser);
@@ -119,6 +130,8 @@ public ResponseEntity<?> orderPay(@PathVariable("orderNo") int orderNo) {
          response.put("order", order);
          return new ResponseEntity<>(response, HttpStatus.OK);
     } catch (Exception e) {
+        log.info("::::::::::::::::::::::::::::::: error ::::::::::::::::::::::::::::::");
+        log.info(e.toString());
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
@@ -205,7 +218,6 @@ public ResponseEntity<?> destroy(@PathVariable("no") int no) {
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
-
    
 }
 

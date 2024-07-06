@@ -1,4 +1,4 @@
--- Active: 1713353106333@@127.0.0.1@3306@mypet
+-- Active: 1713967376592@@127.0.0.1@3306@mypet
 
 -- 👩‍💼 USERS  --
 
@@ -59,12 +59,22 @@ VALUES ('user', '$2a$12$TrN..KcVjciCiz.5Vj96YOBljeVTTGJ9AUKmtfbGpgc9hmC7BxQ92', 
 INSERT INTO users (user_id, password, name, birth, address, email, phone, reg_date, upd_date, enabled, role, gender)
 VALUES ('admin', '$2a$12$TrN..KcVjciCiz.5Vj96YOBljeVTTGJ9AUKmtfbGpgc9hmC7BxQ92', '관리자', '1985-05-15', '서울시 강북구', 'admin_bcrypt@mail.com', '010-8765-4321', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 'F');
 
+-- 훈련사
+INSERT INTO users (user_id, password, name, birth, address, email, phone, reg_date, upd_date, enabled, role, gender)
+VALUES ('partner2', '$2a$12$TrN..KcVjciCiz.5Vj96YOBljeVTTGJ9AUKmtfbGpgc9hmC7BxQ92', '훈련사', '1985-05-15', '서울시 강북구', 'partner_bcrypt@mail.com', '010-8765-4321', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 'F');
+
 -- 권한 데이터 삽입
 -- 사용자 권한
 
 -- BCrypt 사용자 권한
 INSERT INTO user_auth (user_id, auth)
 VALUES ('user', 'ROLE_USER');
+
+-- BCrypt 훈련사 권한
+INSERT INTO user_auth (user_id, auth)
+VALUES ('partner2', 'ROLE_USER');
+INSERT INTO user_auth (user_id, auth)
+VALUES ('partner2', 'ROLE_PARTNER');
 
 -- BCrypt 관리자 권한
 INSERT INTO user_auth (user_id, auth)

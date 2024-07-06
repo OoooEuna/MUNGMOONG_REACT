@@ -71,18 +71,24 @@
     </insert>
 
     <!-- 회원 수정 -->
-    <update id="update">
-        UPDATE user
-        SET user_id = #{userId},
-            user_pw = #{userPw},
+    <update id="update" parameterType="com.mypet.mungmoong.users.dto.Users">
+        UPDATE users
+        SET password = #{password},
             name = #{name},
-            email = #{email}
+            birth = #{birth},
+            email = #{email},
+            address = #{address},
+            phone = #{phone},
+            enabled = #{enabled},
+            gender = #{gender},
+            role = #{role},
+            upd_date = #{updDate}
         WHERE user_id = #{userId}
     </update>
 
     <!-- 회원 삭제 -->
     <delete id="delete">
-        DELETE FROM user
+        DELETE FROM users
         WHERE user_id = #{userId}
     </delete>
 
@@ -92,7 +98,7 @@
     </select>
 
       <!-- 사용자 ID로 조회 -->
-    <select id="selectByUserId" parameterType="string">
+    <select id="selectByUserId" parameterType="string" resultType="Users">
         SELECT * FROM users WHERE user_id = #{userId}
     </select>
 
