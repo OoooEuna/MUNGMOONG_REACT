@@ -353,16 +353,26 @@ mungmoong 멍뭉 프로젝트
 ### MVC ➡ REST
 <div markdown="1">
 
-<img src="https://github.com/JTNewY/mungmoong/assets/159420994/6ff1eb52-a879-4c6e-945d-1ea523bc77eb">
+<img src="https://github.com/OoooEuna/MUNGMOONG_REACT/assets/160719463/f333b108-01e8-4043-9839-21d0972e568f">
 
 </div>
 
 
 ### CSRF ➡ JWT
+<div markdown="1">
+
+<img src="https://github.com/OoooEuna/MUNGMOONG_REACT/assets/160719463/602cbbb9-9565-46b6-837f-3cd1ada347ac">
+
+</div>
 
 
 
 ### Thymeleaf ➡ React
+<div markdown="1">
+
+<img src="https://github.com/OoooEuna/MUNGMOONG_REACT/assets/160719463/6006c00a-55d2-4200-be12-5b70893b7169">
+
+</div>
 
 
 
