@@ -4,9 +4,9 @@ mungmoong 멍뭉 프로젝트
 
 ![37](https://github.com/JTNewY/mungmoong/assets/151705894/e32a41c0-4475-4b9b-81db-6249c28e6dbe)
 
-깃허브 :  https://github.com/JTNewY/mungmoong.git
+깃허브 :  https://github.com/OoooEuna/MUNGMOONG_REACT
 
-유튜브  : https://www.youtube.com/watch?v=WNvraEPGhgc
+유튜브  : 
 
 ---
 <br><br>
@@ -351,21 +351,21 @@ mungmoong 멍뭉 프로젝트
 # 6. 리액트로 전환
 
 <details>
-<summary><h3>🧊 MVC ➡ REST</h3></summary>
+<summary><h3>🧊 [BACK-END] MVC ➡ REST</h3></summary>
 <div markdown="1">
 <img src="https://github.com/OoooEuna/MUNGMOONG_REACT/assets/160719463/f333b108-01e8-4043-9839-21d0972e568f">
 </div>
 </details>
 
 <details>
-<summary><h3>🧊 CSRF ➡ JWT</h3></summary>
+<summary><h3>🧊 [SECURITY] CSRF ➡ JWT</h3></summary>
 <div markdown="1">
 <img src="https://github.com/OoooEuna/MUNGMOONG_REACT/assets/160719463/602cbbb9-9565-46b6-837f-3cd1ada347ac">
 </div>
 </details>
 
 <details>
-<summary><h3>🧊 Thymeleaf ➡ React</h3></summary>
+<summary><h3>🧊 [FRONT-END] Thymeleaf ➡ React</h3></summary>
 <div markdown="1">
 <img src="https://github.com/OoooEuna/MUNGMOONG_REACT/assets/160719463/6006c00a-55d2-4200-be12-5b70893b7169">
 </div>
