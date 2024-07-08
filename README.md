@@ -350,8 +350,6 @@ mungmoong 멍뭉 프로젝트
 
 # 6. 리액트로 전환
 
-### MVC ➡ REST
-
 <details>
 <summary><h3>🧊 MVC ➡ REST</h3></summary>
 <div markdown="1">
@@ -359,7 +357,6 @@ mungmoong 멍뭉 프로젝트
 </div>
 </details>
 
-### CSRF ➡ JWT
 <details>
 <summary><h3>🧊 CSRF ➡ JWT</h3></summary>
 <div markdown="1">
@@ -367,8 +364,6 @@ mungmoong 멍뭉 프로젝트
 </div>
 </details>
 
-
-### Thymeleaf ➡ React
 <details>
 <summary><h3>🧊 Thymeleaf ➡ React</h3></summary>
 <div markdown="1">
