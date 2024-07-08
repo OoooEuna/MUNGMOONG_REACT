@@ -351,28 +351,30 @@ mungmoong 멍뭉 프로젝트
 # 6. 리액트로 전환
 
 ### MVC ➡ REST
+
+<details>
+<summary><h3>🧊 MVC ➡ REST</h3></summary>
 <div markdown="1">
-
 <img src="https://github.com/OoooEuna/MUNGMOONG_REACT/assets/160719463/f333b108-01e8-4043-9839-21d0972e568f">
-
 </div>
-
+</details>
 
 ### CSRF ➡ JWT
+<details>
+<summary><h3>🧊 CSRF ➡ JWT</h3></summary>
 <div markdown="1">
-
 <img src="https://github.com/OoooEuna/MUNGMOONG_REACT/assets/160719463/602cbbb9-9565-46b6-837f-3cd1ada347ac">
-
 </div>
-
+</details>
 
 
 ### Thymeleaf ➡ React
+<details>
+<summary><h3>🧊 Thymeleaf ➡ React</h3></summary>
 <div markdown="1">
-
 <img src="https://github.com/OoooEuna/MUNGMOONG_REACT/assets/160719463/6006c00a-55d2-4200-be12-5b70893b7169">
-
 </div>
+</details>
 
 
 
