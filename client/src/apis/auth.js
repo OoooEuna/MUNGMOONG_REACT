@@ -1,4 +1,5 @@
 import api from './api';
+import axios from 'axios';
 
 // 로그인
 export const login = (username, password) => api.post(`/login?username=${username}&password=${password}`)
@@ -14,3 +15,8 @@ export const update = (data) => api.put(`/users`, data)
 
 // 회원 탈퇴
 export const remove = (userId) => api.delete(`/users/${userId}`)
+
+// 소셜 로그인
+export const socialLogin = async (provider) => {
+    return axios.get(`/api/oauth2/login/${provider}`);
+  };

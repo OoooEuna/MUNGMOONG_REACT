@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import api from '../apis/api';
-import * as auth from '../apis/auth';
+import * as auth from '../apis/auth'; // 이 부분에서 socialLogin을 가져옵니다
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
@@ -12,6 +12,7 @@ const LoginContextProvider = ({ children }) => {
   const [roles, setRoles] = useState({ isUser: false, isAdmin: false });
   const navigate = useNavigate();
 
+  // 로그인 상태 확인
   const loginCheck = async () => {
     const accessToken = localStorage.getItem('accessToken'); // 쿠키 대신 localStorage에서 토큰을 읽음
     console.log(`accessToken : ${accessToken}`);
@@ -44,6 +45,7 @@ const LoginContextProvider = ({ children }) => {
     }
   };
 
+  // 로그인 처리
   const login = async (username, password) => {
     try {
       const response = await auth.login(username, password);
@@ -60,7 +62,6 @@ const LoginContextProvider = ({ children }) => {
 
       if (status === 200) {
         localStorage.setItem('accessToken', accessToken); // 쿠키 대신 localStorage에 저장
-
         loginCheck();
 
         Swal.fire({
@@ -68,7 +69,9 @@ const LoginContextProvider = ({ children }) => {
           text: '메인 화면으로 이동합니다 (●\'◡\'●)',
           icon: 'success',
           confirmButtonText: '확인'
-        }).then();
+        }).then(() => {
+          navigate('/');
+        });
       }
     } catch (error) {
       Swal.fire({
@@ -81,6 +84,41 @@ const LoginContextProvider = ({ children }) => {
     }
   };
 
+  // 소셜 로그인 처리
+  const socialLogin = async (provider) => {
+    try {
+      const response = await auth.socialLogin(provider); // 서버에서 소셜 로그인 요청 처리
+      const headers = response.headers;
+      const authorization = headers['authorization']; // 대소문자에 주의하여 헤더 이름 확인
+      if (authorization) {
+        const accessToken = authorization.replace('Bearer ', '');
+        localStorage.setItem('accessToken', accessToken); // 로컬 스토리지에 저장
+        loginCheck(); // 로그인 상태 확인
+        
+        Swal.fire({
+          title: '로그인 성공! 🎉',
+          text: '메인 화면으로 이동합니다 (●\'◡\'●)',
+          icon: 'success',
+          confirmButtonText: '확인'
+        }).then(() => {
+          navigate('/'); // 로그인 후 홈 페이지로 이동
+        });
+      } else {
+        throw new Error('Authorization header missing');
+      }
+    } catch (error) {
+      Swal.fire({
+        title: '로그인 실패 :(',
+        text: '소셜 로그인에 실패하였습니다',
+        icon: 'error',
+        confirmButtonText: '확인'
+      });
+      console.log(`소셜 로그인 실패 :(`, error);
+    }
+  };
+
+
+  // 사용자 정보 및 역할 설정
   const loginSetting = (userData, accessToken) => {
     const { no, userId, authList } = userData;
     const roleList = authList.map(auth => auth.auth);
@@ -104,6 +142,7 @@ const LoginContextProvider = ({ children }) => {
     setRoles(updatedRoles);
   };
 
+  // 로그아웃 처리
   const logoutSetting = () => {
     api.defaults.headers.common.Authorization = undefined;
     localStorage.removeItem('accessToken'); // 쿠키 대신 localStorage에서 제거
@@ -112,6 +151,7 @@ const LoginContextProvider = ({ children }) => {
     setRoles({ isUser: false, isAdmin: false });
   };
 
+  // 로그아웃
   const logout = () => {
     Swal.fire({
       title: '로그아웃 하시겠습니까? (•_•)',
@@ -135,12 +175,13 @@ const LoginContextProvider = ({ children }) => {
     });
   };
 
+  // 컴포넌트 마운트 시 로그인 상태 확인
   useEffect(() => {
     loginCheck();
   }, []);
 
   return (
-    <LoginContext.Provider value={{ isLogin, login, logout }}>
+    <LoginContext.Provider value={{ isLogin, login, logout, socialLogin }}>
       {children}
     </LoginContext.Provider>
   );

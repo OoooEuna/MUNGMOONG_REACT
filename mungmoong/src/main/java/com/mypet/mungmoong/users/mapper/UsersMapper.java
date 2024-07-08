@@ -22,7 +22,7 @@ public interface UsersMapper {
     // 회원 조회 (번호로 조회)
     Users selectByNo(int no);
 
-    Users findBySocialId(String socialId);
+    Users findBySocialId(String userId);
 
     // 회원 등록
     int insert(Users user);

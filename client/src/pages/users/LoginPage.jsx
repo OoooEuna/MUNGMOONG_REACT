@@ -16,6 +16,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Handle OAuth2 callback
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const code = queryParams.get('code');
@@ -28,7 +29,8 @@ const LoginPage = () => {
       axios.post('http://localhost:8080/api/oauth2/callback', { code, platform })
         .then(response => {
           console.log('OAuth2 Token Response:', response.data);
-          localStorage.setItem('accessToken', response.data.token);
+          const { token } = response.data;
+          localStorage.setItem('accessToken', token);
           Swal.fire({
             title: '로그인 성공',
             text: '메인 화면으로 이동합니다.',
@@ -50,6 +52,7 @@ const LoginPage = () => {
     }
   }, [location, navigate]);
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -73,28 +76,24 @@ const LoginPage = () => {
     }
   };
 
+  // Handle Naver login
   const handleNaverLogin = () => {
-    // OAuth2 인증이 완료된 후 리디렉션 될 URL
     const redirectUri = encodeURIComponent('http://localhost:8080/api/oauth2/callback/naver');
     const url = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=ZFvyeddsFEaFFM0qJIcA&redirect_uri=${redirectUri}`;
     window.location.href = url;
   };
-  
 
+  // Handle Kakao login
   const handleKakaoLogin = () => {
-    // OAuth2 인증이 완료된 후 리디렉션 될 URL
     const redirectUri = encodeURIComponent('http://localhost:8080/api/oauth2/callback/kakao');
     const url = `https://kauth.kakao.com/oauth/authorize?client_id=6eab7537fc945cb54b219628a1e82f76&redirect_uri=${redirectUri}&response_type=code`;
     window.location.href = url;
   };
-  
 
   return (
     <div className="login-wrapper">
       <img src="/img/logo.png" alt="로고" style={{ width: '80%' }} />
       <form id="user" className="login-form" onSubmit={handleSubmit}>
-        {/* CSRF 토큰을 서버에서 동적으로 가져와야 합니다 */}
-        <input type="hidden" name="_csrf" value="YOUR_CSRF_TOKEN" />
         <input
           type="text"
           placeholder="사용자 아이디"
@@ -110,7 +109,6 @@ const LoginPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-
         {error && (
           <p className="text-center text-danger">
             {error}
@@ -127,7 +125,6 @@ const LoginPage = () => {
             />
             아이디 저장
           </label>
-          <h1> &nbsp;&nbsp;&nbsp;</h1>
           <label htmlFor="remember-me">
             <input
               type="checkbox"

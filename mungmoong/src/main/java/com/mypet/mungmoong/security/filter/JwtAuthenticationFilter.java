@@ -1,6 +1,5 @@
 package com.mypet.mungmoong.security.filter;
 
-
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,13 +29,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private final JwtTokenProvider jwtTokenProvider;
 
     // 생성자
-    public JwtAuthenticationFilter( AuthenticationManager authenticationManager,  JwtTokenProvider jwtTokenProvider ) {
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
         // 🔗 필터 URL 경로 설정 : /login
         setFilterProcessesUrl(SecurityConstants.AUTH_LOGIN_URL);
     }
-
 
     /**
      * 🔐 인증 시도 메소드
@@ -62,29 +60,19 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         // 사용자 인증 (로그인)
         authentication = authenticationManager.authenticate(authentication);
-        /*
-            🔐 authenticate() 인증 처리 프로세스
-            1️⃣ 주어진 Authentication 객체에서 사용자의 아이디를 추출합니다.
-            2️⃣ UserDetailsService를 사용하여 해당 아이디에 대한 UserDetails 객체를 가져옵니다.
-            3️⃣ 가져온 UserDetails 객체에서 저장된 비밀번호를 확인하기 위해 PasswordEncoder를 사용합니다.
-            4️⃣ 사용자가 제공한 비밀번호와 저장된 비밀번호가 일치하는지 확인합니다.
-            5️⃣ 인증이 성공하면, 새로운 Authentication 객체를 생성하여 반환합니다.
-            ✅ 인증 여부를, isAuthenticated() ➡ true 로 확인할 수 있습니다.
-         */
 
         log.info("authenticationManager : " + authenticationManager);
         log.info("authentication : " + authentication);
         log.info("인증 여부(isAuthenticated) : " + authentication.isAuthenticated());
 
         // 인증 실패 (username, password 불일치)
-        if( !authentication.isAuthenticated() ) {
+        if (!authentication.isAuthenticated()) {
             log.info("인증 실패 : 아이디와 비밀번호가 일치하지 않습니다.");
-            response.setStatus(401);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
 
         return authentication;
     }
-
 
     /**
      * ⭕ 인증 성공 메소드
@@ -106,7 +94,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             Authentication authentication) throws IOException, ServletException {
         log.info("인증 성공 (auth SUCCESS) : ");
 
-        CustomUser user = ((CustomUser) authentication.getPrincipal());
+        CustomUser user = (CustomUser) authentication.getPrincipal();
         int userNo = user.getUser().getNo();
         String userId = user.getUser().getUserId();
 
@@ -120,17 +108,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         // 💍 { Authorization : Bearer + {jwt} } 
         response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);
-        response.setStatus(200);
+        response.setStatus(HttpServletResponse.SC_OK);
     }
-
-
-
-    
-
-    
-
-
-
-    
-    
 }

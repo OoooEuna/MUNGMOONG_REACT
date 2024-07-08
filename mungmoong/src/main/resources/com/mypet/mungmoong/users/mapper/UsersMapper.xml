@@ -71,23 +71,14 @@
     </insert>
 
     <!-- 회원 수정 -->
-     <update id="update" parameterType="com.mypet.mungmoong.users.dto.Users">
-        UPDATE users
-        SET password = #{password},
+    <update id="update">
+        UPDATE user
+        SET user_id = #{userId},
+            user_pw = #{userPw},
             name = #{name},
-            birth = #{birth},
-            email = #{email},
-            address = #{address},
-            phone = #{phone},
-            enabled = #{enabled},
-            gender = #{gender},
-            role = #{role},
-            reg_date = #{reg_date},
-            upd_date = #{upd_date}
-
+            email = #{email}
         WHERE user_id = #{userId}
     </update>
-
 
     <!-- 회원 삭제 -->
     <delete id="delete">
@@ -105,7 +96,4 @@
         SELECT * FROM users WHERE user_id = #{userId}
     </select>
 
- <select id="findBySocialId" parameterType="String" >
-        SELECT * FROM users WHERE social_id = #{socialId}
-    </select>
 </mapper>
