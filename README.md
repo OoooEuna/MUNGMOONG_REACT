@@ -6,7 +6,9 @@ mungmoong 멍뭉 프로젝트
 
 깃허브 :  https://github.com/OoooEuna/MUNGMOONG_REACT
 
-유튜브  : 
+유튜브 : 
+
+PPT   : https://drive.google.com/file/d/1C5DFmSNXUdE3tCPDQHA6JPVGGjk4Mcv6/view?usp=sharing
 
 ---
 <br><br>
