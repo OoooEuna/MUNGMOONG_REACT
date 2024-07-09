@@ -29,7 +29,7 @@ import com.mypet.mungmoong.users.service.UsersService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/api/users")
 public class UsersApiController {
 
